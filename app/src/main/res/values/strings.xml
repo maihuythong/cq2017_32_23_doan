@@ -11,5 +11,7 @@
     </string>
     <string name="action_sign_out_short">Sign out</string>
     <string name="hello">Hello</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="prompt_phone">Phone number</string>
 
 </resources>
