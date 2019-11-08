@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_invalid_email">Email không hợp lệ</string>
+    <string name="error_invalid_password">Mật khẩu quá ngắn</string>
+    <string name="error_incorrect_password">Số tài hoặc mật khẩu không đúng</string>
+    <string name="error_field_required">Vui lòng điền thông tin</string>
+    <string name="error_check_network_connection">Vui lòng kiểm tra lại kết nối mạng</string>
+    <string name="error_check_network_connection_click_to_retry">Vui lòng kiểm tra lại kết nối mạng. Xin mời thử lại?</string>
+    <string name="error_backend_error">Có lỗi hệ thống, vui lòng thử lại sau.</string>
+</resources>
