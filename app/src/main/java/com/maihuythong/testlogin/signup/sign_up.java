@@ -1,4 +1,4 @@
-package com.maihuythong.testlogin;
+package com.maihuythong.testlogin.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,12 +17,14 @@ import com.maihuythong.testlogin.network.MyAPIClient;
 import com.maihuythong.testlogin.network.UserService;
 
 public class sign_up extends AppCompatActivity {
-    public static String TAG  = "LoginActivity";
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mPhoneView;
+
     private View mProgressView;
     private View mSignUpFormView;
+
     private ProgressDialog mProgressDialog;
     private UserService userService;
 
@@ -34,8 +36,9 @@ public class sign_up extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+
+        mEmailView = findViewById(R.id.email);
+        mPhoneView = findViewById(R.id.phone);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -60,4 +63,7 @@ public class sign_up extends AppCompatActivity {
         mSignUpFormView = findViewById(R.id.registration_form);
         mProgressView = findViewById(R.id.signup_progress);
     }
+
+
+
 }
