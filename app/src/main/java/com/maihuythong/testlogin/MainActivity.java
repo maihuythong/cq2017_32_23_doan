@@ -36,9 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
         MyApplication app = (MyApplication)getApplication();
         TextView tv = (TextView) findViewById(R.id.textView);
-        tv.setText(getString(R.string.hello) + " " + app.getTokenInfo().getUserName());
+        //  tv.setText(getString(R.string.hello) + " " + app.getTokenInfo().getUserName());
+        tv.setText(getString(R.string.hello));
 
-        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+//        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         Button logout = (Button)findViewById(R.id.b_Logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         // Clear token
-                        MyAPIClient.getInstance().setAccessToken(null);
+//                        MyAPIClient.getInstance().setAccessToken(null);
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.remove(MainActivity.this.getString(R.string.saved_access_token));

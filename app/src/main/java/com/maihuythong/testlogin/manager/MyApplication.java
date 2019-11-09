@@ -17,34 +17,82 @@ import com.maihuythong.testlogin.model.TokenInfo;
  */
 
 public class MyApplication extends Application {
-    private TokenInfo tokenInfo;
+//    private TokenInfo tokenInfo;
+//
+//    public TokenInfo getTokenInfo() {
+//        return tokenInfo;
+//    }
+//
+//    public void setTokenInfo(TokenInfo tokenInfo) {
+//        this.tokenInfo = tokenInfo;
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        String str = new Gson().toJson(tokenInfo);
+//        editor.putString(getString(R.string.saved_token), str);
+//        editor.commit();
+//    }
+//
+//    public void loadTokenInfo() {
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String tokenStr = sharedPref.getString(getString(R.string.saved_token), null);
+//        if(TextUtils.isEmpty(tokenStr)) {
+//
+//        }else{
+//            tokenInfo = new Gson().fromJson(tokenStr, new TypeToken<TokenInfo>(){}.getType());
+//        }
+//    }
+//
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        loadTokenInfo();
+//    }
 
-    public TokenInfo getTokenInfo() {
-        return tokenInfo;
+    // private TokenInfo tokenInfo;
+    private String token;
+
+    public String getToken(){return  token;}
+//    public TokenInfo getTokenInfo() {
+//        return tokenInfo;
+//    }
+
+//    public void setTokenInfo(TokenInfo tokenInfo) {
+//        this.tokenInfo = tokenInfo;
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//   //     String str = new Gson().toJson(tokenInfo);
+//        editor.putString(getString(R.string.saved_token), str);
+//        editor.commit();
+//    }
+
+    public void setToken(String tokenString){
+        this.token=tokenString;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("login_token",tokenString);
     }
-
-    public void setTokenInfo(TokenInfo tokenInfo) {
-        this.tokenInfo = tokenInfo;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
-        String str = new Gson().toJson(tokenInfo);
-        editor.putString(getString(R.string.saved_token), str);
-        editor.commit();
-    }
-
-    public void loadTokenInfo() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String tokenStr = sharedPref.getString(getString(R.string.saved_token), null);
+    //    public void loadTokenInfo() {
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String tokenStr = sharedPref.getString(getString(R.string.saved_token), null);
+//        if(TextUtils.isEmpty(tokenStr)) {
+//
+//        }else{
+//            tokenInfo = new Gson().fromJson(tokenStr, new TypeToken<TokenInfo>(){}.getType());
+//        }
+//    }
+    public void loadToken(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String tokenStr = sharedPreferences.getString("login_token", null);
         if(TextUtils.isEmpty(tokenStr)) {
 
         }else{
-            tokenInfo = new Gson().fromJson(tokenStr, new TypeToken<TokenInfo>(){}.getType());
+            token = this.token;
         }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        loadTokenInfo();
+        loadToken();
     }
 }

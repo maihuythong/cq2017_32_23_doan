@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,9 +19,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.maihuythong.testlogin.manager.MyApplication;
-import com.maihuythong.testlogin.model.LoginRequest;
 import com.maihuythong.testlogin.model.LoginResponse;
 import com.maihuythong.testlogin.network.MyAPIClient;
+import com.maihuythong.testlogin.network.MyAPILogin;
+import com.maihuythong.testlogin.network.RetrofitServices;
 import com.maihuythong.testlogin.network.UserService;
 import com.maihuythong.testlogin.signup.sign_up;
 
@@ -31,6 +31,7 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A login screen that offers login via email/password.
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
-        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+      //  userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
@@ -134,28 +135,35 @@ public class LoginActivity extends AppCompatActivity {
         if(cancel == true){
             mProgressDialog.hide();
         }else{
-            final LoginRequest request = new LoginRequest();
-            request.setUsername(email);
-            request.setPassword(password);
-            Call<LoginResponse> call = userService.login(request);
+//            final LoginRequest request = new LoginRequest();
+//            request.setUsername(email);
+//            request.setPassword(password);
+//            Call<LoginResponse> call = userService.login(request);
 
+            Retrofit retrofit = MyAPILogin.getRetrofit();
+            RetrofitServices retrofitServices = retrofit.create(RetrofitServices.class);
+            Call<LoginResponse> call = retrofitServices.isValidUser(mEmailView.getText().toString(),mPasswordView.getText().toString());
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 // Save login info
 
-                    MyAPIClient.getInstance().setAccessToken(response.body().getData().getToken());
+                    LoginResponse result = response.body();
+//                    Log.i("Token",result.getToken());
+//                    Log.i("UserId", String.valueOf(result.getUserId()));
+                    
+//                    MyAPIClient.getInstance().setAccessToken(response.body().getData().getToken());
                     long time = (new Date()).getTime()/1000;
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(getString(R.string.saved_access_token), response.body().getData().getToken());
+                    editor.putString(getString(R.string.saved_access_token), result.getToken());
                     editor.putString(
-                    getString(R.string.saved_access_token), response.body().getData().getToken());
+                    getString(R.string.saved_access_token), result.getToken());
                     editor.putLong(getString(R.string.saved_access_token_time), time);
                     editor.commit();
-
+//
                     MyApplication app = (MyApplication) LoginActivity.this.getApplication();
-                    app.setTokenInfo(response.body().getData());
+                    app.setToken(result.getToken());
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

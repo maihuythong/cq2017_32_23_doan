@@ -7,34 +7,75 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class LoginResponse {
-    @SerializedName("status")
-    private boolean status;
-    @SerializedName("data")
-    private TokenInfo data;
-    @SerializedName("message")
-    private String message;
+//    @SerializedName("status")
+//    private boolean status;
+//    @SerializedName("data")
+//    private TokenInfo data;
+//    @SerializedName("message")
+//    private String message;
+//
+//    public boolean isStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(boolean status) {
+//        this.status = status;
+//    }
+//
+//    public TokenInfo getData() {
+//        return data;
+//    }
+//
+//    public void setData(TokenInfo data) {
+//        this.data = data;
+//    }
+//
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
 
-    public boolean isStatus() {
-        return status;
-    }
+    @SerializedName("userId")
+    private int userId;
+    private String emailVerified;
+    private String phoneVerified;
+    @SerializedName("token")
+    private String token;
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+    public String getToken(){return token;}
+    public int getUserId(){return userId;}
 
-    public TokenInfo getData() {
-        return data;
-    }
-
-    public void setData(TokenInfo data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+//    @SerializedName("status")
+//    private boolean status;
+//    @SerializedName("data")
+//    private TokenInfo data;
+//    @SerializedName("message")
+//    private String message;
+//
+//    public boolean isStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(boolean status) {
+//        this.status = status;
+//    }
+//
+//    public TokenInfo getData() {
+//        return data;
+//    }
+//
+//    public void setData(TokenInfo data) {
+//        this.data = data;
+//    }
+//
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
 }
