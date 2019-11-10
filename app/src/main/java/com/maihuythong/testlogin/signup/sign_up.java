@@ -25,6 +25,8 @@ import com.maihuythong.testlogin.model.LoginRequest;
 import com.maihuythong.testlogin.model.LoginResponse;
 import com.maihuythong.testlogin.network.MyAPIClient;
 import com.maihuythong.testlogin.network.UserService;
+import com.maihuythong.testlogin.showlist.ShowListReq;
+import com.maihuythong.testlogin.showlist.ShowListRes;
 
 import java.util.Date;
 
@@ -165,6 +167,7 @@ public class sign_up extends AppCompatActivity {
 
 
             mAPIService = ApiUtils.getAPIService();
+
             mAPIService.signUp(email, password, phone).enqueue(new Callback<Post>() {
                 @Override
                 public void onResponse(Call<Post> call, Response<Post> response) {
