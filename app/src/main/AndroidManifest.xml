@@ -17,7 +17,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".showlist.ShowListActivity"></activity>
+        <activity android:name=".showlist.ShowListActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity android:name=".signup.sign_up" />
         <activity android:name=".MainActivity" />
         <activity

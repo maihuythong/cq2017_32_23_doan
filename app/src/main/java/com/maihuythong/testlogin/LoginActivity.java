@@ -32,6 +32,7 @@ import com.maihuythong.testlogin.network.MyAPIClient;
 import com.maihuythong.testlogin.network.MyAPILogin;
 import com.maihuythong.testlogin.network.RetrofitServices;
 import com.maihuythong.testlogin.network.UserService;
+import com.maihuythong.testlogin.showlist.ShowListActivity;
 import com.maihuythong.testlogin.signup.sign_up;
 import com.maihuythong.testlogin.socialNetwork.LoginService;
 
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("string_Token",result.getToken());
                         startActivity(intent);
@@ -263,7 +264,7 @@ public class LoginActivity extends AppCompatActivity {
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         LoginActivity.this.finish();
