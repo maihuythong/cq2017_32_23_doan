@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         MyApplication app = (MyApplication)getApplication();
         TextView tv = (TextView) findViewById(R.id.textView);
         //  tv.setText(getString(R.string.hello) + " " + app.getTokenInfo().getUserName());
-        tv.setText(getString(R.string.hello));
+        tv.setText(app.getToken());
 
 //        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         Button logout = (Button)findViewById(R.id.b_Logout);
