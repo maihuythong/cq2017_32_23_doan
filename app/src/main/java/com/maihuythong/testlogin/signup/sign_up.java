@@ -39,6 +39,7 @@ public class sign_up extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPhoneView;
+    private TextView mErrorDialogue;
 
     private View mProgressView;
     private View mSignUpFormView;
@@ -59,6 +60,7 @@ public class sign_up extends AppCompatActivity {
 
         mEmailView = findViewById(R.id.email);
         mPhoneView = findViewById(R.id.phone);
+        mErrorDialogue = findViewById(R.id.error_dialogue);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -178,13 +180,19 @@ public class sign_up extends AppCompatActivity {
                         Log.i("aaa", "post submitted to API." + response.body().toString());
                     }
                     else if(response.code() == 400){
-                        Log.i("ccc", "fail");
+                        mErrorDialogue.setText("Thông tin đăng ký bị trùng");
+                        mProgressDialog.hide();
+                    }
+                    else if(response.code() == 503){
+                        mErrorDialogue.setText("Server đang bận, vui lòng thử lại sau ít phút");
+                        mProgressDialog.hide();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Post> call, Throwable t) {
-                    Log.e("bbb", "Unable to submit post to API.");
+                    mErrorDialogue.setText("Kiểm tra kết nối internet của bạn và thử lại");
+                    mProgressDialog.hide();
                 }
             });
         }
@@ -194,7 +202,6 @@ public class sign_up extends AppCompatActivity {
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
-//        return true;
     }
 
     private boolean isPasswordValid(String password) {

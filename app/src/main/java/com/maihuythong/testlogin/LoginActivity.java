@@ -245,29 +245,40 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 // Save login info
 
-                    LoginResponse result = response.body();
+                    if(response.code() == 200){
+                        LoginResponse result = response.body();
 //                    Log.i("Token",result.getToken());
 //                    Log.i("UserId", String.valueOf(result.getUserId()));
-                    
+
 //                    MyAPIClient.getInstance().setAccessToken(response.body().getData().getToken());
-                    long time = (new Date()).getTime()/1000;
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(getString(R.string.saved_access_token), result.getToken());
-                    editor.putString(
-                    getString(R.string.saved_access_token), result.getToken());
-                    editor.putLong(getString(R.string.saved_access_token_time), time);
-                    editor.commit();
+                        long time = (new Date()).getTime()/1000;
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(getString(R.string.saved_access_token), result.getToken());
+                        editor.putString(
+                                getString(R.string.saved_access_token), result.getToken());
+                        editor.putLong(getString(R.string.saved_access_token_time), time);
+                        editor.commit();
 //
-                    MyApplication app = (MyApplication) LoginActivity.this.getApplication();
-                    app.setToken(result.getToken());
+                        MyApplication app = (MyApplication) LoginActivity.this.getApplication();
+                        app.setToken(result.getToken());
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    LoginActivity.this.finish();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        LoginActivity.this.finish();
 
-                    mProgressDialog.hide();
+                        mProgressDialog.hide();
+                    }
+                    else if(response.code() == 400){
+                        ((TextView)findViewById(R.id.error_dialogue_signin)).setText("Missing email/phone or password");
+                        mProgressDialog.hide();
+                    }
+                    else if(response.code() == 404){
+                        ((TextView)findViewById(R.id.error_dialogue_signin)).setText("Wrong email/phone or password");
+                        mProgressDialog.hide();
+                    }
+
                 }
 
                 @Override
