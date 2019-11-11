@@ -45,9 +45,17 @@ import com.maihuythong.testlogin.showlist.ShowListActivity;
 import com.maihuythong.testlogin.signup.sign_up;
 import com.maihuythong.testlogin.socialNetwork.LoginService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -246,6 +254,7 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             String authCode = account.getServerAuthCode();
+            GetAccessTokenGG(authCode);
 
             //Log.d("thanh1",authCode);
             Toast.makeText(LoginActivity.this,"Login successfully.", Toast.LENGTH_LONG).show();
@@ -260,6 +269,44 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void GetAccessTokenGG(String authCode){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("grant_type", "authorization_code")
+                .add("client_id",getString(R.string.server_client_id))
+                .add("client_secret", getString(R.string.client_secret))
+                .add("redirect_uri","")
+                .add("code", authCode)
+                .build();
+
+        final Request request = new Request.Builder()
+                .url("https://www.googleapis.com/oauth2/v4/token")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Toast.makeText(LoginActivity.this,"Login api failed.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    final String accessTokenGG = jsonObject.toString(5);
+                    Log.d("accesstokenGG",accessTokenGG);
+                    //===============================Send access token to main activiy
+
+                    //==============================================================================
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
