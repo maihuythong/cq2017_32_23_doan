@@ -254,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             String authCode = account.getServerAuthCode();
-            GetAccessTokenGG(authCode);
+            GetAccessTokenGG(authCode); // get access token of google
 
             //Log.d("thanh1",authCode);
             Toast.makeText(LoginActivity.this,"Login successfully.", Toast.LENGTH_LONG).show();
