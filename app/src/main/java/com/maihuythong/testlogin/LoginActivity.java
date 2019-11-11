@@ -26,6 +26,15 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.Task;
 import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.model.LoginResponse;
 import com.maihuythong.testlogin.network.MyAPIClient;
@@ -48,6 +57,7 @@ import retrofit2.Retrofit;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
+    private static final int RC_SIGN_IN = 0;
     public static String TAG  = "LoginActivity";
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -58,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
     private UserService userService;
     CallbackManager callbackManager;
     LoginButton loginButton;
-
+    SignInButton signInButton;
+    GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
@@ -67,6 +78,37 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
+
+
+        //=========================Login Google Area======================================================
+
+        SignInButton signInButton = findViewById(R.id.loginGG_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        String serverClientId = getString(R.string.server_client_id);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.DRIVE_APPFOLDER))
+                .requestServerAuthCode(serverClientId)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signInButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.loginGG_button:
+                        signIn();
+                        break;
+                    // ...
+                }
+            }
+        });
+        //=========================End login Google Area
+
 
         //========================Login facebook area=====================================================
         callbackManager = CallbackManager.Factory.create(); // To receive response of server facebook
@@ -139,7 +181,6 @@ public class LoginActivity extends AppCompatActivity {
         //================================End Face book area==============================
 
 
-
        //  userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -188,11 +229,57 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         callbackManager.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+
+    }
+
+    //====================Google Area===========================
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            String authCode = account.getServerAuthCode();
+
+            //Log.d("thanh1",authCode);
+            Toast.makeText(LoginActivity.this,"Login successfully.", Toast.LENGTH_LONG).show();
+            // Signed in successfully, show authenticated UI.
+
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(LoginActivity.this,"Login failed.", Toast.LENGTH_LONG).show();
+        }
     }
 
 
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+//
+//    @Override
+//    protected void onStart() {
+//        // Check for existing Google Sign In account, if the user is already signed in
+//        // the GoogleSignInAccount will be non-null.
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        String authCode = account.getServerAuthCode();
+//        //Log.d("thanh",authCode);
+//        if(account !=null) {
+//            Toast.makeText(LoginActivity.this,"Login successfully.", Toast.LENGTH_LONG).show();
+//        }
+//        super.onStart();
+//    }
 
-
+    //====================End Google Area===========================
 
     /**
      * Attempts to sign in or register the account specified by the login form.
