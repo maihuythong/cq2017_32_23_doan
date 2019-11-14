@@ -258,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
 
             //Log.d("thanh1",authCode);
             Toast.makeText(LoginActivity.this,"Login successfully.", Toast.LENGTH_LONG).show();
-            // Signed in successfully, show authenticated UI.
+            // Signed in successfully, show authenticated UI.s
 
 
         } catch (ApiException e) {
