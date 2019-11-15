@@ -2,11 +2,14 @@ package com.maihuythong.testlogin.showlist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -22,10 +25,22 @@ public class ShowListActivity extends AppCompatActivity {
     private Tour[] t;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_list);
+
+        //init fab button
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTour();
+            }
+        });
+
         APIService mAPIService = ApiUtils.getAPIService();
         mAPIService.getList(25, 1).enqueue(new Callback<ShowListReq>() {
             @Override
@@ -95,6 +110,10 @@ public class ShowListActivity extends AppCompatActivity {
 //                });
 //            }
 //        });
+    }
+
+    private void AddTour() {
+        startActivity(new Intent(this, CreateTourActivity.class));
     }
 
 

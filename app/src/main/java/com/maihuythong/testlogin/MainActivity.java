@@ -17,6 +17,8 @@ import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.network.MyAPIClient;
 import com.maihuythong.testlogin.network.UserService;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCancelable(false);
 
         MyApplication app = (MyApplication)getApplication();
         TextView tv = (TextView) findViewById(R.id.textView);
