@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "116944607992",
+    "firebase_url": "https://tour-54ae9.firebaseio.com",
+    "project_id": "tour-54ae9",
+    "storage_bucket": "tour-54ae9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116944607992:android:ef663fdc6032937548f90d",
+        "android_client_info": {
+          "package_name": "com.maihuythong.testlogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116944607992-qeeg148m7t6at927gbnkgh3bvc2nb090.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.maihuythong.testlogin",
+            "certificate_hash": "9a4d6cd55b80665405f4a864362c0197b8f6924d"
+          }
+        },
+        {
+          "client_id": "116944607992-3skdjs433lpoe7rn26el6vqj65ng24a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb1VnE_fqORV2xhfL4cF2pODKVIeUODxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116944607992-3skdjs433lpoe7rn26el6vqj65ng24a4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
