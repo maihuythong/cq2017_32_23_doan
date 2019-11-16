@@ -158,7 +158,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imageView_id"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -166,7 +166,7 @@
                     android:src="@drawable/default_img"/>
 
                 <Button
-                    android:id="@+id/ChooseImage_button"
+                    android:id="@+id/chooseImage_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Choose Image" />
@@ -180,7 +180,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="This is your private trip"
-               android:checked="false"/>
+               android:checked="false" />
 
             <Button
                 android:id="@+id/create_tour_button"

@@ -53,7 +53,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CreateTourActivity"/>
+        <activity
+            android:name=".CreateTourActivity"
+            android:label="Create Tour"/>
 
     </application>
 
