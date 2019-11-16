@@ -3,6 +3,9 @@ package com.maihuythong.testlogin.showlist;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
+import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -23,6 +27,8 @@ import retrofit2.Response;
 public class ShowListActivity extends AppCompatActivity {
     private ListView lvTour;
     private Tour[] t;
+    private SharedPreferences sf;
+
 
 
 
@@ -42,7 +48,16 @@ public class ShowListActivity extends AppCompatActivity {
         });
 
         APIService mAPIService = ApiUtils.getAPIService();
-        mAPIService.getList(25, 1).enqueue(new Callback<ShowListReq>() {
+        Intent intent = getIntent();
+
+        String s;
+        s = LoginActivity.token;
+        if(s == null){
+            sf = getSharedPreferences("com.maihuythong.testlogin", MODE_PRIVATE);
+            s = sf.getString("sf_token", "");
+        }
+
+        mAPIService.getList(s,25, 1).enqueue(new Callback<ShowListReq>() {
             @Override
             public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                 if(response.code() == 200){

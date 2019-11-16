@@ -1,6 +1,7 @@
 package com.maihuythong.testlogin;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ import retrofit2.Retrofit;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
+    public static String token;
     private static final int RC_SIGN_IN = 0;
     public static String TAG  = "LoginActivity";
     // UI references.
@@ -76,6 +78,11 @@ public class LoginActivity extends AppCompatActivity {
     private UserService userService;
     CallbackManager callbackManager;
     LoginButton loginButton;
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.maihuythong.testlogin";
+
+
+
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -151,12 +158,13 @@ public class LoginActivity extends AppCompatActivity {
 //
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
-
+                        token = result.getToken();
                         Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("string_Token",result.getToken());
+
                         startActivity(intent);
-                        LoginActivity.this.finish();
+//                        LoginActivity.this.finish();
 
 
 
@@ -173,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                startActivity(intent);
+
             }
 
             @Override
@@ -224,6 +233,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        this.mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
     }
 
     @Override
@@ -231,6 +242,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
         if(mProgressDialog != null)
             mProgressDialog.dismiss();
+
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString("sf_token", token);
+        editor.commit();
     }
 
     @Override
