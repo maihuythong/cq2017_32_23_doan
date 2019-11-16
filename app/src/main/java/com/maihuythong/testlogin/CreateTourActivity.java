@@ -1,6 +1,7 @@
 package com.maihuythong.testlogin;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,11 +13,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.maihuythong.testlogin.model.CreateTourResponse;
+import com.maihuythong.testlogin.network.CreateTourService;
+import com.maihuythong.testlogin.signup.ApiUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateTourActivity  extends AppCompatActivity {
     private EditText startDate;
@@ -30,16 +40,15 @@ public class CreateTourActivity  extends AppCompatActivity {
     private Button chooseImageButton;
     private RadioButton isPrivateButton;
 
-
-
+    private SharedPreferences sf;
 
     private String tourName ="";
-    private Long startDateMilis;
-    private Long endDateMilis;
-    private int adults=0;
-    private int childs=0;
-    private int minCost;
-    private int maxCost;
+    private Number startDateMilis;
+    private Number endDateMilis;
+    private Number adults=0;
+    private Number childs=0;
+    private Number minCost;
+    private Number maxCost;
     private boolean isPrivate = false;
     private String avatar ="";
 
@@ -62,6 +71,7 @@ public class CreateTourActivity  extends AppCompatActivity {
         chooseImageButton = (Button) findViewById(R.id.chooseImage_button);
         isPrivateButton= (RadioButton)findViewById(R.id.isPrivate_id);
 
+        final CreateTourService createTourService = ApiUtils.getCreateTourService();
 
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +117,37 @@ public class CreateTourActivity  extends AppCompatActivity {
 
 
                 //===========put extra to another activity hear============
+
+
+                String token;
+                token = LoginActivity.token;
+                if(token == null){
+                    sf = getSharedPreferences("com.maihuythong.testlogin", MODE_PRIVATE);
+                    token = sf.getString("sf_token", "");
+                }
+
+                createTourService.getTourInfo(token,tourName,startDateMilis,endDateMilis,0,0,0,0,isPrivate,
+                        null,null,null,null,null).enqueue(new Callback<CreateTourResponse>() {
+                    @Override
+                    public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
+                        if(response.code() == 200) {
+                            CreateTourResponse result = response.body();
+                            Toast.makeText(CreateTourActivity.this,"Create Successful", Toast.LENGTH_LONG).show();
+                            Number Tourid = result.getId();
+                        }
+                        if (response.code()==400)
+                        {
+                            CreateTourResponse result = response.body();
+                            Toast.makeText(CreateTourActivity.this,"Bad request", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CreateTourResponse> call, Throwable t) {
+                        Toast.makeText(CreateTourActivity.this,"Create failed", Toast.LENGTH_LONG).show();
+                    }
+                });
+
 
                 //===========================================
             }

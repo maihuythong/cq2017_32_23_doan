@@ -1,5 +1,7 @@
 package com.maihuythong.testlogin.signup;
 
+import com.maihuythong.testlogin.network.CreateTourService;
+
 public class ApiUtils {
 
     private ApiUtils() {}
@@ -12,4 +14,11 @@ public class ApiUtils {
 
         return RetrofitClient.getClient(BASE_URL).create(APIService.class);
     }
+
+    public static CreateTourService getCreateTourService() {
+
+        return RetrofitClient.getClient(BASE_URL).create(CreateTourService.class);
+    }
+
+
 }
