@@ -53,6 +53,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -104,7 +105,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 
-public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener, LocationListener {
+public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
 
     public static final int TEXT_REQUEST = 1;
     private JSONArray stopPointsArray = new JSONArray();
@@ -164,7 +165,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
 
         getLocationPermission();        // check permission before init map
-        init();
+        //init();
     }
 
     private void init(){
@@ -324,6 +325,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             mapFragment.getMapAsync(this);
         }
 
+        getDeviceLocation();
+
     }
 
     private void getDeviceLocation(){
@@ -378,13 +381,13 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
+                initMap();
             }else{
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else
-        {
+        }else{
             ActivityCompat.requestPermissions(this,
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
@@ -400,18 +403,19 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         switch(requestCode){
             case LOCATION_PERMISSION_REQUEST_CODE:{
                 if(grantResults.length > 0){
-                    for (int i = 0; i < grantResults.length; ++i) {
-                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    for(int i = 0; i < grantResults.length; i++){
+                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
                             mLocationPermissionGranted = false;
+                            Log.d(TAG, "onRequestPermissionsResult: permission failed");
                             return;
                         }
                     }
+                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionGranted = true;
-
+                    //initialize our map
                     initMap();
                 }
             }
-
         }
     }
 
@@ -434,9 +438,33 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
             map.setOnMapClickListener(this);
 
+           // init();
 
-            init();
+//            LatLng pos = map.getCameraPosition().target;
+////
+////            Log.d("CAMERE LATLNG", String.valueOf(pos.latitude + pos.longitude));
 
+
+
+//            map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+//                @Override
+//                public void onCameraChange(CameraPosition cameraPosition) {
+//                    LatLng position = map.getCameraPosition().target;
+//                    Object transferData[] = new Object[2];
+//                    GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+//                    String url = getUrlNearby(position.latitude, position.longitude, "other");
+//                    transferData[0] = map;
+//                    transferData[1] = url;
+//
+//                    getNearbyPlaces.execute(transferData);
+//                }
+//            });
+//            map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+//                @Override
+//                public void onCameraIdle() {
+//
+//                }
+//            });
         }
 
 //        LatLng KHTN = new LatLng(10.762643, 106.682079);
@@ -704,11 +732,15 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 rest_station = "rest%station", other = "other";
         Object transferData[] = new Object[2];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+        String url;
+
+        LatLng curnentCamera = map.getCameraPosition().target;
+
         switch (v.getId())
         {
             case R.id.hotel:
                 map.clear();
-                String url = getUrlNearby(currentLatlngSelected.latitude, currentLatlngSelected.longitude, hospital);
+                url = getUrlNearby(curnentCamera.latitude, curnentCamera.longitude, hospital);
                 transferData[0] = map;
                 transferData[1] = url;
 
@@ -720,7 +752,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
             case R.id.restaurant:
                 map.clear();
-                url = getUrlNearby(currentLatlngSelected.latitude, currentLatlngSelected.longitude, restaurant);
+                url = getUrlNearby(curnentCamera.latitude, curnentCamera.longitude, restaurant);
                 transferData[0] = map;
                 transferData[1] = url;
 
@@ -732,7 +764,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
             case R.id.rest_station:
                 map.clear();
-                url = getUrlNearby(currentLatlngSelected.latitude, currentLatlngSelected.longitude, rest_station);
+                url = getUrlNearby(curnentCamera.latitude, curnentCamera.longitude, rest_station);
                 transferData[0] = map;
                 transferData[1] = url;
 
@@ -743,7 +775,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
             case R.id.other:
                 map.clear();
-                url = getUrlNearby(currentLatlngSelected.latitude, currentLatlngSelected.longitude, other);
+                url = getUrlNearby(curnentCamera.latitude, curnentCamera.longitude, other);
                 transferData[0] = map;
                 transferData[1] = url;
 
@@ -907,22 +939,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        double latitude = location.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        // Showing the current location in Google Map
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in the Google Map
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
-    }
 }
 
 // Direction https://github.com/hiepxuan2008/GoogleMapDirectionSimple/blob/master/app/src/main/java/com/itshareplus/googlemapdemo/MapsActivity.java
