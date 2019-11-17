@@ -33,7 +33,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="10dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/stop_point_name"
@@ -42,21 +44,32 @@
                     android:hint="Stop point name"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="false"
+                    android:background="@android:color/transparent"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- spinner hear -->
-            <Spinner
-                android:id="@+id/planets_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
+                <Spinner
+                    android:id="@+id/service_type_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
+            </LinearLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/address_id"
@@ -65,10 +78,24 @@
                     android:hint="Address"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="false"
+                    android:background="@android:color/transparent"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
+                <Spinner
+                    android:id="@+id/province_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,29 +109,6 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="5dp"
                     android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/start_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="Start date"
-                        android:inputType="datetime" />
-
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Adults"
-                        android:textColor="#000000"/>
-                    <EditText
-                        android:id="@+id/adults_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="0"
-                        android:inputType="number"/>
 
                     <TextView
                         android:layout_marginTop="10dp"
@@ -121,6 +125,39 @@
                         android:hint="0"
                         android:inputType="number" />
 
+                    <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arrive At:"
+                    android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/arrive_time_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Time"
+                        android:inputType="time" />
+
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave At:"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/leave_time_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Time"
+                        android:inputType="time" />
+
                 </LinearLayout>
 
 
@@ -131,29 +168,6 @@
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/end_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="datetime"
-                        android:hint="End date"
-                        android:focusable="false"/>
-
-                    <TextView
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Children"
-                        android:textColor="#000000"/>
-                    <EditText
-                        android:id="@+id/children_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="0"
-                        android:inputType="number" />
 
                     <TextView
                         android:layout_marginTop="10dp"
@@ -170,15 +184,47 @@
                         android:hint="0"
                         android:inputType="number" />
 
-                </LinearLayout>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#000000"/>
 
+                    <EditText
+                        android:id="@+id/arrive_date_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="datetime" />
+
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/leave_date_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Date"
+                        android:inputType="datetime" />
+                </LinearLayout>
             </LinearLayout>
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <ImageView
                     android:id="@+id/imageView_id"
@@ -198,21 +244,26 @@
 
 
 
-            <RadioButton
-                android:id="@+id/isPrivate_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This is your private trip"
-                android:checked="false" />
 
             <Button
-                android:id="@+id/create_tour_button"
+                android:id="@+id/add_more_stop_point_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Create Tour"
+                android:text="Add more stop point"
                 android:textStyle="bold"/>
+
+
+            <Button
+                android:id="@+id/complete_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Complete"
+                android:textStyle="bold"/>
+
 
             <TextView
                 android:layout_width="match_parent"
