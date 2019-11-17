@@ -34,6 +34,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -89,7 +90,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
+public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener, LocationListener {
 
     public Number tourId;
     public static final int TEXT_REQUEST = 1;
@@ -382,6 +383,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
+                initMap();
             }else{
                 ActivityCompat.requestPermissions(this,
                         permissions,
@@ -429,10 +431,11 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                     }
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionGranted = true;
-                    //initialize our map
+
                     initMap();
                 }
             }
+
         }
     }
 
@@ -827,6 +830,22 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        double latitude = location.getLatitude();
+
+        // Getting longitude of the current location
+        double longitude = location.getLongitude();
+
+        // Creating a LatLng object for the current location
+        LatLng latLng = new LatLng(latitude, longitude);
+
+        // Showing the current location in Google Map
+        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        // Zoom in the Google Map
+        map.animateCamera(CameraUpdateFactory.zoomTo(15));
+    }
 }
 
 // Direction https://github.com/hiepxuan2008/GoogleMapDirectionSimple/blob/master/app/src/main/java/com/itshareplus/googlemapdemo/MapsActivity.java
