@@ -1,6 +1,7 @@
 package com.maihuythong.testlogin;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
 import com.maihuythong.testlogin.model.CreateTourResponse;
 import com.maihuythong.testlogin.network.CreateTourService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -142,11 +144,16 @@ public class CreateTourActivity  extends AppCompatActivity {
                             CreateTourResponse result = response.body();
                             Toast.makeText(CreateTourActivity.this,"Create Successful", Toast.LENGTH_LONG).show();
                             Number Tourid = result.getId();
+
+                            Intent intent = new Intent(CreateTourActivity.this, StopPointGoogleMap.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra("tourId", Integer.parseInt(Tourid.toString()));
+                            startActivity(intent);
                         }
                         if (response.code()==400)
                         {
                             CreateTourResponse result = response.body();
-                            Toast.makeText(CreateTourActivity.this,"Bad request", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateTourActivity.this,"Thiếu tham số! Vui lòng nhập đầy đủ tên, ngày bắt đầu, ngày kết thúc!", Toast.LENGTH_LONG).show();
                         }
                     }
 

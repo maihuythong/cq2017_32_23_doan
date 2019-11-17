@@ -89,6 +89,7 @@ import retrofit2.Response;
 
 public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
 
+    public Number tourId;
     public static final int TEXT_REQUEST = 1;
 
     private static final String TAG = "MAP ACTIVITY";
@@ -135,6 +136,14 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 //        materialSearchBar = findViewById(R.id.searchBar);
 
 //        token = AutocompleteSessionToken.newInstance();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            tourId= null;
+        } else {
+            tourId= extras.getInt("tourId");
+            Log.d("Tour ID TAG: ","Here is tour ID: " + tourId);
+        }
 
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
@@ -743,6 +752,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 mAPIService.createStopPoints("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OSIsInBob25lIjoiMDgzMzUyNzQ1MCIsImVtYWlsIjoibWFpaHV5dGhvbmd4QGdtYWlsLmNvbSIsImV4cCI6MTU3NTk2OTE0NzMxNCwiYWNjb3VudCI6InVzZXIiLCJpYXQiOjE1NzMzNzcxNDd9.0WdtlhBt-5NHzKGRvtKKnoxhoM0vn3_0p4dJfkNRBjA","1329", arrayStopPoint).enqueue(new Callback<StopPoints>() {
                     @Override
                     public void onResponse(Call<StopPoints> call, Response<StopPoints> response) {
+                        Log.d("RESPONSE", response.body().toString());
                         Log.d("xong", response.code() + "");
                     }
 
