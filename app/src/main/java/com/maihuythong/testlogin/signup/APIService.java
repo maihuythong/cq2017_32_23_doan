@@ -1,8 +1,13 @@
 package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.LoginActivity;
+import com.maihuythong.testlogin.model.StopPointInfo;
+import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.showlist.ShowListRes;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -27,6 +32,12 @@ public interface APIService {
     Call<Post> signUp(@Field("email") String email,
                       @Field("password") String password,
                       @Field("phone") String phone);
+
+
+    @POST("/tour/set-stop-points")
+    @FormUrlEncoded
+    Call<StopPoints> createStopPoints(@Field("tourId") String tourId,
+                                      @Field("stopPoints") ArrayList<StopPointInfo> stopPoints);
 
 
     @GET("/tour/list")

@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,9 +58,15 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.gson.Gson;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.model.StopPointInfo;
+import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.pop.ShowPopupActivity;
 import com.maihuythong.testlogin.showlist.ShowListActivity;
+import com.maihuythong.testlogin.signup.APIService;
+import com.maihuythong.testlogin.signup.ApiUtils;
 //import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,6 +79,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
@@ -465,6 +475,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    private String addressFromMarker;
 
     @Override
     public void onMapClick(LatLng latLng) {
@@ -519,6 +530,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 Intent intent = new Intent(this, ShowPopupActivity.class);
 
                 intent.putExtra("EXTRA_ADDRESS", address);
+                addressFromMarker = address;
                 startActivityForResult(intent, 1);
 
 
@@ -717,9 +729,24 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 Toast.makeText(this, "Searching for Nearby Places...", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Places...", Toast.LENGTH_SHORT).show();
                 break;
-                //Complete button click here
-            case R.id.complete_add_stop_point:
 
+            case R.id.complete_add_stop_point:
+                StopPoints stopPoints = new StopPoints();
+                //TODO:hihih
+//                stopPoints.setTourId("123123123");
+//                stopPoints.setStopPoints(arrayStopPoint);
+                APIService mAPIService = ApiUtils.getAPIService();
+                mAPIService.createStopPoints("1329", arrayStopPoint).enqueue(new Callback<StopPoints>() {
+                    @Override
+                    public void onResponse(Call<StopPoints> call, Response<StopPoints> response) {
+                        Log.d("xong", response.code() + "");
+                    }
+
+                    @Override
+                    public void onFailure(Call<StopPoints> call, Throwable throwable) {
+                        Log.d("khong xong", "Not OK");
+                    }
+                });
         }
     }
 
@@ -746,11 +773,13 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         // Test to make sure the intent reply result was good.
         if (resultCode == RESULT_OK) {
             String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
-     //       String serviceType = data.getStringExtra("REPLY_SERVICE_TYPE");
-    //        String province = data.getStringExtra("REPLY_PROVINCE");
+//            String serviceType = data.getStringExtra("REPLY_SERVICE_TYPE");
+//            String province = data.getStringExtra("REPLY_PROVINCE");
 
-            Log.d(TAG,stopPointName + "  "  );
 
+            StopPointInfo stopPointInfo = new StopPointInfo();
+            stopPointInfo.setAddress(addressFromMarker);
+            arrayStopPoint.add(stopPointInfo);
         }
     }
 

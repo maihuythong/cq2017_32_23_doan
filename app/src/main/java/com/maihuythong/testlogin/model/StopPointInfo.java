@@ -10,16 +10,16 @@ public class StopPointInfo {
     private long leaveAt;
     private int serviceTypeId;
 
-    public StopPointInfo(String name, String address, int provinceId, double latitude, double longtitude, long arrivalAt, long leaveAt, int serviceTypeId) {
-        this.name = name;
-        this.address = address;
-        this.provinceId = provinceId;
-        this.latitude = latitude;
-        this.longtitude = longtitude;
-        this.arrivalAt = arrivalAt;
-        this.leaveAt = leaveAt;
-        this.serviceTypeId = serviceTypeId;
-    }
+//    public StopPointInfo(String name, String address, int provinceId, double latitude, double longtitude, long arrivalAt, long leaveAt, int serviceTypeId) {
+//        this.name = name;
+//        this.address = address;
+//        this.provinceId = provinceId;
+//        this.latitude = latitude;
+//        this.longtitude = longtitude;
+//        this.arrivalAt = arrivalAt;
+//        this.leaveAt = leaveAt;
+//        this.serviceTypeId = serviceTypeId;
+//    }
 
     public String getName() {
         return name;
