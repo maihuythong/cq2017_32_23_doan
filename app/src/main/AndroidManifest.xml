@@ -22,20 +22,24 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".showlist.ShowListActivity">
+        <activity
+            android:name=".showlist.ShowListActivity"
+            android:label="List tour">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
-        <activity android:name=".googlemapapi.StopPointGoogleMap">
+        <activity android:name=".googlemapapi.StopPointGoogleMap"
+            android:label="Stop point create">
 <!--                <intent-filter>-->
 <!--                    <action android:name="android.intent.action.MAIN" />-->
 <!--                    <category android:name="android.intent.category.LAUNCHER" />-->
 <!--                </intent-filter>-->
         </activity>
-        <activity android:name=".signup.sign_up" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".signup.sign_up"
+            android:label="Sign Up"/>
+        <activity android:name=".MainActivity"/>
         <activity
             android:name=".SplashActivity">
             <intent-filter>
@@ -43,7 +47,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -71,7 +77,8 @@
             android:name=".CreateTourActivity"
             android:label="Create Tour"/>
 
-        <activity android:name=".pop.ShowPopupActivity"></activity>
+        <activity android:name=".pop.ShowPopupActivity"
+            android:label="Stop point infor"></activity>
 
     </application>
 
