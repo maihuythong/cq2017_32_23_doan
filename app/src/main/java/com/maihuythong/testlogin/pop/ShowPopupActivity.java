@@ -185,19 +185,30 @@ public class ShowPopupActivity extends AppCompatActivity {
         EditText mStopPointName = findViewById(R.id.stop_point_name);
         Spinner mServiceType = findViewById(R.id.service_type_spinner);
         Spinner mProvinceSpinner = findViewById(R.id.province_spinner);
+        EditText mArrivalAt = findViewById(R.id.arrive_time_id);
+        EditText mLeaveAt = findViewById(R.id.leave_time_id);
+
 
         // Get the reply message from the edit text.
         String stopPointName = mStopPointName.getText().toString();
-        //String serviceType = mServiceType.getSelectedItem().toString();
-       // String province = mProvinceSpinner.getSelectedItem().toString();
+        int serviceType = mServiceType.getSelectedItemPosition();
+        int province = mProvinceSpinner.getSelectedItemPosition();
+        //TODO:
+        String arrivalAt = mArrivalAt.getText().toString();
+//        long arrivalAtInt = Long.parseLong(arrivalAt);
+        String leaveAt = mLeaveAt.getText().toString();
+//        long leaveAtInt = Long.parseLong(leaveAt);
 
 
         // Create a new intent for the reply, add the reply message to it
         // as an extra, set the intent result, and close the activity.
         Intent replyIntent = new Intent();
         replyIntent.putExtra("REPLY_STOP_POINT_NAME", stopPointName);
-       // replyIntent.putExtra("REPLY_SERVICE_TYPE", serviceType);
-       // replyIntent.putExtra("REPLY_PROVINCE", province);
+        replyIntent.putExtra("REPLY_SERVICE_TYPE", serviceType);
+        replyIntent.putExtra("REPLY_PROVINCE", province);
+        //TODO:
+        replyIntent.putExtra("REPLY_ARRIVAL_AT", 1000000);
+        replyIntent.putExtra("REPLY_LEAVE_AT", 20000000);
         setResult(RESULT_OK, replyIntent);
         finish();
     }
