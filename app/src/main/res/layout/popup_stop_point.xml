@@ -253,7 +253,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Add more stop point"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:onClick="returnReply"/>
 
 
             <Button
