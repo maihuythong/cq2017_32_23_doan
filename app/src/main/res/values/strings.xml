@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Login</string>
+    <string name="app_name">Travel Assistant</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

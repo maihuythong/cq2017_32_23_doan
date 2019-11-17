@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/gradient"
     tools:context="com.maihuythong.testlogin.LoginActivity">
 
     <!-- Login progress -->
@@ -24,11 +26,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="183dp"
+                android:layout_height="141dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Travel Assistant"
+                android:textSize="30dp"
+                android:textColor="#f2f542"
+                android:layout_marginBottom="20dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -41,13 +59,17 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:drawableLeft="@drawable/ic_action_user"
+                    android:textColor="#ffffff"
+                    android:singleLine="true"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/password"
@@ -59,27 +81,38 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:drawableLeft="@drawable/ic_action_password"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:text="Sign in"
-                android:textStyle="bold" />
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:background="@color/colorAccent"/>
 
             <Button
                 android:id="@+id/signup_open"
                 style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
+                android:layout_width="190dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="#ffffff"
+                android:background="@color/colorAccent"
                 android:text="Don't have account? Sign up here"
                 android:textStyle="bold"
+                android:textSize="12dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textAlignment="center"/>
 
             <TextView
@@ -90,11 +123,13 @@
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/loginFB_button"
-                android:layout_width="wrap_content"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/loginGG_button"
