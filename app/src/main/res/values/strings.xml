@@ -19,4 +19,12 @@
 
     <string name="server_client_id">116944607992-n5if47e41ehime2tn7lpun6cqfpa29ks.apps.googleusercontent.com</string>
     <string name="client_secret">EVV-b9bHhptNR1Q2783Rpsb8"</string>
+    <string name="google_maps_key">AIzaSyBTPGt6wHibzdpuwi31X9qNwHosuyu0GEg</string>
+    <string name="other_places">Search Other Places</string>
+    <string name="rest_station">Search Rest Station</string>
+    <string name="restaurant">Search Restaurant</string>
+    <string name="hotel">Search Hotel</string>
+    <string name="my_current_location">My current location</string>
+
+
 </resources>

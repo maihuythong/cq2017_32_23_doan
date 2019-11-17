@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".googlemapapi.StopPointGoogleMap"
+    android:orientation="vertical">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:elevation="10dp"
+        android:background="#FFF"
+        android:id="@+id/rlLayoutSearch"
+        >
+
+        <!--        search normal-->
+        <!--        <ImageView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:paddingLeft="10dp"-->
+        <!--            android:src="@drawable/ic_search"-->
+        <!--            android:id="@+id/ic_search"/>-->
+
+
+        <fragment android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+        <!--        search normal-->
+        <!--        <EditText-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:id="@+id/input_search"-->
+        <!--            android:layout_toRightOf="@+id/ic_search"-->
+        <!--            android:textSize="15dp"-->
+        <!--            android:textColor="#000"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:background="@null"-->
+        <!--            android:hint="Enter address...."-->
+        <!--            />-->
+
+        <!--     suggestion
+             <com.mancj.materialsearchbar.MaterialSearchBar
+                 style="@style/MaterialSearchBarLight"
+                 app:mt_speechMode="true"
+                 app:mt_hint="Custom hint"
+                 app:mt_maxSuggestionsCount="10"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:outlineProvider="bounds"
+                 android:id="@+id/searchBar" />-->
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:contentDescription="@string/my_current_location"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/rlLayoutSearch"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/my_location"
+        android:src="@drawable/ic_my_location"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_hotel"
+            android:id="@+id/hotel"
+            android:contentDescription="@string/hotel"
+            android:onClick="onClick"
+            android:layout_margin="5dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_restaurant"
+            android:id="@+id/restaurant"
+            android:onClick="onClick"
+            android:contentDescription="@string/restaurant"
+            android:layout_margin="5dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rest_station"
+            android:id="@+id/rest_station"
+            android:onClick="onClick"
+            android:contentDescription="@string/rest_station"
+            android:layout_margin="5dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/other"
+            android:id="@+id/other"
+            android:onClick="onClick"
+            android:contentDescription="@string/other_places"
+            android:layout_margin="5dp"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
