@@ -69,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"
                 android:padding="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:textAlignment="center">
 
                 <AutoCompleteTextView
                     android:id="@+id/address_id"
@@ -79,7 +80,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="false"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -71,6 +71,8 @@
             android:name=".CreateTourActivity"
             android:label="Create Tour"/>
 
+        <activity android:name=".pop.ShowPopupActivity"></activity>
+
     </application>
 
 <!--        <application-->
