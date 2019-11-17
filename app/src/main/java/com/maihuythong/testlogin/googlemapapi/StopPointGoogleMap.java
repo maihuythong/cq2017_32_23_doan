@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.Login;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -56,6 +58,7 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.gson.Gson;
+import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.model.StopPointInfo;
 import com.maihuythong.testlogin.model.StopPoints;
@@ -736,7 +739,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 //                stopPoints.setTourId("123123123");
 //                stopPoints.setStopPoints(arrayStopPoint);
                 APIService mAPIService = ApiUtils.getAPIService();
-                mAPIService.createStopPoints("1329", arrayStopPoint).enqueue(new Callback<StopPoints>() {
+
+                mAPIService.createStopPoints("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OSIsInBob25lIjoiMDgzMzUyNzQ1MCIsImVtYWlsIjoibWFpaHV5dGhvbmd4QGdtYWlsLmNvbSIsImV4cCI6MTU3NTk2OTE0NzMxNCwiYWNjb3VudCI6InVzZXIiLCJpYXQiOjE1NzMzNzcxNDd9.0WdtlhBt-5NHzKGRvtKKnoxhoM0vn3_0p4dJfkNRBjA","1329", arrayStopPoint).enqueue(new Callback<StopPoints>() {
                     @Override
                     public void onResponse(Call<StopPoints> call, Response<StopPoints> response) {
                         Log.d("xong", response.code() + "");
@@ -773,12 +777,21 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         // Test to make sure the intent reply result was good.
         if (resultCode == RESULT_OK) {
             String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
+            //TODO:
 //            String serviceType = data.getStringExtra("REPLY_SERVICE_TYPE");
 //            String province = data.getStringExtra("REPLY_PROVINCE");
 
 
             StopPointInfo stopPointInfo = new StopPointInfo();
-            stopPointInfo.setAddress(addressFromMarker);
+//            stopPointInfo.setAddress(addressFromMarker);
+            stopPointInfo.setName("hihi");
+            stopPointInfo.setLatitude(123);
+            stopPointInfo.setLongtitude(123);
+            stopPointInfo.setArrivalAt(123856);
+            stopPointInfo.setLeaveAt(545312);
+            stopPointInfo.setServiceTypeId(1);
+//            stopPointInfo.setProvinceId(1);
+
             arrayStopPoint.add(stopPointInfo);
         }
     }

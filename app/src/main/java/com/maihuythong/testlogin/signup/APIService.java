@@ -36,7 +36,8 @@ public interface APIService {
 
     @POST("/tour/set-stop-points")
     @FormUrlEncoded
-    Call<StopPoints> createStopPoints(@Field("tourId") String tourId,
+    Call<StopPoints> createStopPoints(@Header("Authorization") String s,
+                                      @Field("tourId") String tourId,
                                       @Field("stopPoints") ArrayList<StopPointInfo> stopPoints);
 
 
