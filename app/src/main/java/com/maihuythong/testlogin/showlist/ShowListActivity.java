@@ -53,8 +53,8 @@ public class ShowListActivity extends AppCompatActivity {
         String s;
         s = LoginActivity.token;
         if(s == null){
-            sf = getSharedPreferences("com.maihuythong.testlogin", MODE_PRIVATE);
-            s = sf.getString("sf_token", "");
+            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+            s = sf.getString("login_access_token", "");
         }
 
         mAPIService.getList(s,25, 1).enqueue(new Callback<ShowListReq>() {

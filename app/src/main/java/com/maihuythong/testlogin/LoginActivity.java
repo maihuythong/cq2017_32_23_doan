@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     LoginButton loginButton;
     private SharedPreferences mPreferences;
-    private String sharedPrefFile = "com.maihuythong.testlogin";
+    private String sharedPrefFile = "com.maihuythong.testlogin_preferences";
 
 
 
@@ -244,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
 
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString("sf_token", token);
+        editor.putString("login_access_token", token);
         editor.commit();
     }
 
@@ -412,6 +412,7 @@ public class LoginActivity extends AppCompatActivity {
 //
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
+                        token = result.getToken();
 
                         Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

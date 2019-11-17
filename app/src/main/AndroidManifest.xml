@@ -26,12 +26,13 @@
         <activity android:name=".signup.sign_up" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".SplashActivity"/>
-        <activity android:name=".LoginActivity">
+            android:name=".SplashActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity">
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
