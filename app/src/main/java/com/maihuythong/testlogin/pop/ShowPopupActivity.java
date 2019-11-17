@@ -2,7 +2,9 @@ package com.maihuythong.testlogin.pop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,10 +16,24 @@ import com.maihuythong.testlogin.R;
 
 public class ShowPopupActivity extends AppCompatActivity {
 
+    private Spinner spinnerProvince;
+    private MenuItem itemSpinnerProvince;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_stop_point);
+
+        Spinner spinnerProvince = findViewById(R.id.province_spinner);
+        ArrayAdapter<CharSequence> adapterProvince = ArrayAdapter.createFromResource(this,
+                R.array.province_array, android.R.layout.simple_spinner_item);
+        adapterProvince.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerProvince.setAdapter(adapterProvince);
+
+        Spinner spinnerService = findViewById(R.id.service_type_spinner);
+        ArrayAdapter<CharSequence> adapterService = ArrayAdapter.createFromResource(this,
+                R.array.service_array, android.R.layout.simple_spinner_item);
+        adapterService.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerService.setAdapter(adapterService);
 
         // Get the intent that launched this activity, and the message in
         // the intent extra.
