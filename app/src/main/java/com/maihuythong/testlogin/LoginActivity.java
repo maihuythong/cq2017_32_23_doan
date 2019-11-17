@@ -243,9 +243,9 @@ public class LoginActivity extends AppCompatActivity {
         if(mProgressDialog != null)
             mProgressDialog.dismiss();
 
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString("login_access_token", token);
-        editor.commit();
+    //        SharedPreferences.Editor editor = mPreferences.edit();
+    //        editor.putString("login_access_token", token);
+    //        editor.commit();
     }
 
     @Override

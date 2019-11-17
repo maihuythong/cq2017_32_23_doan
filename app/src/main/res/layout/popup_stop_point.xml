@@ -13,20 +13,20 @@
 
     <!-- Login progress -->
     <ProgressBar
-        android:id="@+id/createTour_progress"
+        android:id="@+id/popup_stop_point_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <ScrollView
-        android:id="@+id/createTour_form"
+        android:id="@+id/stop_point_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/create_tour_form"
+            android:id="@+id/stop_point_info_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -36,10 +36,33 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/tourName"
+                    android:id="@+id/stop_point_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tour Name"
+                    android:hint="Stop point name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- spinner hear -->
+            <Spinner
+                android:id="@+id/planets_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/address_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -175,12 +198,12 @@
 
 
 
-           <RadioButton
-               android:id="@+id/isPrivate_id"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="This is your private trip"
-               android:checked="false" />
+            <RadioButton
+                android:id="@+id/isPrivate_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is your private trip"
+                android:checked="false" />
 
             <Button
                 android:id="@+id/create_tour_button"

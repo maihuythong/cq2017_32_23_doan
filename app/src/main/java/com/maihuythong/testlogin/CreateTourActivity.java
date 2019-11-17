@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -42,15 +43,15 @@ public class CreateTourActivity  extends AppCompatActivity {
 
     private SharedPreferences sf;
 
-    private String tourName ="";
+    private String tourName ="Default";
     private Number startDateMilis;
     private Number endDateMilis;
-    private Number adults=0;
-    private Number childs=0;
-    private Number minCost;
-    private Number maxCost;
+    private Number adults=null;
+    private Number childs=null;
+    private Number minCost=null;
+    private Number maxCost=null;
     private boolean isPrivate = false;
-    private String avatar ="";
+    private String avatar = null;
 
 
 
@@ -102,6 +103,13 @@ public class CreateTourActivity  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+ 
                 tourName=tourNameView.getText().toString();
                 if(!TextUtils.isEmpty(adultsView.getText()))
                 adults = Integer.parseInt(adultsView.getText().toString());
@@ -121,13 +129,13 @@ public class CreateTourActivity  extends AppCompatActivity {
 
                 String token;
                 token = LoginActivity.token;
-                if(token == null){
-                    sf = getSharedPreferences("com.maihuythong.testlogin", MODE_PRIVATE);
-                    token = sf.getString("sf_token", "");
+                if(token== null){
+                    sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+                    token = sf.getString("login_access_token", "");
                 }
 
                 createTourService.getTourInfo(token,tourName,startDateMilis,endDateMilis,0,0,0,0,isPrivate,
-                        null,null,null,null,null).enqueue(new Callback<CreateTourResponse>() {
+                        adults,childs,minCost,maxCost,avatar).enqueue(new Callback<CreateTourResponse>() {
                     @Override
                     public void onResponse(Call<CreateTourResponse> call, Response<CreateTourResponse> response) {
                         if(response.code() == 200) {
