@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.Login;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -133,9 +135,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_stop_point_google_map);
         //searchText = findViewById(R.id.input_search);
         myLocation = findViewById(R.id.my_location);
-//        materialSearchBar = findViewById(R.id.searchBar);
-
-//        token = AutocompleteSessionToken.newInstance();
 
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
@@ -151,11 +150,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
         placesClient = Places.createClient(this);
 
-
-
-
         getLocationPermission();        // check permission before init map
-        init();
+        //init();
     }
 
     private void init(){
@@ -253,7 +249,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         if(autocompleteFragment != null) {
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
 
-
             // Set up a PlaceSelectionListener to handle the response.
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
@@ -278,12 +273,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        //marker.showInfoWindow();
-        // map.moveCamera(CameraUpdateFactory.newLatLngZoom(KHTN,17));
-
-
         HideSoftKeyboard();
-
 
     }
 
@@ -308,6 +298,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         }
 
     }
+
     private void initMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -361,6 +352,28 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
     }
 
     private void getLocationPermission(){
+//        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION};
+//
+//        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+//                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+//            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+//                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+//                mLocationPermissionGranted = true;
+//         //       initMap();
+//            }else
+//            {
+//                ActivityCompat.requestPermissions(this,
+//                        permissions,
+//                        LOCATION_PERMISSION_REQUEST_CODE);
+//            }
+//        }else
+//        {
+//            ActivityCompat.requestPermissions(this,
+//                    permissions,
+//                    LOCATION_PERMISSION_REQUEST_CODE);
+//        }
+
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -369,38 +382,54 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
-                initMap();
-            }else
-            {
+            }else{
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else
-        {
+        }else{
             ActivityCompat.requestPermissions(this,
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+//        mLocationPermissionGranted = false;
+//
+//        switch(requestCode){
+//            case LOCATION_PERMISSION_REQUEST_CODE:{
+//                if(grantResults.length > 0){
+//                    for (int i = 0; i < grantResults.length; ++i) {
+//                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+//                            mLocationPermissionGranted = false;
+//                            return;
+//                        }
+//                    }
+//                    mLocationPermissionGranted = true;
+//                    //if all permission granted => init map
+//                    initMap();
+//                }
+//            }
+//        }
 
         mLocationPermissionGranted = false;
 
         switch(requestCode){
             case LOCATION_PERMISSION_REQUEST_CODE:{
                 if(grantResults.length > 0){
-                    for (int i = 0; i < grantResults.length; ++i) {
-                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    for(int i = 0; i < grantResults.length; i++){
+                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
                             mLocationPermissionGranted = false;
+                            Log.d(TAG, "onRequestPermissionsResult: permission failed");
                             return;
                         }
                     }
+                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionGranted = true;
-                    //if all permission granted => init map
+                    //initialize our map
                     initMap();
                 }
             }
@@ -430,7 +459,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             init();
 
         }
-
 //        LatLng KHTN = new LatLng(10.762643, 106.682079);
 //        LatLng NHStreet = new LatLng(10.774467, 106.703274);
 //
@@ -530,11 +558,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 try {
                     addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                     address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//                    String city = addresses.get(0).getLocality();
-//                    String state = addresses.get(0).getAdminArea();
-//                    String country = addresses.get(0).getCountryName();
-//                    String postalCode = addresses.get(0).getPostalCode();
-//                    String knownName = addresses.get(0).getFeatureName();
+
                 }catch (IOException e){
                     Log.d(TAG,"Addresses error!" + e.getMessage());
                 }
@@ -544,9 +568,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 intent.putExtra("EXTRA_ADDRESS", address);
                 addressFromMarker = address;
                 startActivityForResult(intent, 1);
-
-
-
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
