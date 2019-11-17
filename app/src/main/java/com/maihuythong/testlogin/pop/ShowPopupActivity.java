@@ -191,13 +191,9 @@ public class ShowPopupActivity extends AppCompatActivity {
 
         // Get the reply message from the edit text.
         String stopPointName = mStopPointName.getText().toString();
-        int serviceType = mServiceType.getSelectedItemPosition();
-        int province = mProvinceSpinner.getSelectedItemPosition();
-        //TODO:
-        String arrivalAt = mArrivalAt.getText().toString();
-//        long arrivalAtInt = Long.parseLong(arrivalAt);
-        String leaveAt = mLeaveAt.getText().toString();
-//        long leaveAtInt = Long.parseLong(leaveAt);
+        int serviceType = mServiceType.getSelectedItemPosition() + 1;
+        int province = mProvinceSpinner.getSelectedItemPosition() + 1;
+
 
 
         // Create a new intent for the reply, add the reply message to it
@@ -206,9 +202,11 @@ public class ShowPopupActivity extends AppCompatActivity {
         replyIntent.putExtra("REPLY_STOP_POINT_NAME", stopPointName);
         replyIntent.putExtra("REPLY_SERVICE_TYPE", serviceType);
         replyIntent.putExtra("REPLY_PROVINCE", province);
-        //TODO:
-        replyIntent.putExtra("REPLY_ARRIVAL_AT", 1000000);
-        replyIntent.putExtra("REPLY_LEAVE_AT", 20000000);
+//        replyIntent.putExtra("REPLY_ARRIVAL_AT", arriveAtMilis);
+//        replyIntent.putExtra("REPLY_LEAVE_AT", leaveAtMilis);
+
+        replyIntent.putExtra("REPLY_ARRIVAL_AT", arriveAtMilis);
+        replyIntent.putExtra("REPLY_LEAVE_AT", leaveAtMilis);
         setResult(RESULT_OK, replyIntent);
         finish();
     }

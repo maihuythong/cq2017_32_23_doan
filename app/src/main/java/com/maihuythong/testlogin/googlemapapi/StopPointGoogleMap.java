@@ -900,8 +900,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
             int serviceType = data.getIntExtra("REPLY_SERVICE_TYPE", 1);
             int province = data.getIntExtra("REPLY_PROVINCE", 1);
-            int arrivalAt = data.getIntExtra("REPLY_ARRIVAL_AT", 1000000);
-            int leaveAt = data.getIntExtra("REPLY_LEAVE_AT", 2000000);
+            long arrivalAt = data.getLongExtra("REPLY_ARRIVAL_AT", 1000000);
+            long leaveAt = data.getLongExtra("REPLY_LEAVE_AT", 2000000);
 
 
 //            StopPointInfo stopPointInfo = new StopPointInfo();
@@ -924,9 +924,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 tmp.put("name", stopPointName);
                 tmp.put("lat", mLat);
                 tmp.put("long", mLng);
-                //TODO:
-                tmp.put("leaveAt", 1000000);
-                tmp.put("arrivalAt", 2000000);
+                tmp.put("leaveAt", arrivalAt);
+                tmp.put("arrivalAt", leaveAt);
                 tmp.put("serviceTypeId", serviceType);
                 tmp.put("address", addressFromMarker);
                 stopPointsArray.put(tmp);
