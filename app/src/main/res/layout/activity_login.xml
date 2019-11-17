@@ -97,7 +97,7 @@
                 android:text="Sign in"
                 android:textColor="#ffffff"
                 android:textStyle="bold"
-                android:background="@color/colorAccent"/>
+                android:background="@drawable/border_color"/>
 
             <Button
                 android:id="@+id/signup_open"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textColor="#ffffff"
-                android:background="@color/colorAccent"
+                android:background="@drawable/border_color"
                 android:text="Don't have account? Sign up here"
                 android:textStyle="bold"
                 android:textSize="12dp"
