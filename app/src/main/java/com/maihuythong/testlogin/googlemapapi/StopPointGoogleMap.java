@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -56,11 +56,15 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.gson.Gson;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.model.StopPointInfo;
+import com.maihuythong.testlogin.pop.ShowPopupActivity;
+import com.maihuythong.testlogin.showlist.ShowListActivity;
 //import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -71,6 +75,8 @@ import java.util.Locale;
 
 
 public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
+
+    public static final int TEXT_REQUEST = 1;
 
     private static final String TAG = "MAP ACTIVITY";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -84,6 +90,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     private ArrayList<LatLng> stopPoints = new ArrayList<>();
+    private ArrayList<LatLng> tempstopPoints = new ArrayList<>();
+    private LatLng StartPoint;
 
 
     private Boolean mLocationPermissionGranted = false;
@@ -97,6 +105,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
     private PolylineOptions polyline;
     private EditText searchText;
     private ImageView myLocation;
+
+    private ArrayList<StopPointInfo> arrayStopPoint = new ArrayList<>();
 
     //private MaterialSearchBar materialSearchBar;
     PlacesClient placesClient;
@@ -114,7 +124,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 //        token = AutocompleteSessionToken.newInstance();
 
         if(!Places.isInitialized()){
-            Places.initialize(getApplicationContext(),"AIzaSyBTPGt6wHibzdpuwi31X9qNwHosuyu0GEg");
+            Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
         }
 
         placesClient = Places.createClient(this);
@@ -301,7 +311,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                             myLatlng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM,
-                                    "My location");
+                                    "Start Tour");
                         }else{
                             Log.d(TAG, "onConplete: current location is null");
                             Toast.makeText(StopPointGoogleMap.this,"unable to get current location", Toast.LENGTH_SHORT).show();
@@ -322,7 +332,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .title(title);
-            map.addMarker(markerOptions);
+          //  map.addMarker(markerOptions);
         }
 
         HideSoftKeyboard();
@@ -460,19 +470,63 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
     public void onMapClick(LatLng latLng) {
         Log.d(TAG,"LAT: "+ latLng.latitude + " LONG: "+ latLng.longitude);
         // Toast.makeText(this,"LAT: "+ latLng.latitude + " LONG: ", Toast.LENGTH_SHORT).show();
-        desMarker = map.addMarker(new MarkerOptions()
-                .position(latLng));
-
-        try {
-            if(currentLatlngSelected == null) {
-                currentLatlngSelected = new LatLng(latLng.latitude, latLng.longitude);
-            }else
-            {
-                stopPoints.add(new LatLng(latLng.latitude,latLng.longitude));
+        //desMarker = map.addMarker(new MarkerOptions()
+        //        .position(latLng));
+        //currentLatlngSelected
+        if(StartPoint == null){
+            Marker myLocation = map.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Start Tour"));
+            StartPoint = new LatLng(latLng.latitude, latLng.longitude);
+        }else {
+            currentLatlngSelected = new LatLng(latLng.latitude, latLng.longitude);
+            tempstopPoints.add(new LatLng(latLng.latitude, latLng.longitude));
+            if (tempstopPoints.size() > 1) {
+                for (int i = 0; i < tempstopPoints.size() - 1; ++i) {
+                    stopPoints.add(tempstopPoints.get(i));
+                }
             }
-            new DirectionFinder(this, myLatlng , currentLatlngSelected, stopPoints).execute();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
+            try {
+//            if(currentLatlngSelected == null) {
+//                currentLatlngSelected = new LatLng(latLng.latitude, latLng.longitude);
+//            }else
+//            {
+//                stopPoints.add(new LatLng(latLng.latitude,latLng.longitude));
+//            }
+            Marker newmarker = map.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Stop point"));
+
+                new DirectionFinder(this, StartPoint, currentLatlngSelected, stopPoints).execute();
+
+                Geocoder geocoder;
+                List<Address> addresses;
+                String address = "";
+                geocoder = new Geocoder(this, Locale.getDefault());
+                try {
+                    addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//                    String city = addresses.get(0).getLocality();
+//                    String state = addresses.get(0).getAdminArea();
+//                    String country = addresses.get(0).getCountryName();
+//                    String postalCode = addresses.get(0).getPostalCode();
+//                    String knownName = addresses.get(0).getFeatureName();
+                }catch (IOException e){
+                    Log.d(TAG,"Addresses error!" + e.getMessage());
+                }
+
+                Intent intent = new Intent(this, ShowPopupActivity.class);
+
+                intent.putExtra("EXTRA_ADDRESS", address);
+                startActivityForResult(intent, 1);
+
+
+
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         //
 //        Geocoder geocoder;
@@ -663,6 +717,9 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 Toast.makeText(this, "Searching for Nearby Places...", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Places...", Toast.LENGTH_SHORT).show();
                 break;
+                //Complete button click here
+            case R.id.complete_add_stop_point:
+
         }
     }
 
@@ -678,6 +735,23 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
 
         return googleURL.toString();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Test for the right intent reply.
+        // Test to make sure the intent reply result was good.
+        if (resultCode == RESULT_OK) {
+            String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
+     //       String serviceType = data.getStringExtra("REPLY_SERVICE_TYPE");
+    //        String province = data.getStringExtra("REPLY_PROVINCE");
+
+            Log.d(TAG,stopPointName + "  "  );
+
+        }
     }
 
 }

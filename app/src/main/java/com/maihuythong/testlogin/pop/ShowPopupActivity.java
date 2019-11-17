@@ -37,16 +37,16 @@ public class ShowPopupActivity extends AppCompatActivity {
 
         // Get the reply message from the edit text.
         String stopPointName = mStopPointName.getText().toString();
-        String serviceType = mServiceType.getSelectedItem().toString();
-        String province = mProvinceSpinner.getSelectedItem().toString();
+        //String serviceType = mServiceType.getSelectedItem().toString();
+       // String province = mProvinceSpinner.getSelectedItem().toString();
 
 
         // Create a new intent for the reply, add the reply message to it
         // as an extra, set the intent result, and close the activity.
         Intent replyIntent = new Intent();
         replyIntent.putExtra("REPLY_STOP_POINT_NAME", stopPointName);
-        replyIntent.putExtra("REPLY_SERVICE_TYPE", serviceType);
-        replyIntent.putExtra("REPLY_PROVINCE", province);
+       // replyIntent.putExtra("REPLY_SERVICE_TYPE", serviceType);
+       // replyIntent.putExtra("REPLY_PROVINCE", province);
         setResult(RESULT_OK, replyIntent);
         finish();
     }

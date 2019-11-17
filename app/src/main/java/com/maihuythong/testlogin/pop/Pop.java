@@ -29,5 +29,10 @@ public class Pop extends AppCompatActivity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width*0.8), (int)(height*0.6));
+
+
+
+
+
     }
 }
