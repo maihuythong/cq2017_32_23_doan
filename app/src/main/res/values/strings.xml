@@ -26,6 +26,7 @@
     <string name="hotel">Search Hotel</string>
     <string name="my_current_location">My current location</string>
     <string name="comple_add_stop_point">Complete</string>
+    <string name="complete_adding_stop_points">Complete adding stop points</string>
 
 
 </resources>

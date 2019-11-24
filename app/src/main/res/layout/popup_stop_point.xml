@@ -257,16 +257,6 @@
                 android:onClick="returnReply"/>
 
 
-            <Button
-                android:id="@+id/complete_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Complete"
-                android:textStyle="bold"/>
-
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

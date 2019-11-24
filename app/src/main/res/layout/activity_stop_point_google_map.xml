@@ -134,11 +134,12 @@
 
     <Button
         android:id="@+id/complete_add_stop_point"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/comple_add_stop_point"
+        android:text="@string/complete_adding_stop_points"
         android:layout_below="@+id/rlLayoutSearch"
         android:onClick="onClick"
+        android:textColor="@color/colorAccent"
         />
 
 
