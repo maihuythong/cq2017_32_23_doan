@@ -33,7 +33,7 @@ public class CustomAdapter extends ArrayAdapter<Tour> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.row_listview, parent, false);
+            convertView = LayoutInflater.from(context).inflate(this.resource, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             viewHolder.tvId = (TextView) convertView.findViewById(R.id.tvId);

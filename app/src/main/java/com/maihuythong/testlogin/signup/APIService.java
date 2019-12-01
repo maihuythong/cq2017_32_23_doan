@@ -4,6 +4,7 @@ import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.model.StopPointInfo;
 import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
 import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.showlist.ShowListRes;
 
@@ -21,11 +22,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
-//    @POST("/posts")
-//    @FormUrlEncoded
-//    Call<Post> savePost(@Field("title") String title,
-//                        @Field("body") String body,
-//                        @Field("userId") long userId);
 
     @POST("/user/register")
     @FormUrlEncoded
@@ -43,4 +39,7 @@ public interface APIService {
 
     @GET("/tour/list")
     Call<ShowListReq> getList(@Header("Authorization") String s, @Query("rowPerPage") int rowPerPage, @Query("pageNum") int pageNum);
+
+    @GET("/tour/history-user")
+    Call<ShowAccountToursReq> getAccountTours(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 }

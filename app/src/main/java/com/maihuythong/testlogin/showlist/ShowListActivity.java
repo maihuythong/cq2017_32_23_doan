@@ -9,12 +9,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
@@ -47,6 +49,15 @@ public class ShowListActivity extends AppCompatActivity {
             }
         });
 
+        Button showAccountTours = findViewById(R.id.show_account_tours);
+        showAccountTours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowListActivity.this, ShowAccountToursActivity.class);
+                startActivity(intent);
+            }
+        });
+
         APIService mAPIService = ApiUtils.getAPIService();
         Intent intent = getIntent();
 
@@ -57,7 +68,7 @@ public class ShowListActivity extends AppCompatActivity {
             s = sf.getString("login_access_token", "");
         }
 
-        mAPIService.getList(s,25, 1).enqueue(new Callback<ShowListReq>() {
+        mAPIService.getList(s,50, 1).enqueue(new Callback<ShowListReq>() {
             @Override
             public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                 if(response.code() == 200){
