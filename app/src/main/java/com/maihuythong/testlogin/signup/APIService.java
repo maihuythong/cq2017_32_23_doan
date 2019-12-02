@@ -7,6 +7,8 @@ import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
 import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.showlist.ShowListRes;
+import com.maihuythong.testlogin.updateTour.UpdateTour;
+import com.maihuythong.testlogin.updateTour.UpdateTourReq;
 
 import java.util.ArrayList;
 
@@ -42,4 +44,24 @@ public interface APIService {
 
     @GET("/tour/history-user")
     Call<ShowAccountToursReq> getAccountTours(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    @POST("/tour/update-tour")
+    @FormUrlEncoded
+    Call<UpdateTourReq> updateTour(@Header("Authorization") String s,
+                                   @Field("id") long id,
+                                   @Field("name") String name,
+                                   @Field("startDate") String startDate,
+                                   @Field("endDate") String endDate,
+//                                   @Field("sourceLat") String sourceLat,
+//                                   @Field("sourceLong") String sourceLong,
+//                                   @Field("desLong") String desLong,
+//                                   @Field("desLat") String desLat,
+                                   @Field("adults") long adults,
+                                   @Field("childs") long childs,
+                                   @Field("minCost") String minCost,
+                                   @Field("maxCost") String maxCost,
+                                   @Field("isPrivate") boolean isPrivate
+//                                   @Field("avatar") String avatar,
+//                                   @Field("status") String status
+                                    );
 }

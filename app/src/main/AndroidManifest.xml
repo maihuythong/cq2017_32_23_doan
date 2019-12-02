@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".showAccountTours.ShowAccountToursActivity"></activity>
+        <activity android:name=".updateTour.UpdateTour"></activity>
+        <activity android:name=".showAccountTours.ShowAccountToursActivity" />
         <activity
             android:name=".showlist.ShowListActivity"
             android:label="List tour">
@@ -52,7 +53,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

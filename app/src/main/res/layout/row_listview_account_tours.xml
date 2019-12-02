@@ -17,7 +17,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="aaaa"
-                android:id="@+id/edit_tour"/>
+                android:id="@+id/edit_tour"
+                android:onClick="aaa"/>
 
 
             <LinearLayout

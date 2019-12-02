@@ -1,11 +1,14 @@
 package com.maihuythong.testlogin.showAccountTours;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
@@ -26,6 +29,7 @@ import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.showlist.Tour;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.updateTour.UpdateTour;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,8 +74,9 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                         arrTour.add(t[i]);
                     }
 
-                    CustomAdapter customAdaper = new CustomAdapter(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
-                    lvTour.setAdapter(customAdaper);
+                    CustomAdapterAccountTours customAdaperAccountTours =
+                            new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
+                    lvTour.setAdapter(customAdaperAccountTours);
                 }
                 else{
                     //TODO
@@ -84,6 +89,4 @@ public class ShowAccountToursActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
