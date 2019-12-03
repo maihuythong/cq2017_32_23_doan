@@ -24,6 +24,7 @@
         <TextView
             android:id="@+id/inviter_name"
             android:layout_width="wrap_content"
+            android:textStyle="bold"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/content_invite"
@@ -34,6 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:layout_toRightOf="@+id/content_invite"
             android:id="@+id/invite_tour_name"/>
         <TextView

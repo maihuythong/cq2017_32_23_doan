@@ -799,6 +799,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                         try {
                             JSONArray b = new JSONArray();
                             Log.d("kkk", response.getString("message"));
+                            finish();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

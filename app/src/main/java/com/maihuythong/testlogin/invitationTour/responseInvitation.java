@@ -8,6 +8,19 @@ public class responseInvitation {
     @Expose
     private long tourId;
 
+
+    @SerializedName("isAccepted")
+    @Expose
+    private Boolean isAccepted;
+
+    public Boolean getAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        isAccepted = accepted;
+    }
+
     public long getTourId() {
         return tourId;
     }
@@ -16,15 +29,5 @@ public class responseInvitation {
         this.tourId = tourId;
     }
 
-    public long getIsAccepted() {
-        return isAccepted;
-    }
 
-    public void setIsAccepted(long isAccepted) {
-        this.isAccepted = isAccepted;
-    }
-
-    @SerializedName("isAccepted")
-    @Expose
-    private long isAccepted;
 }

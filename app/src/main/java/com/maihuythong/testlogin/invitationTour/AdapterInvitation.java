@@ -1,6 +1,8 @@
 package com.maihuythong.testlogin.invitationTour;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +17,20 @@ import androidx.annotation.NonNull;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Invocation;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -52,7 +58,18 @@ public class AdapterInvitation extends ArrayAdapter {
         TextView timeInvite;
         Button confirm;
         Button delete;
+
+
     }
+
+    private Invitation getInvitationFromTourId(long tourId){
+        for (int i = 0; i < data.size(); ++i) {
+            if (data.get(i).getId() == tourId)
+                return data.get(i);
+        }
+        return null;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder = null;
@@ -74,7 +91,7 @@ public class AdapterInvitation extends ArrayAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Invitation invitation = data.get(position);
+        final Invitation invitation = data.get(position);
 //        holder.avatar.setImageResource(null);
         viewHolder.inviter.setText(invitation.getHostName());
         viewHolder.tourName.setText(invitation.getTourName());
@@ -88,12 +105,16 @@ public class AdapterInvitation extends ArrayAdapter {
             @Override
             public void onClick(View v) {
 
-                String token = LoginActivity.token;
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String token = preferences.getString("login_access_token", null);
                 APIService mAPIService = ApiUtils.getAPIService();
                 mAPIService.responseInvitation(token, viewHolder.tourId, true).enqueue(new Callback<responseInvitation>() {
                     @Override
                     public void onResponse(Call<responseInvitation> call, Response<responseInvitation> response) {
                         Toast.makeText(getContext(),"Confirm Click success", Toast.LENGTH_SHORT).show();
+                        Invitation invitation1 = getInvitationFromTourId(viewHolder.tourId);
+                        data.remove(invitation1);
+                        notifyDataSetChanged();
                     }
 
                     @Override
@@ -106,23 +127,28 @@ public class AdapterInvitation extends ArrayAdapter {
 
 
 
+
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String token = LoginActivity.token;
-                APIService mAPIService = ApiUtils.getAPIService();
-                mAPIService.responseInvitation(token, viewHolder.tourId, false).enqueue(new Callback<responseInvitation>() {
-                    @Override
-                    public void onResponse(Call<responseInvitation> call, Response<responseInvitation> response) {
-                        Toast.makeText(getContext(), "Delete Click", Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String token = preferences.getString("login_access_token", null);
+            APIService mAPIService = ApiUtils.getAPIService();
+            mAPIService.responseInvitation(token, viewHolder.tourId, false).enqueue(new Callback<responseInvitation>() {
+                @Override
+                public void onResponse(Call<responseInvitation> call, Response<responseInvitation> response) {
+                    Toast.makeText(getContext(), "Delete Click", Toast.LENGTH_SHORT).show();
 //                        ListView lvInvitation = findViewbyId(R.id.lv_)
-                    }
+                    Invitation invitation1 = getInvitationFromTourId(viewHolder.tourId);
+                    data.remove(invitation1);
+                    notifyDataSetChanged();
+                }
 
-                    @Override
-                    public void onFailure(Call<responseInvitation> call, Throwable t) {
+                @Override
+                public void onFailure(Call<responseInvitation> call, Throwable t) {
 
-                    }
-                });
+                }
+            });
             }
         });
 
