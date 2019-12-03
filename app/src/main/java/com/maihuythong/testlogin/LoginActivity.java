@@ -1,7 +1,6 @@
 package com.maihuythong.testlogin;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,10 +37,8 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.model.LoginResponse;
-import com.maihuythong.testlogin.network.MyAPIClient;
 import com.maihuythong.testlogin.network.MyAPILogin;
 import com.maihuythong.testlogin.network.RetrofitServices;
-import com.maihuythong.testlogin.network.UserService;
 import com.maihuythong.testlogin.showlist.ShowListActivity;
 import com.maihuythong.testlogin.signup.sign_up;
 import com.maihuythong.testlogin.socialNetwork.LoginService;
@@ -75,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
     private ProgressDialog mProgressDialog;
-    private UserService userService;
     CallbackManager callbackManager;
     LoginButton loginButton;
     private SharedPreferences mPreferences;

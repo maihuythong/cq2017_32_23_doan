@@ -1,28 +1,20 @@
 package com.maihuythong.testlogin.signup;
 
-import com.maihuythong.testlogin.LoginActivity;
-import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
-import com.maihuythong.testlogin.invitationTour.responseInvitation;
+import com.maihuythong.testlogin.ShowListUsers.UserReq;
 import com.maihuythong.testlogin.model.StopPointInfo;
-import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
 import com.maihuythong.testlogin.showlist.ShowListReq;
-import com.maihuythong.testlogin.showlist.ShowListRes;
-import com.maihuythong.testlogin.updateTour.UpdateTour;
 import com.maihuythong.testlogin.updateTour.UpdateTourReq;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIService {
@@ -47,16 +39,6 @@ public interface APIService {
     @GET("/tour/history-user")
     Call<ShowAccountToursReq> getAccountTours(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
-    @GET("/tour/get/invitation")
-    Call<ShowInvitationReq> getInvitation(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
-
-    @POST("/tour/response/invitation")
-    @FormUrlEncoded
-    Call<responseInvitation> responseInvitation(@Header("Authorization") String s,
-                                                @Field("tourId") long tourId,
-                                                @Field("isAccepted") Boolean isAccepted
-    );
-
     @POST("/tour/update-tour")
     @FormUrlEncoded
     Call<UpdateTourReq> updateTour(@Header("Authorization") String s,
@@ -76,4 +58,14 @@ public interface APIService {
 //                                   @Field("avatar") String avatar,
 //                                   @Field("status") String status
                                     );
+
+    @GET("/user/search")
+    Call<UserReq> getListUsers(
+            @Query("searchKey")
+                    String searchKey,
+            @Query("pageIndex")
+                    Number pageIndex,
+            @Query("pageSize")
+                    Number pageSize
+    );
 }

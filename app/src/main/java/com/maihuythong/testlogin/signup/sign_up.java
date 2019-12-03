@@ -1,12 +1,8 @@
 package com.maihuythong.testlogin.signup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,18 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.maihuythong.testlogin.LoginActivity;
-import com.maihuythong.testlogin.MainActivity;
-import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.manager.MyApplication;
-import com.maihuythong.testlogin.model.LoginRequest;
-import com.maihuythong.testlogin.model.LoginResponse;
-import com.maihuythong.testlogin.network.MyAPIClient;
-import com.maihuythong.testlogin.network.UserService;
-import com.maihuythong.testlogin.showlist.ShowListReq;
-import com.maihuythong.testlogin.showlist.ShowListRes;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Date;
+import com.maihuythong.testlogin.LoginActivity;
+import com.maihuythong.testlogin.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,7 +33,6 @@ public class sign_up extends AppCompatActivity {
     private View mSignUpFormView;
 
     private ProgressDialog mProgressDialog;
-    private UserService userService;
 
     private APIService mAPIService;
 
@@ -56,8 +43,6 @@ public class sign_up extends AppCompatActivity {
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
-        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-
         mEmailView = findViewById(R.id.email);
         mPhoneView = findViewById(R.id.phone);
         mErrorDialogue = findViewById(R.id.error_dialogue);

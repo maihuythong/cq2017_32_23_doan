@@ -1,13 +1,12 @@
 package com.maihuythong.testlogin.showlist;
 
 import android.content.Context;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.maihuythong.testlogin.showlist.Tour;
+
 import com.maihuythong.testlogin.R;
 
 import java.util.ArrayList;
@@ -52,4 +51,10 @@ public class CustomAdapter extends ArrayAdapter<Tour> {
         TextView tvName;
 
     }
+
+    public Tour getItem(int position){
+        return arrTour.get(position);
+    }
+
+
 }

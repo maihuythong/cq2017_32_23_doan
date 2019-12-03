@@ -85,8 +85,12 @@
             android:name=".pop.ShowPopupActivity"
             android:label="Stop point infor" />
         <activity
+            android:name=".ShowListUsers.ListUsersActivity"
+            android:label="ListUser" />
+
+        <activity
             android:name=".invitationTour.InvitationActivity"
-            android:label="Show Invitation" />
+            android:label="Invitations" />
     </application>
 
 </manifest>
