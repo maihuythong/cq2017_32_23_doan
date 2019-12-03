@@ -1,6 +1,8 @@
 package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
+import com.maihuythong.testlogin.invitationTour.responseInvitation;
 import com.maihuythong.testlogin.model.StopPointInfo;
 import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
@@ -38,6 +40,16 @@ public interface APIService {
 
     @GET("/tour/history-user")
     Call<ShowAccountToursReq> getAccountTours(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    @GET("/tour/get/invitation")
+    Call<ShowInvitationReq> getInvitation(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    @POST("/tour/response/invitation")
+    @FormUrlEncoded
+    Call<responseInvitation> responseInvitation(@Header("Authorization") String s,
+                                                @Field("tourId") long tourId,
+                                                @Field("isAccepted") Boolean isAccepted
+    );
 
     @POST("/tour/update-tour")
     @FormUrlEncoded

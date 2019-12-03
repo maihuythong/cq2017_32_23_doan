@@ -13,9 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
-import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
+import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -30,6 +31,9 @@ public class ShowListActivity extends AppCompatActivity {
     private ListView lvTour;
     private Tour[] t;
     private SharedPreferences sf;
+
+
+
 
 
     @Override
@@ -55,29 +59,41 @@ public class ShowListActivity extends AppCompatActivity {
             }
         });
 
+
+
+        Button showInvitation = findViewById(R.id.show_invitation);
+        showInvitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowListActivity.this, InvitationActivity.class);
+                startActivity(intent);
+            }
+        });
+
         APIService mAPIService = ApiUtils.getAPIService();
         Intent intent = getIntent();
 
         String s;
         s = LoginActivity.token;
-        if (s == null) {
+        if(s == null){
             sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
             s = sf.getString("login_access_token", "");
         }
 
-        mAPIService.getList(s, 50, 1).enqueue(new Callback<ShowListReq>() {
+        mAPIService.getList(s,50, 1).enqueue(new Callback<ShowListReq>() {
             @Override
             public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
-                if (response.code() == 200) {
+                if(response.code() == 200){
                     t = response.body().getTours();
                     Log.d("mmm", "" + response.body().getTotal());
                     lvTour = (ListView) findViewById(R.id.lv_tour);
                     ArrayList<Tour> arrTour = new ArrayList<>();
 
-                    for (int i = 0; i < t.length; i++) {
+                    for(int i = 0; i<t.length; i++){
                         arrTour.add(t[i]);
                     }
-                    CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, arrTour);
+
+                    CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
                     lvTour.setAdapter(customAdaper);
 
                     lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,8 +104,8 @@ public class ShowListActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     });
-
-                } else {
+                }
+                else{
                     //TODO
                 }
             }
@@ -98,7 +114,6 @@ public class ShowListActivity extends AppCompatActivity {
             public void onFailure(Call<ShowListReq> call, Throwable throwable) {
                 //TODO
             }
-
         });
 
     }
