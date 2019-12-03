@@ -830,6 +830,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                         try {
                             JSONArray b = new JSONArray();
                             Log.d("kkk", response.getString("message"));
+                            Toast.makeText(getApplicationContext(),"Add stop point success!", Toast.LENGTH_LONG).show();
+                            finish();
 
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -3,8 +3,6 @@ package com.maihuythong.testlogin.showlist;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -54,6 +53,15 @@ public class ShowListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowListActivity.this, ShowAccountToursActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button showInvitation = findViewById(R.id.show_invitation);
+        showInvitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowListActivity.this, InvitationActivity.class);
                 startActivity(intent);
             }
         });

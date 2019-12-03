@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".updateTour.UpdateTour"></activity>
+        <activity android:name=".updateTour.UpdateTour" />
         <activity android:name=".showAccountTours.ShowAccountToursActivity" />
         <activity
             android:name=".showlist.ShowListActivity"
@@ -84,6 +84,9 @@
         <activity
             android:name=".pop.ShowPopupActivity"
             android:label="Stop point infor" />
+        <activity
+            android:name=".invitationTour.InvitationActivity"
+            android:label="Show Invitation" />
     </application>
 
 </manifest>

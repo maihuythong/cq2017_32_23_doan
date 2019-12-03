@@ -152,6 +152,7 @@ public class CreateTourActivity  extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("tourId", Integer.parseInt(Tourid.toString()));
                             startActivity(intent);
+                            finish();
                         }
                         if (response.code()==400)
                         {
