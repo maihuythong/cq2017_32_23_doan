@@ -1,14 +1,18 @@
 package com.maihuythong.testlogin.ShowListUsers;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -21,8 +25,8 @@ import retrofit2.Response;
 
 public class ListUsersActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private SharedPreferences sf;
     private User[] usersArray;
-
     private ListView lvUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +63,7 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
     public boolean onQueryTextSubmit(String query) {
 
         String userInput = query.toLowerCase();
-
         APIService mAPIService = ApiUtils.getAPIService();
-
         mAPIService.getListUsers(userInput, 1, 10).enqueue(new Callback<UserReq>() {
             @Override
             public void onResponse(Call<UserReq> call, Response<UserReq> response) {
@@ -69,22 +71,32 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
                 if (response.code() == 200) {
                     usersArray = response.body().getUsers();
 
-                    ArrayList<User> arrUser = new ArrayList<>();
+                    final ArrayList<User> arrUser = new ArrayList<>();
                     for (int i = 0; i < usersArray.length; i++) {
                         arrUser.add(usersArray[i]);
                     }
                     UsersAdapter usersAdapter = new UsersAdapter(ListUsersActivity.this, R.layout.user_layout, arrUser);
                     lvUsers.setAdapter(usersAdapter);
+
+                    lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            User newUser;
+                            newUser = arrUser.get(position);
+                            SendInvitation(newUser);
+                        }
+                    });
+
                 }
                 if (response.code()==500)
                 {
-                    Toast.makeText(ListUsersActivity.this,"Server error on adding member to a tour", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ListUsersActivity.this,"Server error on getting tour invitation list", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<UserReq> call, Throwable t) {
             }
+
         });
         return true;
     }
@@ -102,16 +114,25 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
                 if (response.code() == 200) {
                     usersArray = response.body().getUsers();
 
-                    ArrayList<User> arrUser = new ArrayList<>();
+                    final ArrayList<User> arrUser = new ArrayList<>();
                     for (int i = 0; i < usersArray.length; i++) {
                         arrUser.add(usersArray[i]);
                     }
                     UsersAdapter usersAdapter = new UsersAdapter(ListUsersActivity.this, R.layout.user_layout, arrUser);
                     lvUsers.setAdapter(usersAdapter);
+
+                    lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            User newUser;
+                            newUser = arrUser.get(position);
+                            SendInvitation(newUser);
+                        }
+                    });
                 }
                 if (response.code()==500)
                 {
-                    Toast.makeText(ListUsersActivity.this,"Server error on adding member to a tour", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ListUsersActivity.this,"Server error on getting tour invitation list", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -120,5 +141,34 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
             }
         });
         return true;
+    }
+
+    private void SendInvitation(User user){
+        APIService mAPIService = ApiUtils.getAPIService();
+        String s;
+        s = LoginActivity.token;
+        if(s == null){
+            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+            s = sf.getString("login_access_token", "");
+        }
+        long tourId = getIntent().getLongExtra("tourId",0);
+        Long userId = user.getID();
+        mAPIService.senInvation(s,tourId,userId.toString(),false).enqueue(new Callback<SendInvationRes>() {
+            @Override
+            public void onResponse(Call<SendInvationRes> call, Response<SendInvationRes> response) {
+                if(response.code()==200)
+
+                    Toast.makeText(ListUsersActivity.this,response.body().getMessage(), Toast.LENGTH_LONG).show();
+
+                if(response.code() == 500)
+                    Toast.makeText(ListUsersActivity.this,"Server error on adding member to a tour!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<SendInvationRes> call, Throwable t) {
+                Toast.makeText(ListUsersActivity.this,"Can not send!", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

@@ -1,43 +1,27 @@
 package com.maihuythong.testlogin.showAccountTours;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.showlist.CustomAdapter;
-import com.maihuythong.testlogin.showlist.ShowListActivity;
-import com.maihuythong.testlogin.showlist.ShowListReq;
+import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
 import com.maihuythong.testlogin.showlist.Tour;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.maihuythong.testlogin.updateTour.UpdateTour;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,7 +52,7 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                 if(response.code() == 200){
                     t = response.body().getTours();
                     ListView lvTour = findViewById(R.id.lv_tour);
-                    ArrayList<Tour> arrTour = new ArrayList<>();
+                    final ArrayList<Tour> arrTour = new ArrayList<>();
 
                     for(int i = 0; i<t.length; i++){
                         arrTour.add(t[i]);
@@ -77,6 +61,60 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                     CustomAdapterAccountTours customAdaperAccountTours =
                             new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
                     lvTour.setAdapter(customAdaperAccountTours);
+
+                    lvTour.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(ShowAccountToursActivity.this).setNegativeButton
+                                    ("Update", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    UpdateTour(arrTour,position);
+                                }
+                            }).setNeutralButton("Invite", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SendInvitation(arrTour,position);
+                                }
+                            }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create();
+                            alertDialog.getWindow().setLayout(600, 400);
+                            alertDialog.show();
+
+                            // Get screen width and height in pixels
+                            DisplayMetrics displayMetrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                            // The absolute width of the available display size in pixels.
+                            int displayWidth = displayMetrics.widthPixels;
+                            // The absolute height of the available display size in pixels.
+                            int displayHeight = displayMetrics.heightPixels;
+
+                            // Initialize a new window manager layout parameters
+                            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+                            // Copy the alert dialog window attributes to new layout parameter instance
+                            layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+
+                            // Set alert dialog width equal to screen width 80%
+                            int dialogWindowWidth = (int) (displayWidth * 0.8f);
+                            // Set alert dialog height equal to screen height 14%
+                            int dialogWindowHeight = (int) (displayHeight * 0.14f);
+
+                            // Set the width and height for the layout parameters
+                            // This will bet the width and height of alert dialog
+                            layoutParams.width = dialogWindowWidth;
+                            layoutParams.height = dialogWindowHeight;
+
+                            // Apply the newly created layout parameters to the alert dialog window
+                            alertDialog.getWindow().setAttributes(layoutParams);
+                            return true;
+                        }
+                    });
                 }
                 else{
                     //TODO
@@ -88,5 +126,34 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                 //TODO
             }
         });
+    }
+
+
+    private  void UpdateTour(ArrayList<Tour> arrTour,int position){
+        Tour tt;
+        tt = arrTour.get(position);
+        Intent intent = new Intent(ShowAccountToursActivity.this, UpdateTour.class);
+        intent.putExtra("pos", position);
+        intent.putExtra("id", tt.getID());
+        intent.putExtra("status", tt.getStatus());
+        intent.putExtra("name", tt.getName());
+        intent.putExtra("minCost", tt.getMinCost());
+        intent.putExtra("maxCost", tt.getMaxCost());
+        intent.putExtra("startDate", tt.getStartDate());
+        intent.putExtra("endDate", tt.getEndDate());
+        intent.putExtra("adult", tt.getAdults());
+        intent.putExtra("child", tt.getChilds());
+        intent.putExtra("isPrivate", tt.getIsPrivate());
+        intent.putExtra("avatar", tt.getAvatar());
+        startActivity(intent);
+    }
+
+    //Send invitation
+    private  void SendInvitation(ArrayList<Tour> arrTour,int position){
+        Tour tt;
+        tt = arrTour.get(position);
+        Intent intent = new Intent(ShowAccountToursActivity.this, ListUsersActivity.class);
+        intent.putExtra("tourId",tt.getID());
+        startActivity(intent);
     }
 }

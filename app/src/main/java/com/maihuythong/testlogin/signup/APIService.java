@@ -1,5 +1,6 @@
 package com.maihuythong.testlogin.signup;
 
+import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
 import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
@@ -80,4 +81,14 @@ public interface APIService {
             @Query("pageSize")
                     Number pageSize
     );
+
+    @POST("/tour/add/member")
+    @FormUrlEncoded
+    Call<SendInvationRes> senInvation(
+        @Header("Authorization") String s,
+        @Field("tourId") long tourId,
+        @Field("invitedUserId") String invitedUserId,
+        @Field("isInvited") Boolean isInvited
+    );
+
 }
