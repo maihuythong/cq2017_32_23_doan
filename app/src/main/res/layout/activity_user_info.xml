@@ -41,10 +41,10 @@
                     />
 
                 <TextView
-                    android:id="@+id/user_id"
+                    android:id="@+id/userInfo_id"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="ID of user"/>
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorAccent" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,10 +59,10 @@
                     android:text="Email:" />
 
                 <TextView
-                    android:id="@+id/email_user"
+                    android:id="@+id/emailInfo_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Email of user"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -77,10 +77,10 @@
                     android:text="Name:" />
 
                 <TextView
-                    android:id="@+id/name_user"
+                    android:id="@+id/nameInfo_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Name of user"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -93,10 +93,10 @@
                     android:text="Phone:" />
 
                 <TextView
-                    android:id="@+id/phone_user"
+                    android:id="@+id/phoneInfo_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Phone number of user"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -109,10 +109,10 @@
                     android:text="Gender:" />
 
                 <TextView
-                    android:id="@+id/gender_user"
+                    android:id="@+id/genderInfo_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Gender of user"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -125,10 +125,10 @@
                     android:text="Birthday:" />
 
                 <TextView
-                    android:id="@+id/dob_user"
+                    android:id="@+id/dobInfo_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Date of birth user"/>
+                    android:textColor="@color/colorAccent"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.UserInfo.UserInfoRes;
 import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
 import com.maihuythong.testlogin.model.StopPointInfo;
@@ -90,6 +91,12 @@ public interface APIService {
         @Field("tourId") long tourId,
         @Field("invitedUserId") String invitedUserId,
         @Field("isInvited") Boolean isInvited
+    );
+
+
+    @GET("/user/info")
+    Call<UserInfoRes> getUserInfo(
+            @Header("Authorization") String s
     );
 
 }
