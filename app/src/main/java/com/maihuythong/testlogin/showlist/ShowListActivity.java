@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.UserInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
@@ -48,6 +49,7 @@ public class ShowListActivity extends AppCompatActivity {
             }
         });
 
+        //init show account tours button
         Button showAccountTours = findViewById(R.id.show_account_tours);
         showAccountTours.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +59,7 @@ public class ShowListActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //init show invitation of tours button
         Button showInvitation = findViewById(R.id.show_invitation);
         showInvitation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,15 @@ public class ShowListActivity extends AppCompatActivity {
             }
         });
 
+        //init show user info button
+        Button showUserInfo = findViewById(R.id.show_userInfo);
+        showUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowListActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
         APIService mAPIService = ApiUtils.getAPIService();
         Intent intent = getIntent();
 

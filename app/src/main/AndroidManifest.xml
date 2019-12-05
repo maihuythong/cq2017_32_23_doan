@@ -20,6 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".UserInfo.UserInfoActivity"></activity>
+        <activity android:name=".UserInfo.user_info" />
         <activity android:name=".updateTour.UpdateTour" />
         <activity android:name=".showAccountTours.ShowAccountToursActivity" />
         <activity
@@ -87,7 +89,6 @@
         <activity
             android:name=".ShowListUsers.ListUsersActivity"
             android:label="ListUser" />
-
         <activity
             android:name=".invitationTour.InvitationActivity"
             android:label="Invitations" />
