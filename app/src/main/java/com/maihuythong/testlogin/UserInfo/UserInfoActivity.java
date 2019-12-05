@@ -48,14 +48,22 @@ public class UserInfoActivity extends AppCompatActivity {
         // Open LoginActivity
         Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        mProgressDialog.hide();
         UserInfoActivity.this.startActivity(intent);
         UserInfoActivity.this.finish();
+        mProgressDialog.hide();
     }
 
     private void LogOutFaceBook(){
         FacebookSdk.sdkInitialize(getApplicationContext());
         LoginManager.getInstance().logOut();
         AccessToken.setCurrentAccessToken(null);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mProgressDialog != null)
+            mProgressDialog.dismiss();
     }
 }
