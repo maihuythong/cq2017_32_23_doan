@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -15,7 +14,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
@@ -95,15 +93,6 @@ public class ShowListActivity extends AppCompatActivity {
 
                     CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
                     lvTour.setAdapter(customAdaper);
-
-                    lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            Intent intent = new Intent(ShowListActivity.this, ListUsersActivity.class);
-                            startActivity(intent);
-                        }
-                    });
                 }
                 else{
                     //TODO

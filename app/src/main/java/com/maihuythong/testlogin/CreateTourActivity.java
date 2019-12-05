@@ -113,6 +113,7 @@ public class CreateTourActivity  extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch (Exception e) {
                     // TODO: handle exception
+                    Toast.makeText(CreateTourActivity.this,"Cant hide keyboard!", Toast.LENGTH_LONG).show();
                 }
  
                 tourName=tourNameView.getText().toString();

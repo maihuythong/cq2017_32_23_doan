@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -126,6 +127,7 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             User newUser;
                             newUser = arrUser.get(position);
+                            hideInputKeyboard();
                             SendInvitation(newUser);
                         }
                     });
@@ -170,5 +172,15 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
             }
         });
 
+    }
+
+    void hideInputKeyboard(){
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            // TODO: handle exception
+            Toast.makeText(ListUsersActivity.this,"Cant hide keyboard!", Toast.LENGTH_LONG).show();
+        }
     }
 }
