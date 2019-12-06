@@ -24,16 +24,11 @@ import com.maihuythong.testlogin.signup.ApiUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.prefs.Preferences;
 
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Invocation;
 import retrofit2.Response;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class AdapterInvitation extends ArrayAdapter {
     private Context context;
@@ -58,8 +53,6 @@ public class AdapterInvitation extends ArrayAdapter {
         TextView timeInvite;
         Button confirm;
         Button delete;
-
-
     }
 
     private Invitation getInvitationFromTourId(long tourId){
@@ -154,10 +147,5 @@ public class AdapterInvitation extends ArrayAdapter {
 
         return convertView;
     }
-
-
-
-
-
 
 }

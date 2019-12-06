@@ -8,6 +8,10 @@ import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
 import com.maihuythong.testlogin.model.StopPointInfo;
 import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.rate_comment_review.GetCommentTour;
+import com.maihuythong.testlogin.rate_comment_review.GetPointOfTour;
+import com.maihuythong.testlogin.rate_comment_review.SendCommentTour;
+import com.maihuythong.testlogin.rate_comment_review.SendReviewTour;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
 import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.updateTour.UpdateTourReq;
@@ -47,6 +51,13 @@ public interface APIService {
 
     @GET("/tour/get/invitation")
     Call<ShowInvitationReq> getInvitation(@Header("Authorization") String s, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
+
+    @GET("/tour/get/review-point-stats")
+    Call<GetPointOfTour> getPointOfTour(@Header("Authorization") String s, @Query("tourId") long tourId);
+
+    @GET("/tour/comment-list")
+    Call<GetCommentTour> getCommentTour(@Header("Authorization") String s, @Query("tourId") long tourId, @Query("pageIndex") long pageIndex, @Query("pageSize") long pageSize);
+
 
     @POST("/tour/response/invitation")
     @FormUrlEncoded
@@ -93,6 +104,24 @@ public interface APIService {
         @Field("tourId") long tourId,
         @Field("invitedUserId") String invitedUserId,
         @Field("isInvited") Boolean isInvited
+    );
+
+    @POST("/tour/add/review")
+    @FormUrlEncoded
+    Call<SendReviewTour> sendReview(
+        @Header("Authorization") String s,
+        @Field("tourId") long tourId,
+        @Field("point") int point,
+        @Field("review") String contentReview
+    );
+
+    @POST("/tour/comment")
+    @FormUrlEncoded
+    Call<SendCommentTour> sendCommentTour(
+        @Header("Authorization") String s,
+        @Field("tourId") int tourId,
+        @Field("userId") int userId,
+        @Field("comment") String comment
     );
 
 

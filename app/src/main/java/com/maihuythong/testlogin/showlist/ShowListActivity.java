@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -16,6 +17,7 @@ import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.UserInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
+import com.maihuythong.testlogin.rate_comment_review.RateCommentTour;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -95,7 +97,7 @@ public class ShowListActivity extends AppCompatActivity {
                     t = response.body().getTours();
                     Log.d("mmm", "" + response.body().getTotal());
                     lvTour = (ListView) findViewById(R.id.lv_tour);
-                    ArrayList<Tour> arrTour = new ArrayList<>();
+                    final ArrayList<Tour> arrTour = new ArrayList<>();
 
                     for(int i = 0; i<t.length; i++){
                         arrTour.add(t[i]);
@@ -103,6 +105,13 @@ public class ShowListActivity extends AppCompatActivity {
 
                     CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
                     lvTour.setAdapter(customAdaper);
+
+                    lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            openRateCommentTour(arrTour, position);
+                        }
+                    });
                 }
                 else{
                     //TODO
@@ -119,6 +128,27 @@ public class ShowListActivity extends AppCompatActivity {
 
     private void AddTour() {
         startActivity(new Intent(this, CreateTourActivity.class));
+    }
+
+
+
+    private  void openRateCommentTour(ArrayList<Tour> arrTour,int position){
+        Tour tt;
+        tt = arrTour.get(position);
+        Intent intent = new Intent(ShowListActivity.this, RateCommentTour.class);
+        intent.putExtra("pos", position);
+        intent.putExtra("id", tt.getID());
+        intent.putExtra("status", tt.getStatus());
+        intent.putExtra("name", tt.getName());
+        intent.putExtra("minCost", tt.getMinCost());
+        intent.putExtra("maxCost", tt.getMaxCost());
+        intent.putExtra("startDate", tt.getStartDate());
+        intent.putExtra("endDate", tt.getEndDate());
+        intent.putExtra("adult", tt.getAdults());
+        intent.putExtra("child", tt.getChilds());
+        intent.putExtra("isPrivate", tt.getIsPrivate());
+        intent.putExtra("avatar", tt.getAvatar());
+        startActivity(intent);
     }
 
 }

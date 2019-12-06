@@ -93,6 +93,9 @@
         <activity
             android:name=".invitationTour.InvitationActivity"
             android:label="Invitations" />
+
+        <activity android:name=".rate_comment_review.RateCommentTour"
+            android:label="Rate, review, comment a tour"/>
     </application>
 
 </manifest>
