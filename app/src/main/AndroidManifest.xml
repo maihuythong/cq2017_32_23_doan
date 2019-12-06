@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UserInfo.UserInfoActivity"></activity>
+        <activity android:name=".UserInfo.UpdateUserInfoActivity"></activity>
+        <activity android:name=".UserInfo.UserInfoActivity" />
         <activity android:name=".UserInfo.user_info" />
         <activity android:name=".updateTour.UpdateTour" />
         <activity android:name=".showAccountTours.ShowAccountToursActivity" />

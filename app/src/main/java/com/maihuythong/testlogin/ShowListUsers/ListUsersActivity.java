@@ -160,7 +160,7 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
             public void onResponse(Call<SendInvationRes> call, Response<SendInvationRes> response) {
                 if(response.code()==200)
 
-                    Toast.makeText(ListUsersActivity.this,response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ListUsersActivity.this,"Send invitation "+ response.body().getMessage(), Toast.LENGTH_LONG).show();
 
                 if(response.code() == 500)
                     Toast.makeText(ListUsersActivity.this,"Server error on adding member to a tour!", Toast.LENGTH_LONG).show();
@@ -174,7 +174,7 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
 
     }
 
-    void hideInputKeyboard(){
+    public void hideInputKeyboard(){
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

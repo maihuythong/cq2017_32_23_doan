@@ -36,11 +36,12 @@ public class UserInfoActivity extends AppCompatActivity {
     private TextView genderView;
     private TextView dobView;
 
+    UserInfoRes UserInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-
 
         userIdView = (TextView)findViewById(R.id.userInfo_id);
         emailView = (TextView)findViewById(R.id.emailInfo_user);
@@ -52,14 +53,30 @@ public class UserInfoActivity extends AppCompatActivity {
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
-        Button LogOutButton = (Button)findViewById(R.id.logout);
+
         GetUserInfo();
+
+        Button UpdateInfoButton = (Button)findViewById(R.id.update_user_info_button);
+        UpdateInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(UserInfoActivity.this,UpdateUserInfoActivity.class);
+                intent.putExtra("fullName", UserInfo.getFullName());
+                intent.putExtra("email",UserInfo.getEmail());
+                intent.putExtra("phone",UserInfo.getPhone());
+                intent.putExtra("dob",UserInfo.getDob());
+                startActivity(intent);
+            }
+        });
+        Button LogOutButton = (Button)findViewById(R.id.logout_button);
         LogOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogOut();
             }
         });
+
     }
 
     //Handle logout
@@ -106,21 +123,21 @@ public class UserInfoActivity extends AppCompatActivity {
             public void onResponse(Call<UserInfoRes> call, Response<UserInfoRes> response) {
                 if(response.code()==200) {
                     Toast.makeText(UserInfoActivity.this, "Get info success", Toast.LENGTH_LONG).show();
-                    UserInfoRes newUserInfo = response.body();
-                    if(!Objects.isNull(newUserInfo.getID()))
-                        userIdView.setText(String.valueOf(newUserInfo.getID()));
-                    if(!Objects.isNull(newUserInfo.getEmail()))
-                        emailView.setText(newUserInfo.getEmail());
-                    if(!Objects.isNull(newUserInfo.getFullName()))
-                        fullNameView.setText(newUserInfo.getFullName());
-                    if(!Objects.isNull(newUserInfo.getPhone()))
-                        phoneView.setText(newUserInfo.getPhone());
-                    if(!Objects.isNull(newUserInfo.getGender()))
-                        if(newUserInfo.getGender()==0)
+                    UserInfo = response.body();
+                    if(!Objects.isNull(UserInfo.getID()))
+                        userIdView.setText(String.valueOf(UserInfo.getID()));
+                    if(!Objects.isNull(UserInfo.getEmail()))
+                        emailView.setText(UserInfo.getEmail());
+                    if(!Objects.isNull(UserInfo.getFullName()))
+                        fullNameView.setText(UserInfo.getFullName());
+                    if(!Objects.isNull(UserInfo.getPhone()))
+                        phoneView.setText(UserInfo.getPhone());
+                    if(!Objects.isNull(UserInfo.getGender()))
+                        if(UserInfo.getGender()==0)
                             genderView.setText("Nam");
                         else genderView.setText("Nữ");
-                    if(!Objects.isNull(newUserInfo.getDob()))
-                        dobView.setText(newUserInfo.getDob());
+                    if(!Objects.isNull(UserInfo.getDob()))
+                        dobView.setText(UserInfo.getDob());
 
                 }
 

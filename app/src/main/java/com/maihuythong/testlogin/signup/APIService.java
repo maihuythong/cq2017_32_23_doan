@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.UserInfo.UpdateUserInfoRes;
 import com.maihuythong.testlogin.UserInfo.UserInfoRes;
 import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
@@ -12,6 +13,7 @@ import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.updateTour.UpdateTourReq;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -98,5 +100,16 @@ public interface APIService {
     Call<UserInfoRes> getUserInfo(
             @Header("Authorization") String s
     );
+
+    @POST("/user/edit-info")
+    @FormUrlEncoded
+    Call<UpdateUserInfoRes> EditInfo(
+            @Header("Authorization") String s,
+            @Field("fullName") String fullName,
+            @Field("email") String email,
+            @Field("phone") String phone,
+            @Field("gender") Number gender,
+            @Field("dob")Date dob
+            );
 
 }
