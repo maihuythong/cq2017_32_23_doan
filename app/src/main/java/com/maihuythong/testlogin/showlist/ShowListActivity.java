@@ -151,4 +151,8 @@ public class ShowListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

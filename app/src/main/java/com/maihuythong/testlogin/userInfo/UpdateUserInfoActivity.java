@@ -46,7 +46,6 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     private String phoneNumberUser;
     private long genderUser;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
