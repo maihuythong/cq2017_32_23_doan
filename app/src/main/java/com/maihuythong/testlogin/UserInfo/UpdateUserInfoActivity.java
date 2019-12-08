@@ -182,7 +182,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     }
 
 
-    void hideInputKeyboard(){
+    private void hideInputKeyboard(){
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

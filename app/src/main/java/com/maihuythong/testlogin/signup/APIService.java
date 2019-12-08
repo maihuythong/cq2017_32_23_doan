@@ -2,6 +2,8 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.UserInfo.GetVerifyCodeRes;
+import com.maihuythong.testlogin.UserInfo.SendVerifyCodeRes;
 import com.maihuythong.testlogin.UserInfo.UpdateUserInfoRes;
 import com.maihuythong.testlogin.UserInfo.UserInfoRes;
 import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
@@ -140,5 +142,23 @@ public interface APIService {
             @Field("gender") Number gender,
             @Field("dob")Date dob
             );
+
+    @GET("/user/send-active")
+    Call<GetVerifyCodeRes> getVerify(
+            @Query("userId")
+                long userId,
+            @Query("type")
+                String type
+    );
+
+    @GET("/user/active")
+    Call<SendVerifyCodeRes> sendVerifycode(
+            @Query("userId")
+                    long userId,
+            @Query("type")
+                    String type,
+            @Query("verifyCode")
+                    String verifyCode
+    );
 
 }

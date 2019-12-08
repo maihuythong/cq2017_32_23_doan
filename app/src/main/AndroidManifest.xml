@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UserInfo.UpdateUserInfoActivity"></activity>
+        <activity android:name=".UserInfo.InputVerifyCodeActivity"></activity>
+        <activity android:name=".UserInfo.UpdateUserInfoActivity" />
         <activity android:name=".UserInfo.UserInfoActivity" />
         <activity android:name=".UserInfo.user_info" />
         <activity android:name=".updateTour.UpdateTour" />
@@ -93,9 +94,9 @@
         <activity
             android:name=".invitationTour.InvitationActivity"
             android:label="Invitations" />
-
-        <activity android:name=".rate_comment_review.RateCommentTour"
-            android:label="Rate, review, comment a tour"/>
+        <activity
+            android:name=".rate_comment_review.RateCommentTour"
+            android:label="Rate, review, comment a tour" />
     </application>
 
 </manifest>

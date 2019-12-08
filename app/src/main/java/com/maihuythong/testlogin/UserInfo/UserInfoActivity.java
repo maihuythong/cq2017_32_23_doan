@@ -77,6 +77,16 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
 
+        Button VerifyEmail =(Button)findViewById(R.id.verify_email);
+
+        VerifyEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getVerifyCode("email");
+            }
+        });
+
+
     }
 
     //Handle logout
@@ -151,6 +161,32 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserInfoRes> call, Throwable t) {
                 Toast.makeText(UserInfoActivity.this,"Error get information user", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void getVerifyCode(final String typeVerify){
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        mAPIService.getVerify(UserInfo.getID(),typeVerify).enqueue(new Callback<GetVerifyCodeRes>() {
+            @Override
+            public void onResponse(Call<GetVerifyCodeRes> call, Response<GetVerifyCodeRes> response) {
+                if(response.code()==200) {
+                    Toast.makeText(UserInfoActivity.this, "Verify was sent, please check email to get verify code!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(UserInfoActivity.this,InputVerifyCodeActivity.class);
+                    intent.putExtra("userId",UserInfo.getID());
+                    intent.putExtra("typeVerify",typeVerify);
+                    startActivity(intent);
+                }
+
+                if(response.code()==400)
+                    Toast.makeText(UserInfoActivity.this,"Error "+ response.body().getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<GetVerifyCodeRes> call, Throwable t) {
+
             }
         });
     }
