@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserInfo.user_info">
+    tools:context=".userInfo.user_info">
 
     <LinearLayout
         android:layout_width="match_parent"

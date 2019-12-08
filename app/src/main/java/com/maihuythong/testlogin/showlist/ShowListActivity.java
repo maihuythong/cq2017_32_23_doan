@@ -15,7 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.UserInfo.UserInfoActivity;
+import com.maihuythong.testlogin.userInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.rate_comment_review.RateCommentTour;
 import com.maihuythong.testlogin.showAccountTours.ShowAccountToursActivity;

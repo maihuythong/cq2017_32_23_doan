@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
     private String sharedPrefFile = "com.maihuythong.testlogin_preferences";
 
 
-
     SignInButton signInButton;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -436,6 +435,7 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

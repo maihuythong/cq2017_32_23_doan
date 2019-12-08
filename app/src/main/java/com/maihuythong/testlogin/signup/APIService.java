@@ -2,10 +2,10 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
-import com.maihuythong.testlogin.UserInfo.GetVerifyCodeRes;
-import com.maihuythong.testlogin.UserInfo.SendVerifyCodeRes;
-import com.maihuythong.testlogin.UserInfo.UpdateUserInfoRes;
-import com.maihuythong.testlogin.UserInfo.UserInfoRes;
+import com.maihuythong.testlogin.userInfo.GetVerifyCodeRes;
+import com.maihuythong.testlogin.userInfo.SendVerifyCodeRes;
+import com.maihuythong.testlogin.userInfo.UpdateUserInfoRes;
+import com.maihuythong.testlogin.userInfo.UserInfoRes;
 import com.maihuythong.testlogin.invitationTour.ShowInvitationReq;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
 import com.maihuythong.testlogin.model.StopPointInfo;

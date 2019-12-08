@@ -1,4 +1,4 @@
-package com.maihuythong.testlogin.UserInfo;
+package com.maihuythong.testlogin.userInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 

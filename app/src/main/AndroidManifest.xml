@@ -20,10 +20,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UserInfo.InputVerifyCodeActivity"></activity>
-        <activity android:name=".UserInfo.UpdateUserInfoActivity" />
-        <activity android:name=".UserInfo.UserInfoActivity" />
-        <activity android:name=".UserInfo.user_info" />
+        <activity android:name=".userInfo.InputVerifyCodeActivity"></activity>
+        <activity android:name=".userInfo.UpdateUserInfoActivity" />
+        <activity android:name=".userInfo.UserInfoActivity" />
         <activity android:name=".updateTour.UpdateTour" />
         <activity android:name=".showAccountTours.ShowAccountToursActivity" />
         <activity

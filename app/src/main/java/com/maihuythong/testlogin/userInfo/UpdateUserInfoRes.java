@@ -1,10 +1,10 @@
-package com.maihuythong.testlogin.UserInfo;
+package com.maihuythong.testlogin.userInfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetVerifyCodeRes {
-    @SerializedName("Message")
+public class UpdateUserInfoRes {
+    @SerializedName("message")
     @Expose
     private String message;
 

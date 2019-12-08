@@ -1,4 +1,4 @@
-package com.maihuythong.testlogin.UserInfo;
+package com.maihuythong.testlogin.userInfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
