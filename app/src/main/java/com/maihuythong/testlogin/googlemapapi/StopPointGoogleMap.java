@@ -3,6 +3,7 @@ package com.maihuythong.testlogin.googlemapapi;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.LayoutDirection;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,9 +37,17 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,7 +86,7 @@ import java.util.Map;
 //import com.mancj.materialsearchbar.MaterialSearchBar;
 
 
-public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener {
+public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback, OnMapReadyCallback, GoogleMap.OnMapClickListener, DirectionFinderListener{
 
     public static final int TEXT_REQUEST = 1;
     private JSONArray stopPointsArray = new JSONArray();
@@ -87,6 +99,9 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
     private  static final  int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
     private Marker desMarker;
+    private Marker startLocation;
+    private Marker currentStopPoint;
+    //private Polyline currentPolylinePaths;
 
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -114,114 +129,54 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
     private AutocompleteSessionToken token;
     private List<AutocompletePrediction> predictionList;
+
+
+    protected GoogleApiClient mGoogleApiClient;
+    protected LocationRequest locationRequest;
+    int REQUEST_CHECK_SETTINGS = 100;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_point_google_map);
         //searchText = findViewById(R.id.input_search);
-        myLocation = findViewById(R.id.my_location);
-//        materialSearchBar = findViewById(R.id.searchBar);
-
-//        token = AutocompleteSessionToken.newInstance();
-
-        if(!Places.isInitialized()){
-            Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
-        }
-
-        placesClient = Places.createClient(this);
 
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).build();
+        mGoogleApiClient.connect();
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(30 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
 
 
-        getLocationPermission();        // check permission before init map
+
+
+//        getLocationPermission();        // check permission before init map
+//        myLocation = findViewById(R.id.my_location);
+////        materialSearchBar = findViewById(R.id.searchBar);
+//
+////        token = AutocompleteSessionToken.newInstance();
+//
+//        if(!Places.isInitialized()){
+//            Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
+//        }
+//
+//        placesClient = Places.createClient(this);
+
+
+
+
         //init();
     }
 
     private void init(){
-        // text enter ok
-        /*searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH
-                        ||actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
-                        ||event.getAction() == KeyEvent.KEYCODE_ENTER){
-                    //excute seacrh
-                    geoLocate();
-                }
-                return false;
-            }
-        });*/
-
-        // ======================================================//
-        //       Suggestion
-/*        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
-            @Override
-            public void onSearchStateChanged(boolean enabled) {
-
-            }
-
-            @Override
-            public void onSearchConfirmed(CharSequence text) {
-                startSearch(text.toString(),true,null,true);
-            }
-
-            @Override
-            public void onButtonClicked(int buttonCode) {
-                if (buttonCode == MaterialSearchBar.BUTTON_NAVIGATION){
-
-                }else if(buttonCode == MaterialSearchBar.BUTTON_BACK){
-                    materialSearchBar.disableSearch();
-                }
-            }
-        });
-
-        materialSearchBar.addTextChangeListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                        .setCountry("vi")
-                        .setTypeFilter(TypeFilter.ADDRESS)
-                        .setSessionToken(token)
-                        .setQuery(s.toString())
-                        .build();
-                placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(new OnCompleteListener<FindAutocompletePredictionsResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<FindAutocompletePredictionsResponse> task) {
-                        if(task.isSuccessful()){
-                            FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-                            if (predictionsResponse != null){
-                                predictionList = predictionsResponse.getAutocompletePredictions();
-
-                                List<String> suggestionList = new ArrayList<>();
-                                for (int i = 0 ; i < predictionList.size(); ++ i){
-                                    AutocompletePrediction prediction = predictionList.get(i);
-                                    suggestionList.add(prediction.getFullText(null).toString());
-                                }
-
-                                materialSearchBar.updateLastSuggestions(suggestionList);
-                                if (!materialSearchBar.isSuggestionsVisible()){
-                                    materialSearchBar.showSuggestionsList();
-                                }
-                            }
-                        }else {
-                            Log.i(TAG,"Prediction fetching task unsuccessful!");
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
-
         // ================================================= //
 
         // search better
@@ -256,14 +211,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 getDeviceLocation();
             }
         });
-
-        //marker.showInfoWindow();
-        // map.moveCamera(CameraUpdateFactory.newLatLngZoom(KHTN,17));
-
-
         HideSoftKeyboard();
-
-
     }
 
     private void  geoLocate(){
@@ -292,14 +240,21 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
-        }
 
-        getDeviceLocation();
+            myLocation = findViewById(R.id.my_location);
+        }
 
     }
 
+
     private void getDeviceLocation(){
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         try {
             if(mLocationPermissionGranted){
@@ -335,7 +290,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .title(title);
-          //  map.addMarker(markerOptions);
+            //  map.addMarker(markerOptions);
         }
 
         HideSoftKeyboard();
@@ -394,98 +349,55 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
         // get current location
         if(mLocationPermissionGranted){
-            getDeviceLocation();
+            //getDeviceLocation();
+//        materialSearchBar = findViewById(R.id.searchBar);
+
+//        token = AutocompleteSessionToken.newInstance();
+
+            if(!Places.isInitialized()){
+                Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
+            }
+
+            placesClient = Places.createClient(this);
 
             if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 return;
+            }
+
 
             map.setMyLocationEnabled(true);   // my location (blue dot)
+
+            getDeviceLocation();
+
             map.getUiSettings().setMyLocationButtonEnabled(false);
             map.getUiSettings().setZoomControlsEnabled(true);
 
             map.setOnMapClickListener(this);
 
-           // init();
+            init();
+            map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+                    Log.d("System out", "onMarkerDragStart..."+marker.getPosition().latitude+"..."+marker.getPosition().longitude);
+                }
 
-//            LatLng pos = map.getCameraPosition().target;
-////
-////            Log.d("CAMERE LATLNG", String.valueOf(pos.latitude + pos.longitude));
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                    Log.i("System out", "onMarkerDrag...");
+                }
 
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+                    Log.d("System out", "onMarkerDragEnd..."+marker.getPosition().latitude+"..."+marker.getPosition().longitude);
 
+                    map.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                }
+            });
 
-//            map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-//                @Override
-//                public void onCameraChange(CameraPosition cameraPosition) {
-//                    LatLng position = map.getCameraPosition().target;
-//                    Object transferData[] = new Object[2];
-//                    GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
-//                    String url = getUrlNearby(position.latitude, position.longitude, "other");
-//                    transferData[0] = map;
-//                    transferData[1] = url;
-//
-//                    getNearbyPlaces.execute(transferData);
-//                }
-//            });
-//            map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-//                @Override
-//                public void onCameraIdle() {
-//
-//                }
-//            });
         }
 
-//        LatLng KHTN = new LatLng(10.762643, 106.682079);
-//        LatLng NHStreet = new LatLng(10.774467, 106.703274);
-//
-//        MarkerOptions options = new MarkerOptions();
-//        options.position(KHTN);
-//        options.title("Đại học KHTN").snippet("Số 227 NVC, Q5");
-//        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//        options.alpha(0.8f);
-//        options.rotation(0);
-//        Marker marker = map.addMarker(options);
-//        marker.showInfoWindow();
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(KHTN,17));
-//
-//        MarkerOptions options2 = new MarkerOptions();
-//        options.position(NHStreet);
-//        options.title("Phố đi bộ NH").snippet("Quận 1 HCM");
-//        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//        options.alpha(0.8f);
-//        options.rotation(0);
-//        Marker marker2 = map.addMarker(options);
-
-
-//        final AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-//
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//
-//                // 227 Nguyễn Văn Cừ : 10.762643, 106.682079
-//                // Phố đi bộ Nguyễn Huệ : 10.774467, 106.703274
-//
-//                String request = makeURL("10.762643","106.682079","10.774467","106.703274");
-//                GetDirectionsTask task = new GetDirectionsTask(request);
-//                ArrayList<LatLng> list = task.testDirection();
-//                for (LatLng latLng : list) {
-//                    listStep.add(latLng);
-//                }
-//                return null;
-//            }
-//            @Override
-//            protected void onPostExecute(Void result) {
-//                // TODO Auto-generated method stub
-//                super.onPostExecute(result);
-//                polyline.addAll(listStep);
-//                Polyline line = map.addPolyline(polyline);
-//                line.setColor(Color.BLUE);
-//                line.setWidth(5);
-//            }
-//        };
-//
-//        task.execute();
     }
 
     private void HideSoftKeyboard(){
@@ -504,9 +416,10 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         //        .position(latLng));
         //currentLatlngSelected
         if(StartPoint == null){
-            Marker myLocation = map.addMarker(new MarkerOptions()
+            startLocation = map.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .title("Start Tour"));
+                    .title("Start Tour")
+                    .draggable(true));
             StartPoint = new LatLng(latLng.latitude, latLng.longitude);
         }else {
             currentLatlngSelected = new LatLng(latLng.latitude, latLng.longitude);
@@ -524,9 +437,11 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 //            {
 //                stopPoints.add(new LatLng(latLng.latitude,latLng.longitude));
 //            }
-            Marker newmarker = map.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title("Stop point"));
+                currentStopPoint = map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Stop point")
+                        .draggable(true));
+
 
                 new DirectionFinder(this, StartPoint, currentLatlngSelected, stopPoints).execute();
 
@@ -559,25 +474,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 e.printStackTrace();
             }
         }
-        //
-//        Geocoder geocoder;
-//
-//        List<Address> addresses;
-//        geocoder = new Geocoder(this, Locale.getDefault());
-//        try {
-//            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-//            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//            String city = addresses.get(0).getLocality();
-//            String state = addresses.get(0).getAdminArea();
-//            String country = addresses.get(0).getCountryName();
-//            String postalCode = addresses.get(0).getPostalCode();
-//            String knownName = addresses.get(0).getFeatureName();
-//
-//            moveCamera(latLng,DEFAULT_ZOOM,address);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.d(TAG,"Geocoder destination error");
-//        }
+
     }
 
     @Override
@@ -611,18 +508,24 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
 
+        for(Polyline line : polylinePaths)
+        {
+            line.remove();
+        }
+
         polylinePaths.clear();
 
         for (Route r : routes) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(r.startLocation, 16));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(r.endLocation, 16));
 
-            originMarkers.add(map.addMarker(new MarkerOptions()
-                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
-                    .title(r.startAddress)
-                    .position(r.startLocation)));
+//            originMarkers.add(map.addMarker(new MarkerOptions()
+//                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
+//                    .title(r.startAddress)
+//                    .position(r.startLocation)));
+            startLocation.setTitle("Start tour at: " + r.startAddress);
             destinationMarkers.add(map.addMarker(new MarkerOptions()
                     //.icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
-                    .title(r.endAddress)
+                    .title("Current destination: " + r.endAddress)
                     .position(r.endLocation)));
 
             PolylineOptions polylineOptions = new PolylineOptions().
@@ -632,6 +535,8 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
             for (int i = 0; i < r.points.size(); i++)
                 polylineOptions.add(r.points.get(i));
+
+
 
             polylinePaths.add(map.addPolyline(polylineOptions));
         }
@@ -825,23 +730,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
                 requestQueue.add(jsonObjectRequest);
 
 
-//// Request a string response from the provided URL.
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST, theUrl, req,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                // Display the first 500 characters of the response string.
-//                                textView.setText("Response is: "+ response.substring(0,500));
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        textView.setText("That didn't work!");
-//                    }
-//                });
-//
-//// Add the request to the RequestQueue.
-//                queue.add(stringRequest);
         }
     }
 
@@ -866,12 +754,14 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
         // Test for the right intent reply.
         // Test to make sure the intent reply result was good.
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
             String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
             int serviceType = data.getIntExtra("REPLY_SERVICE_TYPE", 1);
             int province = data.getIntExtra("REPLY_PROVINCE", 1);
             long arrivalAt = data.getLongExtra("REPLY_ARRIVAL_AT", 1000000);
             long leaveAt = data.getLongExtra("REPLY_LEAVE_AT", 2000000);
+
+            currentStopPoint.setTitle("Stop point: " + stopPointName);
 
 
 //            StopPointInfo stopPointInfo = new StopPointInfo();
@@ -906,8 +796,84 @@ public class StopPointGoogleMap extends AppCompatActivity implements OnMapReadyC
 
 
         }
+
+
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == RESULT_OK) {
+
+                myLocation = findViewById(R.id.my_location);
+                Toast.makeText(getApplicationContext(), "GPS enabled", Toast.LENGTH_LONG).show();
+                getLocationPermission();        // check permission before init map
+
+            } else {
+
+                Toast.makeText(getApplicationContext(), "GPS is not enabled", Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+        PendingResult result =
+                LocationServices.SettingsApi.checkLocationSettings(
+                        mGoogleApiClient,
+                        builder.build()
+                );
+
+        result.setResultCallback(this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onResult(@NonNull Result result) {
+        final Status status = result.getStatus();
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+
+                getLocationPermission();        // check permission before init map
+                myLocation = findViewById(R.id.my_location);
+
+                if(!Places.isInitialized()){
+                    Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
+                }
+
+                placesClient = Places.createClient(this);
+
+                break;
+
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                //  Location settings are not satisfied. Show the user a dialog
+
+                try {
+                    // Show the dialog by calling startResolutionForResult(), and check the result
+                    // in onActivityResult().
+
+                    status.startResolutionForResult(StopPointGoogleMap.this, REQUEST_CHECK_SETTINGS);
+
+                } catch (IntentSender.SendIntentException e) {
+
+                    //failed to show
+                }
+                break;
+
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                // Location settings are unavailable so not possible to show any dialog now
+                break;
+        }
+    }
 }
 
 // Direction https://github.com/hiepxuan2008/GoogleMapDirectionSimple/blob/master/app/src/main/java/com/itshareplus/googlemapdemo/MapsActivity.java
