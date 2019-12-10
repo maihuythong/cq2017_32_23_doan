@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.maihuythong.testlogin.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +63,14 @@ public class CommentAdapter extends ArrayAdapter {
 //        holder.avatar.setImageResource(null);
         viewHolder.userName.setText(comment.getName());
         viewHolder.contentComment.setText(comment.getComment());
-        viewHolder.userAvatar = null;                                               // Add avatar here
+        //viewHolder.userAvatar = null;                                               // Add avatar here
+
+        if (comment.getAvatar() != null){
+            Picasso.get().load(comment.getAvatar()).into(viewHolder.userAvatar);
+        }else {
+            viewHolder.userAvatar = null;                                               // Add default avatar here
+        }
+
         viewHolder.userId = comment.getUserId();
 
         String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(comment.getCreateOn()));

@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
 import com.maihuythong.testlogin.userInfo.GetVerifyCodeRes;
 import com.maihuythong.testlogin.userInfo.SendVerifyCodeRes;
@@ -142,7 +143,7 @@ public interface APIService {
             @Field("phone") String phone,
             @Field("gender") Number gender,
             @Field("dob")Date dob
-    );
+            );
 
     @GET("/user/send-active")
     Call<GetVerifyCodeRes> getVerify(
@@ -162,6 +163,9 @@ public interface APIService {
                     String verifyCode
     );
 
+
+    @GET("/tour/info")
+    Call<GetTourInfo> getTourInfo(@Header("Authorization") String s, @Query("tourId") long tourId );
 
     @POST("/user/request-otp-recovery")
     @FormUrlEncoded

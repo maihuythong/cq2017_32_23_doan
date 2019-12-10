@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
+import com.maihuythong.testlogin.showTourInfo.ShowTourInfo;
 import com.maihuythong.testlogin.showlist.Tour;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -61,6 +62,13 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                     CustomAdapterAccountTours customAdaperAccountTours =
                             new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
                     lvTour.setAdapter(customAdaperAccountTours);
+
+                    lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            sendTourInfo(arrTour, position);
+                        }
+                    });
 
                     lvTour.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
@@ -154,6 +162,14 @@ public class ShowAccountToursActivity extends AppCompatActivity {
         tt = arrTour.get(position);
         Intent intent = new Intent(ShowAccountToursActivity.this, ListUsersActivity.class);
         intent.putExtra("tourId",tt.getID());
+        startActivity(intent);
+    }
+
+    private  void sendTourInfo(ArrayList<Tour> arrTour,int position){
+        Tour tour;
+        tour = arrTour.get(position);
+        Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInfo.class);
+        intent.putExtra("id",tour.getID());
         startActivity(intent);
     }
 }

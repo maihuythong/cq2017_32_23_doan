@@ -98,6 +98,8 @@
         <activity
             android:name=".rate_comment_review.RateCommentTour"
             android:label="Rate, review, comment a tour" />
+        <activity android:name=".showTourInfo.ShowTourInfo"
+            android:label="Show all infomation of tour"/>
     </application>
 
 </manifest>

@@ -224,6 +224,7 @@ public class RateCommentTour extends AppCompatActivity {
         mAPIService.sendReview(token, tourId, numStar, reviewContent.getText().toString()).enqueue(new Callback<SendReviewTour>() {
             @Override
             public void onResponse(Call<SendReviewTour> call, Response<SendReviewTour> response) {
+                reviewContent.setText("");
                 Toast.makeText(getApplicationContext(),"Sent your review", Toast.LENGTH_SHORT).show();
             }
 

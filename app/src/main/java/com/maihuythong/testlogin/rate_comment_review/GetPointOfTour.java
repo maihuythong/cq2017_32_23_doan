@@ -12,7 +12,7 @@ public class GetPointOfTour {
     }
 
 
-    class Point {
+    public class Point {
         private int point;
         private int total;
 
