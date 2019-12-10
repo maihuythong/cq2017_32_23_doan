@@ -39,6 +39,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.maihuythong.testlogin.forgotPassword.RequestOTPActivity;
 import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.model.LoginResponse;
 import com.maihuythong.testlogin.network.MyAPILogin;
@@ -49,6 +50,7 @@ import com.maihuythong.testlogin.socialNetwork.LoginService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -75,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private TextView fogotPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     private ProgressDialog mProgressDialog;
@@ -94,6 +97,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
+
+        fogotPasswordView = (TextView) findViewById(R.id.forgot_password_id);
+        fogotPasswordView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RequestOTPActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         try {

@@ -20,7 +20,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".userInfo.InputVerifyCodeActivity"></activity>
+        <activity android:name=".forgotPassword.RecoveryPasswordActivity"></activity>
+        <activity android:name=".forgotPassword.RequestOTPActivity" />
+        <activity android:name=".userInfo.InputVerifyCodeActivity" />
         <activity android:name=".userInfo.UpdateUserInfoActivity" />
         <activity android:name=".userInfo.UserInfoActivity" />
         <activity android:name=".updateTour.UpdateTour" />

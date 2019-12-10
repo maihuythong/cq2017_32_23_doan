@@ -20,6 +20,10 @@ import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -179,8 +183,18 @@ public class UserInfoActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-                if(response.code()==400)
-                    Toast.makeText(UserInfoActivity.this,"Error "+ response.body().getMessage(), Toast.LENGTH_LONG).show();
+                if(response.code()==400) {
+                    String message = "Send failed!";
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        message = jObjError.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(UserInfoActivity.this,"Error "+ message, Toast.LENGTH_LONG).show();
+                }
 
             }
 

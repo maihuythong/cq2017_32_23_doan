@@ -15,6 +15,11 @@ import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,8 +85,18 @@ public class InputVerifyCodeActivity extends AppCompatActivity {
 
                 }
 
-                if(response.code()==400||response.code()==404||response.code()==403)
-                    Toast.makeText(InputVerifyCodeActivity.this,"Error: "+ response.body().getMessage(), Toast.LENGTH_LONG).show();
+                if(response.code()==400||response.code()==404||response.code()==403) {
+                    String message = "Send failed!";
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        message = jObjError.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(InputVerifyCodeActivity.this,"Error: "+ message, Toast.LENGTH_LONG).show();
+                }
 
             }
 
