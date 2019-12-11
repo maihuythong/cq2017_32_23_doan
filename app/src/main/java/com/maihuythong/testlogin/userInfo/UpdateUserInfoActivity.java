@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -22,11 +23,13 @@ import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +37,7 @@ import retrofit2.Response;
 
 public class UpdateUserInfoActivity extends AppCompatActivity {
 
+    private ImageView avatarView;
     private AutoCompleteTextView fullNameView;
     private AutoCompleteTextView emailView;
     private AutoCompleteTextView phoneView;
@@ -44,6 +48,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     private String fullNameUser;
     private String emailUser;
     private String phoneNumberUser;
+    private String avatarUser;
     private long genderUser;
 
     @Override
@@ -53,6 +58,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
+        avatarView = (ImageView)findViewById(R.id.avatar_view_up);
         fullNameView = (AutoCompleteTextView)findViewById(R.id.full_name_up);
         emailView = (AutoCompleteTextView)findViewById(R.id.email_up);
         phoneView = (AutoCompleteTextView)findViewById(R.id.phone_number_up);
@@ -63,6 +69,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         emailView.setText(intent.getStringExtra("email"));
         phoneView.setText(intent.getStringExtra("phone"));
         dobView.setText(intent.getStringExtra("dob"));
+        if(!Objects.isNull(intent.getStringExtra("avatar")))
+            Picasso.get().load(intent.getStringExtra("avatar")).into(avatarView);
         genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

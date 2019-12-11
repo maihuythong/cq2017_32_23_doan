@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private TextView phoneView;
     private TextView genderView;
     private TextView dobView;
+    private ImageView avatarView;
 
     UserInfoRes UserInfo;
 
@@ -53,6 +56,7 @@ public class UserInfoActivity extends AppCompatActivity {
         phoneView = (TextView)findViewById(R.id.phoneInfo_user);
         genderView = (TextView)findViewById(R.id.genderInfo_user);
         dobView = (TextView)findViewById(R.id.dobInfo_user);
+        avatarView = (ImageView)findViewById(R.id.avatar_user);
 
 
         mProgressDialog = new ProgressDialog(this);
@@ -70,6 +74,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 intent.putExtra("email",UserInfo.getEmail());
                 intent.putExtra("phone",UserInfo.getPhone());
                 intent.putExtra("dob",UserInfo.getDob());
+                intent.putExtra("avatar",UserInfo.getAvatar());
                 startActivity(intent);
             }
         });
@@ -138,6 +143,9 @@ public class UserInfoActivity extends AppCompatActivity {
                 if(response.code()==200) {
                     Toast.makeText(UserInfoActivity.this, "Get info success", Toast.LENGTH_LONG).show();
                     UserInfo = response.body();
+                    if(!Objects.isNull(UserInfo.getAvatar()))
+                        Picasso.get().load(UserInfo.getAvatar()).into(avatarView);
+
                     if(!Objects.isNull(UserInfo.getID()))
                         userIdView.setText(String.valueOf(UserInfo.getID()));
                     if(!Objects.isNull(UserInfo.getEmail()))
