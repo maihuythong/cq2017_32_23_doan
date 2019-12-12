@@ -20,9 +20,6 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UserInfo.InputVerifyCodeActivity"></activity>
-        <activity android:name=".UserInfo.UpdateUserInfoActivity" />
-        <activity android:name=".UserInfo.UserInfoActivity" />
         <activity android:name=".forgotPassword.RecoveryPasswordActivity"></activity>
         <activity android:name=".forgotPassword.RequestOTPActivity" />
         <activity android:name=".userInfo.InputVerifyCodeActivity" />
