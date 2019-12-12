@@ -1,38 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@drawable/action_bar_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tours available"
+            android:textAlignment="center"
+            android:paddingRight="70dp"
+            android:textColor="@color/appbar_text_color"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:elevation="0dp"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/tab_bar_tour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/show_account_tours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A" />
+
+            <Button
+                android:id="@+id/show_invitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/show_account_tours"
+                android:text="invite" />
+
+            <Button
+                android:id="@+id/show_userInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/show_invitation"
+                android:text="User" />
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/lv_tour"
+            android:layout_below="@+id/tab_bar_tour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/show_account_tours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="a" />
-
-        <Button
-            android:id="@+id/show_invitation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/show_account_tours"
-            android:text="invite" />
-
-        <Button
-            android:id="@+id/show_userInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/show_invitation"
-            android:text="User" />
 
     </RelativeLayout>
 
@@ -45,4 +74,4 @@
         android:layout_margin="16dp"
         app:srcCompat="@android:drawable/ic_input_add"
         android:tint="#FFFFFF"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

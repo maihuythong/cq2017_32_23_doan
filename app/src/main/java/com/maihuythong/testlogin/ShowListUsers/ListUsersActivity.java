@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
@@ -29,11 +30,14 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
     private SharedPreferences sf;
     private User[] usersArray;
     private ListView lvUsers;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
         lvUsers = (ListView) findViewById(R.id.lv_users);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
     }

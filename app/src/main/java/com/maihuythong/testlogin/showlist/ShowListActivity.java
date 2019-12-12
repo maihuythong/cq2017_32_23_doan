@@ -6,13 +6,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,11 +43,11 @@ import retrofit2.Response;
 import android.provider.Settings.Secure;
 
 
-public class ShowListActivity extends AppCompatActivity {
+public class ShowListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private ListView lvTour;
     private Tour[] t;
     private SharedPreferences sf;
-
+    private Toolbar toolbar;
 
 
 
@@ -50,6 +56,8 @@ public class ShowListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_list);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         String android_id = Secure.getString(getApplicationContext().getContentResolver(),
                 Secure.ANDROID_ID);
@@ -129,7 +137,7 @@ public class ShowListActivity extends AppCompatActivity {
             s = sf.getString("login_access_token", "");
         }
 
-        mAPIService.getList(s,50, 1).enqueue(new Callback<ShowListReq>() {
+        mAPIService.getList(s,100, 1).enqueue(new Callback<ShowListReq>() {
             @Override
             public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                 if(response.code() == 200){
@@ -190,8 +198,43 @@ public class ShowListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search_user, menu);
+
+        MenuItem menuItem= menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     @Override
     public void onBackPressed() {
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }
