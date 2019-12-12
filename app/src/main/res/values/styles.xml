@@ -1,13 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorHint">@color/colorAccent</item>
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -15,7 +9,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="homeAsUpIndicator">@drawable/ic_chevron_left_black_30dp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -26,4 +21,30 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+
+    <style name="AppTheme.Button">
+        <item name="android:textColor">@color/button_text</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+<!--    <style name="ErrorText" parent="TextAppearance.AppCompat">-->
+<!--        <item name="android:textColor">@color/text_color</item>-->
+<!--        <item name="android:textSize">16sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="HintText" parent="TextAppearance.AppCompat">-->
+<!--        <item name="android:textColor">@color/text_color</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">-->
+<!--        <item name="hintTextAppearance">@style/HintText</item>-->
+<!--        <item name="errorTextAppearance">@style/ErrorText</item>-->
+<!--        <item name="android:textColor">@color/text_color</item>-->
+<!--        <item name="android:textColorHint">@color/text_color</item>-->
+<!--        <item name="colorControlNormal">@color/text_color</item>-->
+<!--        <item name="colorControlActivated">@color/text_color</item>-->
+<!--        <item name="colorControlHighlight">@color/text_color</item>-->
+<!--    </style>-->
 </resources>

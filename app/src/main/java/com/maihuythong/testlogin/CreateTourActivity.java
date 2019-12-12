@@ -1,8 +1,10 @@
 package com.maihuythong.testlogin;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
 import com.maihuythong.testlogin.model.CreateTourResponse;
@@ -63,8 +66,13 @@ public class CreateTourActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_tour);
-        //Button back in title bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//        setSupportActionBar((Toolbar) findViewById(R.id.custom_action_bar));
+//        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_gradient));
+//        getSupportActionBar().setElevation(0);
+//
+//        //Button back in title bar
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tourNameView = (AutoCompleteTextView) findViewById(R.id.tourName);
         startDate = (EditText) findViewById(R.id.start_date);

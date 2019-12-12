@@ -3,6 +3,7 @@ package com.maihuythong.testlogin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +100,12 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+
         fogotPasswordView = (TextView) findViewById(R.id.forgot_password_id);
         fogotPasswordView.setOnClickListener(new OnClickListener() {
             @Override
@@ -124,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //=========================Login Google Area======================================================
-
-        SignInButton signInButton = findViewById(R.id.loginGG_button);
+        ImageButton gg = findViewById(R.id.gg);
+        signInButton = findViewById(R.id.loginGG_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -142,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
         signInButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
+                Log.d("caaaa", "aaaaa");
                 switch (v.getId()) {
                     case R.id.loginGG_button:
                         signIn();
@@ -154,6 +163,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //========================Login facebook area=====================================================
+        //Our custom Facebook button
+        ImageButton fb = findViewById(R.id.fb);
+
         callbackManager = CallbackManager.Factory.create(); // To receive response of server facebook
         loginButton = (LoginButton) findViewById(R.id.loginFB_button);
         loginButton.setReadPermissions(Arrays.asList("email","public_profile"));
@@ -228,7 +240,7 @@ public class LoginActivity extends AppCompatActivity {
 
        //  userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -274,6 +286,14 @@ public class LoginActivity extends AppCompatActivity {
     //        SharedPreferences.Editor editor = mPreferences.edit();
     //        editor.putString("login_access_token", token);
     //        editor.commit();
+    }
+
+    public void onClickFacebookButton(View view) {
+        loginButton.performClick();
+    }
+
+    public void onClickGoogleButton(View view) {
+        signInButton.performClick();
     }
 
     @Override

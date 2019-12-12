@@ -17,9 +17,12 @@
         android:icon="@drawable/icon_launch"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".UserInfo.InputVerifyCodeActivity"></activity>
+        <activity android:name=".UserInfo.UpdateUserInfoActivity" />
+        <activity android:name=".UserInfo.UserInfoActivity" />
         <activity android:name=".forgotPassword.RecoveryPasswordActivity"></activity>
         <activity android:name=".forgotPassword.RequestOTPActivity" />
         <activity android:name=".userInfo.InputVerifyCodeActivity" />
@@ -47,7 +50,7 @@
         </activity>
         <activity
             android:name=".signup.sign_up"
-            android:label="Sign Up" />
+            android:label="Sign Up"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -85,7 +88,8 @@
         </activity>
         <activity
             android:name=".CreateTourActivity"
-            android:label="Create Tour" />
+            android:label="Create Tour"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".pop.ShowPopupActivity"
             android:label="Stop point infor" />
@@ -98,6 +102,12 @@
         <activity
             android:name=".rate_comment_review.RateCommentTour"
             android:label="Rate, review, comment a tour" />
+
+        <service android:name=".NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity android:name=".showTourInfo.ShowTourInfo"
             android:label="Show all infomation of tour"/>
     </application>

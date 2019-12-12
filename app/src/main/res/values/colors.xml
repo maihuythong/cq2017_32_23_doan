@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#000bff</color>
+    <color name="colorPrimaryDark">#000bff</color>
+    <color name="colorAccent">#FF9C00</color>
+    <color name="button_text">#ffffff</color>
+    <color name="text_color">#6D6D6D</color>
+    <color name="appbar_text_color">#ffffff</color>
+    <color name="colorAccent2">#4DE90F</color>
+    <color name="error_text_color">#FF0000</color>
 </resources>

@@ -1,76 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".invitationTour.InvitationActivity"
-    >
+    android:padding="@dimen/margin_16dp">
 
-    <ImageView
-        android:id="@+id/avatar_inviter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="50dp"
-        android:maxWidth="50dp"
-        />
-    <RelativeLayout
-        android:id="@+id/rl_text_invitation"
-        android:layout_toRightOf="@+id/avatar_inviter"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/inviter_name"
-            android:layout_width="wrap_content"
-            android:textStyle="bold"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/content_invite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/inviter_name"
-            android:text=" sent you an invitation for tour"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/content_invite"
-            android:id="@+id/invite_tour_name"/>
-        <TextView
-            android:id="@+id/time_invite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/invite_tour_name"/>
+        <ImageView
+            android:id="@+id/avatar_inviter"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:maxWidth="70dp"
+            android:maxHeight="70dp" />
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/rl_text_invitation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/inviter_name"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+                <TextView
+                    android:id="@+id/content_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" sent you an invitation for tour"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:id="@+id/invite_tour_name"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/time_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/time_invite_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" ( hour ago)"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rl_text_invitation"
-        >
-        <Button
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:id="@+id/button_invite_confirm"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_invite_confirm"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="CONFIRM"
+                style="@style/AppTheme.Button"
+                android:layout_marginEnd="@dimen/margin_16dp"/>
 
-            android:text="Confirm"
-            android:textColor="@color/colorAccent"/>
-
-        <Button
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:id="@+id/button_invite_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="delete"
-            android:layout_toRightOf="@id/button_invite_confirm"
-            android:textColor="@color/quantum_white_100"/>
-    </RelativeLayout>
-
-
-</RelativeLayout>
+            <Button
+                android:id="@+id/button_invite_delete"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="DELETE"
+                android:background="@drawable/button"
+                style="@style/AppTheme.Button"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
