@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,8 +51,8 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     private Tour[] t;
     private SharedPreferences sf;
     private Toolbar toolbar;
-
-
+    private long totalTours;
+    private final ArrayList<Tour> arrTour = new ArrayList<>();
 
 
     @Override
@@ -80,10 +83,8 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                             Log.w("fcmTokenFailed", "getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-
                         // Log and toast
                         Log.d("fcmTokenSuccess", token);
                     }
@@ -127,8 +128,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                 startActivity(intent);
             }
         });
-        APIService mAPIService = ApiUtils.getAPIService();
-        Intent intent = getIntent();
+
 
         String s;
         s = LoginActivity.token;
@@ -137,22 +137,23 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             s = sf.getString("login_access_token", "");
         }
 
-        mAPIService.getList(s,100, 1).enqueue(new Callback<ShowListReq>() {
+        APIService mAPIService = ApiUtils.getAPIService();
+        Intent intent = getIntent();
+
+        mAPIService.getList(s,3000, 1).enqueue(new Callback<ShowListReq>() {
             @Override
             public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                 if(response.code() == 200){
                     t = response.body().getTours();
+                    totalTours =response.body().getTotal();
                     Log.d("mmm", "" + response.body().getTotal());
                     lvTour = (ListView) findViewById(R.id.lv_tour);
-                    final ArrayList<Tour> arrTour = new ArrayList<>();
 
                     for(int i = 0; i<t.length; i++){
                         arrTour.add(t[i]);
                     }
-
                     CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
                     lvTour.setAdapter(customAdaper);
-
                     lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -205,9 +206,13 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         getMenuInflater().inflate(R.menu.menu_search_user, menu);
 
         MenuItem menuItem= menu.findItem(R.id.action_search);
-
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
+
+        EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        textSearch.setTextColor(Color.WHITE);
+
+
         return true;
     }
     @Override
@@ -230,7 +235,28 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        String userInput = query.toString();
+         final ArrayList<Tour> foundedTours = new ArrayList<>();
+        for (int i =0;i < totalTours;i++){
+            if(!Objects.isNull(t[i].getName()))
+                if(t[i].getName().equals(userInput))
+                    foundedTours.add(t[i]);
+            if(Long.toString(t[i].getID()).equals(userInput))
+                foundedTours.add(t[i]);
+            if(!foundedTours.isEmpty()) {
+                CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
+                lvTour.setAdapter(customAdaper);
+            }
+        }
+        if(!foundedTours.isEmpty()) {
+            lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    openRateCommentTour(foundedTours, position);
+                }
+            });
+        }
+        return true;
     }
 
     @Override
