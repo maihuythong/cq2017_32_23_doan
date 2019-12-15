@@ -3,15 +3,24 @@ package com.maihuythong.testlogin.showAccountTours;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
@@ -23,20 +32,29 @@ import com.maihuythong.testlogin.signup.ApiUtils;
 import com.maihuythong.testlogin.updateTour.UpdateTour;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowAccountToursActivity extends AppCompatActivity {
+public class ShowAccountToursActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private Tour[] t;
+    private long totalAccTours;
+    private ListView lvTour;
+    ArrayList<Tour> arrTour = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_account_tours);
-        final ArrayList<Tour> arrAccTours = new ArrayList<>();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        lvTour = findViewById(R.id.lv_tour);
+
+        final ArrayList<Tour> arrAccTours = new ArrayList<>();
 
         String s;
         s = LoginActivity.token;
@@ -47,13 +65,12 @@ public class ShowAccountToursActivity extends AppCompatActivity {
 
         APIService mAPIService = ApiUtils.getAPIService();
 
-        mAPIService.getAccountTours(s,1, 50).enqueue(new Callback<ShowAccountToursReq>() {
+        mAPIService.getAccountTours(s,1, 200).enqueue(new Callback<ShowAccountToursReq>() {
             @Override
             public void onResponse(Call<ShowAccountToursReq> call, Response<ShowAccountToursReq> response) {
                 if(response.code() == 200){
                     t = response.body().getTours();
-                    ListView lvTour = findViewById(R.id.lv_tour);
-                    final ArrayList<Tour> arrTour = new ArrayList<>();
+                    totalAccTours = response.body().getTotal();
 
                     for(int i = 0; i<t.length; i++){
                         arrTour.add(t[i]);
@@ -91,35 +108,18 @@ public class ShowAccountToursActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             }).create();
-                            alertDialog.getWindow().setLayout(600, 400);
                             alertDialog.show();
 
-                            // Get screen width and height in pixels
-                            DisplayMetrics displayMetrics = new DisplayMetrics();
-                            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                            // The absolute width of the available display size in pixels.
-                            int displayWidth = displayMetrics.widthPixels;
-                            // The absolute height of the available display size in pixels.
-                            int displayHeight = displayMetrics.heightPixels;
+                            Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                            Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                            Button btnNeutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
 
-                            // Initialize a new window manager layout parameters
-                            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                            layoutParams.weight = 10;
+                            btnPositive.setLayoutParams(layoutParams);
+                            btnNegative.setLayoutParams(layoutParams);
+                            btnNeutral.setLayoutParams(layoutParams);
 
-                            // Copy the alert dialog window attributes to new layout parameter instance
-                            layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
-
-                            // Set alert dialog width equal to screen width 80%
-                            int dialogWindowWidth = (int) (displayWidth * 0.8f);
-                            // Set alert dialog height equal to screen height 14%
-                            int dialogWindowHeight = (int) (displayHeight * 0.14f);
-
-                            // Set the width and height for the layout parameters
-                            // This will bet the width and height of alert dialog
-                            layoutParams.width = dialogWindowWidth;
-                            layoutParams.height = dialogWindowHeight;
-
-                            // Apply the newly created layout parameters to the alert dialog window
-                            alertDialog.getWindow().setAttributes(layoutParams);
                             return true;
                         }
                     });
@@ -171,5 +171,96 @@ public class ShowAccountToursActivity extends AppCompatActivity {
         Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInfo.class);
         intent.putExtra("id",tour.getID());
         startActivity(intent);
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search_user, menu);
+
+        MenuItem menuItem= menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+        EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        textSearch.setTextColor(Color.WHITE);
+
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        String userInput = query.toString();
+        arrTour = new ArrayList<>();
+
+        if(userInput.isEmpty())
+        {
+            arrTour.addAll(Arrays.asList(t));
+
+        }else{
+            for (int i =0;i < totalAccTours;i++){
+                if(!Objects.isNull(t[i].getName()))
+                    if(t[i].getName().equals(userInput))
+                        arrTour.add(t[i]);
+                if(Long.toString(t[i].getID()).equals(userInput))
+                    arrTour.add(t[i]);
+            }
+        }
+
+        if(!arrTour.isEmpty()) {
+            CustomAdapterAccountTours customAdaperAccountTours =
+                    new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
+            lvTour.setAdapter(customAdaperAccountTours);
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String userInput = newText.toString();
+        arrTour = new ArrayList<>();
+
+        if(userInput.isEmpty())
+        {
+            arrTour.addAll(Arrays.asList(t));
+
+        }else{
+            for (int i =0;i < totalAccTours;i++){
+                if(!Objects.isNull(t[i].getName()))
+                    if(t[i].getName().equals(userInput))
+                        arrTour.add(t[i]);
+                if(Long.toString(t[i].getID()).equals(userInput))
+                    arrTour.add(t[i]);
+            }
+        }
+
+        if(!arrTour.isEmpty()) {
+            CustomAdapterAccountTours customAdaperAccountTours =
+                    new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
+            lvTour.setAdapter(customAdaperAccountTours);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

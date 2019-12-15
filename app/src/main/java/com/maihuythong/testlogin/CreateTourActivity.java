@@ -67,12 +67,8 @@ public class CreateTourActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_tour);
 
-//        setSupportActionBar((Toolbar) findViewById(R.id.custom_action_bar));
-//        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.action_bar_gradient));
-//        getSupportActionBar().setElevation(0);
-//
-//        //Button back in title bar
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         tourNameView = (AutoCompleteTextView) findViewById(R.id.tourName);
         startDate = (EditText) findViewById(R.id.start_date);
@@ -241,4 +237,9 @@ public class CreateTourActivity  extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

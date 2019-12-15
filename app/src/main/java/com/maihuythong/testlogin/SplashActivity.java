@@ -1,5 +1,6 @@
 package com.maihuythong.testlogin;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.maihuythong.testlogin.firebase.MyFirebaseService;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
@@ -45,18 +49,21 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            LoginManager.getInstance().logOut();
+            AccessToken.setCurrentAccessToken(null);
             startActivity(intent);
             finish();
-            return;
+
         }else{
-            String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+            @SuppressLint("HardwareIds") String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
             APIService mAPIService = ApiUtils.getAPIService();
 
             mAPIService.putTokenFirebase(accessToken, FirebaseInstanceId.getInstance().getToken(), deviceId, 1, "1.0").enqueue(new Callback<PutTokenFirebase>() {
                 @Override
                 public void onResponse(Call<PutTokenFirebase> call, Response<PutTokenFirebase> response) {
-                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Firebase: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -70,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
             //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-            return;
+
         }
     }
 }

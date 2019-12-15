@@ -11,8 +11,7 @@
         android:background="@drawable/action_bar_gradient"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:navigationIcon="?attr/homeAsUpIndicator">
+        app:actionViewClass="android.support.v7.widget.SearchView">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,11 +56,13 @@
 
         </LinearLayout>
 
+
         <ListView
             android:id="@+id/lv_tour"
             android:layout_below="@+id/tab_bar_tour"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+        </ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

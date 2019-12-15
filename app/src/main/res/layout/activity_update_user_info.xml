@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create tour"
+            android:text="Update information"
             android:textAlignment="center"
             android:paddingRight="70dp"
             android:textColor="@color/appbar_text_color"

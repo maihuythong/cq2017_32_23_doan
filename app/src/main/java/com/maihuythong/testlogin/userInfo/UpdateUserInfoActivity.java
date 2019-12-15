@@ -56,8 +56,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_user_info);
-//        setSupportActionBar((Toolbar)getResources(R.id.toolbar));
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         avatarView = (ImageView)findViewById(R.id.avatar_view_up);
@@ -199,5 +199,11 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             // TODO: handle exception
             Toast.makeText(UpdateUserInfoActivity.this,"Cant hide keyboard!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

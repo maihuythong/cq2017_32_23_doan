@@ -5,12 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".userInfo.user_info">
+    tools:context=".userInfo.UserInfoActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@drawable/action_bar_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your information"
+            android:textAlignment="center"
+            android:paddingRight="70dp"
+            android:textColor="@color/appbar_text_color"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:elevation="0dp"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/avatar_user"

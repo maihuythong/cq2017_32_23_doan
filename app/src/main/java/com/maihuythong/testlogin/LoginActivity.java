@@ -182,8 +182,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
 
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                Toast.makeText(LoginActivity.this,"Successful", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(LoginActivity.this,"Login successful!", Toast.LENGTH_LONG).show();
                 Retrofit retrofit = MyAPILogin.getRetrofit();
                 LoginService loginService = retrofit.create(LoginService.class);
                 Call<LoginResponse> call = loginService.isValidUser(accessToken.getToken().toString());

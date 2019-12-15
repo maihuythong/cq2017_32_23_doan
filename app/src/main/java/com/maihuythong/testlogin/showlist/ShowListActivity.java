@@ -1,10 +1,13 @@
 package com.maihuythong.testlogin.showlist;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -45,13 +48,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.provider.Settings.Secure;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 public class ShowListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private ListView lvTour;
     private Tour[] t;
-    private SharedPreferences sf;
-    private Toolbar toolbar;
     private long totalTours;
     private final ArrayList<Tour> arrTour = new ArrayList<>();
 
@@ -60,7 +63,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_list);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         try {
@@ -111,49 +114,75 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         });
 
+        new LoadTourAsyncTask (this).execute();
 
-        String s;
-        s = LoginActivity.token;
-        if(s == null){
-            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
-            s = sf.getString("login_access_token", "");
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadTourAsyncTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+
+        LoadTourAsyncTask(ShowListActivity activity) {
+            dialog = new ProgressDialog(activity);
         }
 
-        APIService mAPIService = ApiUtils.getAPIService();
-        Intent intent = getIntent();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Loading, please wait....");
+            dialog.show();
+        }
+        @Override
+        protected Void doInBackground(Void... args) {
+            String s;
+            s = LoginActivity.token;
+            if(s == null){
+                SharedPreferences sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+                s = sf.getString("login_access_token", "");
+            }
 
-        mAPIService.getList(s,3000, 1).enqueue(new Callback<ShowListReq>() {
-            @Override
-            public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
-                if(response.code() == 200){
-                    t = response.body().getTours();
-                    totalTours =response.body().getTotal();
-                    Log.d("mmm", "" + response.body().getTotal());
-                    lvTour = (ListView) findViewById(R.id.lv_tour);
+            APIService mAPIService = ApiUtils.getAPIService();
+            Intent intent = getIntent();
 
-                    for(int i = 0; i<t.length; i++){
-                        arrTour.add(t[i]);
+            mAPIService.getList(s,3000, 1).enqueue(new Callback<ShowListReq>() {
+                @Override
+                public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
+                    if(response.code() == 200){
+                        t = response.body().getTours();
+                        totalTours =response.body().getTotal();
+                        lvTour = (ListView) findViewById(R.id.lv_tour);
+
+                        arrTour.addAll(Arrays.asList(t));
+                        CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
+                        lvTour.setAdapter(customAdaper);
+                        lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                openRateCommentTour(arrTour, position);
+                            }
+                        });
+                        Toast.makeText(ShowListActivity.this,"Get tours finished!", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
                     }
-                    CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
-                    lvTour.setAdapter(customAdaper);
-                    lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            openRateCommentTour(arrTour, position);
-                        }
-                    });
+                    else{
+                        //TODO
+                    }
                 }
-                else{
+
+                @Override
+                public void onFailure(Call<ShowListReq> call, Throwable throwable) {
                     //TODO
                 }
-            }
-
-            @Override
-            public void onFailure(Call<ShowListReq> call, Throwable throwable) {
-                //TODO
-            }
-        });
+            });
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            // do UI work here
+            super.onPostExecute(result);
+        }
     }
+
 
     private void AddTour() {
         startActivity(new Intent(this, CreateTourActivity.class));
