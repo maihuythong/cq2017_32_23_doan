@@ -63,10 +63,6 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String android_id = Secure.getString(getApplicationContext().getContentResolver(),
-                Secure.ANDROID_ID);
-        Log.d("deviceId", android_id);
-
         try {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
@@ -75,21 +71,6 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("fcmTokenFailed", "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        // Log and toast
-                        Log.d("fcmTokenSuccess", token);
-                    }
-                });
 
         //init fab button
         FloatingActionButton fab = findViewById(R.id.fab);

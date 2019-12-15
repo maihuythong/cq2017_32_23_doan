@@ -126,22 +126,22 @@ public class AdapterInvitation extends ArrayAdapter {
             public void onClick(View v) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 String token = preferences.getString("login_access_token", null);
-            APIService mAPIService = ApiUtils.getAPIService();
-            mAPIService.responseInvitation(token, viewHolder.tourId, false).enqueue(new Callback<responseInvitation>() {
-                @Override
-                public void onResponse(Call<responseInvitation> call, Response<responseInvitation> response) {
-                    Toast.makeText(getContext(), "Delete Click", Toast.LENGTH_SHORT).show();
-//                        ListView lvInvitation = findViewbyId(R.id.lv_)
-                    Invitation invitation1 = getInvitationFromTourId(viewHolder.tourId);
-                    data.remove(invitation1);
-                    notifyDataSetChanged();
-                }
+                APIService mAPIService = ApiUtils.getAPIService();
+                mAPIService.responseInvitation(token, viewHolder.tourId, false).enqueue(new Callback<responseInvitation>() {
+                    @Override
+                    public void onResponse(Call<responseInvitation> call, Response<responseInvitation> response) {
+                        Toast.makeText(getContext(), "Delete Click", Toast.LENGTH_SHORT).show();
+    //                        ListView lvInvitation = findViewbyId(R.id.lv_)
+                        Invitation invitation1 = getInvitationFromTourId(viewHolder.tourId);
+                        data.remove(invitation1);
+                        notifyDataSetChanged();
+                    }
 
-                @Override
-                public void onFailure(Call<responseInvitation> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<responseInvitation> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
             }
         });
 

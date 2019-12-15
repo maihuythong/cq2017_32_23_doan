@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
 import com.maihuythong.testlogin.userInfo.GetVerifyCodeRes;
@@ -180,6 +181,16 @@ public interface APIService {
             @Field("userId") long userId,
             @Field("newPassword") String newPassword,
             @Field("verifyCode") String verifyCode
+    );
+
+    @POST("/user/notification/put-token")
+    @FormUrlEncoded
+    Call<PutTokenFirebase> putTokenFirebase(
+            @Header("Authorization") String s,
+            @Field("fcmToken") String fcmToken,
+            @Field("deviceId") String deviceId,
+            @Field("platform") int platform,
+            @Field("appVersion") String appVersion
     );
 
 }

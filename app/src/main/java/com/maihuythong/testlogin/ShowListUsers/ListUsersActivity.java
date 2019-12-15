@@ -162,10 +162,11 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
         mAPIService.senInvation(s,tourId,userId.toString(),false).enqueue(new Callback<SendInvationRes>() {
             @Override
             public void onResponse(Call<SendInvationRes> call, Response<SendInvationRes> response) {
-                if(response.code()==200)
-
-                    Toast.makeText(ListUsersActivity.this,"Send invitation "+ response.body().getMessage(), Toast.LENGTH_LONG).show();
-
+                if(response.code()==200) {
+//                    MyFirebaseService myFirebaseService = new MyFirebaseService();
+//                    myFirebaseService
+                    Toast.makeText(ListUsersActivity.this, "Send invitation " + response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
                 if(response.code() == 500)
                     Toast.makeText(ListUsersActivity.this,"Server error on adding member to a tour!", Toast.LENGTH_LONG).show();
             }
