@@ -38,6 +38,7 @@ import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -171,14 +172,11 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                 //TODO
             }
         });
-
     }
 
     private void AddTour() {
         startActivity(new Intent(this, CreateTourActivity.class));
     }
-
-
 
     private  void openRateCommentTour(ArrayList<Tour> arrTour,int position){
         Tour tt;
@@ -236,17 +234,25 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     @Override
     public boolean onQueryTextSubmit(String query) {
         String userInput = query.toString();
-         final ArrayList<Tour> foundedTours = new ArrayList<>();
-        for (int i =0;i < totalTours;i++){
-            if(!Objects.isNull(t[i].getName()))
-                if(t[i].getName().equals(userInput))
+        final ArrayList<Tour> foundedTours = new ArrayList<>();
+
+        if(userInput.isEmpty())
+        {
+            foundedTours.addAll(Arrays.asList(t));
+
+        }else{
+            for (int i =0;i < totalTours;i++){
+                if(!Objects.isNull(t[i].getName()))
+                    if(t[i].getName().equals(userInput))
+                        foundedTours.add(t[i]);
+                if(Long.toString(t[i].getID()).equals(userInput))
                     foundedTours.add(t[i]);
-            if(Long.toString(t[i].getID()).equals(userInput))
-                foundedTours.add(t[i]);
-            if(!foundedTours.isEmpty()) {
-                CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
-                lvTour.setAdapter(customAdaper);
             }
+        }
+
+        if(!foundedTours.isEmpty()) {
+            CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
+            lvTour.setAdapter(customAdaper);
         }
         if(!foundedTours.isEmpty()) {
             lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -261,6 +267,35 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        String userInput = newText.toString();
+        final ArrayList<Tour> foundedTours = new ArrayList<>();
+
+        if(userInput.isEmpty())
+        {
+            foundedTours.addAll(Arrays.asList(t));
+
+        }else{
+            for (int i =0;i < totalTours;i++){
+                if(!Objects.isNull(t[i].getName()))
+                    if(t[i].getName().equals(userInput))
+                        foundedTours.add(t[i]);
+                if(Long.toString(t[i].getID()).equals(userInput))
+                    foundedTours.add(t[i]);
+            }
+        }
+
+        if(!foundedTours.isEmpty()) {
+            CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
+            lvTour.setAdapter(customAdaper);
+        }
+        if(!foundedTours.isEmpty()) {
+            lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    openRateCommentTour(foundedTours, position);
+                }
+            });
+        }
+        return true;
     }
 }
