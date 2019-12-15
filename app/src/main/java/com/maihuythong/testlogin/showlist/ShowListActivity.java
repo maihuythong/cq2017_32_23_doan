@@ -129,7 +129,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.setMessage("Loading, please wait....");
+            dialog.setMessage("Loading tours, please wait....");
             dialog.show();
         }
         @Override
