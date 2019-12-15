@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -41,12 +42,17 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.maihuythong.testlogin.firebase.MyFirebaseService;
+import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.forgotPassword.RequestOTPActivity;
 import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.model.LoginResponse;
 import com.maihuythong.testlogin.network.MyAPILogin;
 import com.maihuythong.testlogin.network.RetrofitServices;
 import com.maihuythong.testlogin.showlist.ShowListActivity;
+import com.maihuythong.testlogin.signup.APIService;
+import com.maihuythong.testlogin.signup.ApiUtils;
 import com.maihuythong.testlogin.signup.sign_up;
 import com.maihuythong.testlogin.socialNetwork.LoginService;
 
@@ -461,7 +467,22 @@ public class LoginActivity extends AppCompatActivity {
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
                         token = result.getToken();
+                        String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
+                        APIService mAPIService = ApiUtils.getAPIService();
+
+                        mAPIService.putTokenFirebase(result.getToken(), FirebaseInstanceId.getInstance().getToken(), deviceId, 1, "1.0").enqueue(new Callback<PutTokenFirebase>() {
+                            @Override
+                            public void onResponse(Call<PutTokenFirebase> call, Response<PutTokenFirebase> response) {
+                                Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<PutTokenFirebase> call, Throwable t) {
+
+                            }
+                        });
+//                        myFirebaseService.onNewToken(FirebaseInstanceId.getInstance().getToken());
                         Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
