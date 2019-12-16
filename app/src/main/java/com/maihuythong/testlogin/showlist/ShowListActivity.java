@@ -55,6 +55,8 @@ import android.widget.Toast;
 public class ShowListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private ListView lvTour;
     private Tour[] t;
+    private SharedPreferences sf;
+    private Toolbar toolbar;
     private long totalTours;
     private final ArrayList<Tour> arrTour = new ArrayList<>();
 
@@ -63,7 +65,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         try {

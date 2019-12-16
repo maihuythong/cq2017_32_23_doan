@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.maps.model.Polyline;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.firebase.MessagingTour;
 import com.maihuythong.testlogin.rate_comment_review.Comment;
 import com.maihuythong.testlogin.rate_comment_review.CommentAdapter;
 import com.maihuythong.testlogin.rate_comment_review.GetPointOfTour;
@@ -59,6 +60,7 @@ public class ShowTourInfo extends AppCompatActivity {
     private Button member;
     private Button review;
     private Button comment;
+    private Button chat;
     private LinearLayout linearLayoutComment;
     private LinearLayout linearLayoutReview;
     private ImageButton sendComment;
@@ -102,6 +104,7 @@ public class ShowTourInfo extends AppCompatActivity {
         averageStar = findViewById(R.id.average_star);
         smallRating = findViewById(R.id.small_rating_bar);
         totalRating = findViewById(R.id.total_rating);
+        chat = findViewById(R.id.tour_chat);
 
         token = LoginActivity.token;
         if(token == null){
@@ -176,6 +179,19 @@ public class ShowTourInfo extends AppCompatActivity {
                 SendCommentTour();
             }
         });
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChat();
+            }
+        });
+    }
+
+    private void openChat() {
+        Intent intent = new Intent(ShowTourInfo.this, MessagingTour.class);
+        intent.putExtra("tourId", tourId);
+        startActivity(intent);
     }
 
     private String getHostName(ArrayList<Member> members){

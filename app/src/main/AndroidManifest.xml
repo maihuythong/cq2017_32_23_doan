@@ -110,6 +110,10 @@
         <activity android:name=".showTourInfo.ShowTourInfo"
             android:label="Show all infomation of tour"/>
 
+        <activity
+            android:name=".firebase.MessagingTour"
+            android:label="Chat" />
+
         <receiver android:name=".firebase.MyBroadcastReceiver"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
