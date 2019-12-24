@@ -213,9 +213,9 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
         }else{
             for (int i =0;i < totalAccTours;i++){
                 if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().equals(userInput))
+                    if(t[i].getName().contains(userInput))
                         arrTour.add(t[i]);
-                if(Long.toString(t[i].getID()).equals(userInput))
+                if(Long.toString(t[i].getID()).contains(userInput))
                     arrTour.add(t[i]);
             }
         }
@@ -242,9 +242,9 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
         }else{
             for (int i =0;i < totalAccTours;i++){
                 if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().equals(userInput))
+                    if(t[i].getName().contains(userInput))
                         arrTour.add(t[i]);
-                if(Long.toString(t[i].getID()).equals(userInput))
+                if(Long.toString(t[i].getID()).contains(userInput))
                     arrTour.add(t[i]);
             }
         }

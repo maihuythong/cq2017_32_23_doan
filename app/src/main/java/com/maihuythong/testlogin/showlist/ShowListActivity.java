@@ -146,7 +146,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             APIService mAPIService = ApiUtils.getAPIService();
             Intent intent = getIntent();
 
-            mAPIService.getList(s,3000, 1).enqueue(new Callback<ShowListReq>() {
+            mAPIService.getList(s,4000, 1).enqueue(new Callback<ShowListReq>() {
                 @Override
                 public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                     if(response.code() == 200){
@@ -255,9 +255,9 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         }else{
             for (int i =0;i < totalTours;i++){
                 if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().equals(userInput))
+                    if(t[i].getName().contains(userInput))
                         foundedTours.add(t[i]);
-                if(Long.toString(t[i].getID()).equals(userInput))
+                if(Long.toString(t[i].getID()).contains(userInput))
                     foundedTours.add(t[i]);
             }
         }
@@ -289,9 +289,9 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         }else{
             for (int i =0;i < totalTours;i++){
                 if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().equals(userInput))
+                    if(t[i].getName().contains(userInput))
                         foundedTours.add(t[i]);
-                if(Long.toString(t[i].getID()).equals(userInput))
+                if(Long.toString(t[i].getID()).contains(userInput))
                     foundedTours.add(t[i]);
             }
         }
