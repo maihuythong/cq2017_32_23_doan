@@ -49,6 +49,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.provider.Settings.Secure;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -57,6 +58,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     private Tour[] t;
     private SharedPreferences sf;
     private Toolbar toolbar;
+    private TextView totalToursView;
     private long totalTours;
     private final ArrayList<Tour> arrTour = new ArrayList<>();
 
@@ -67,6 +69,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         setContentView(R.layout.activity_show_list);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        totalToursView = findViewById(R.id.total_available_tours);
 
         try {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -116,7 +119,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         });
 
-        new LoadTourAsyncTask (this).execute();
+        new LoadTourAsyncTask(this).execute();
 
     }
 
@@ -152,6 +155,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                     if(response.code() == 200){
                         t = response.body().getTours();
                         totalTours =response.body().getTotal();
+                        totalToursView.setText(Long.toString(totalTours));
                         lvTour = (ListView) findViewById(R.id.lv_tour);
 
                         arrTour.addAll(Arrays.asList(t));

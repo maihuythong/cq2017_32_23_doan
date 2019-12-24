@@ -1,9 +1,11 @@
 package com.maihuythong.testlogin.showAccountTours;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -54,88 +56,115 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
 
         lvTour = findViewById(R.id.lv_tour);
 
-        final ArrayList<Tour> arrAccTours = new ArrayList<>();
+        new LoadAccTourAsyncTask(this).execute();
 
-        String s;
-        s = LoginActivity.token;
-        if(s == null){
-            SharedPreferences sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
-            s = sf.getString("login_access_token", "");
-        }
-
-        APIService mAPIService = ApiUtils.getAPIService();
-
-        mAPIService.getAccountTours(s,1, 200).enqueue(new Callback<ShowAccountToursReq>() {
-            @Override
-            public void onResponse(Call<ShowAccountToursReq> call, Response<ShowAccountToursReq> response) {
-                if(response.code() == 200){
-                    t = response.body().getTours();
-                    totalAccTours = response.body().getTotal();
-
-                    for(int i = 0; i<t.length; i++){
-                        arrTour.add(t[i]);
-                    }
-
-                    CustomAdapterAccountTours customAdaperAccountTours =
-                            new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
-                    lvTour.setAdapter(customAdaperAccountTours);
-
-                    lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            sendTourInfo(arrTour, position);
-                        }
-                    });
-
-                    lvTour.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                        @Override
-                        public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-
-                            AlertDialog alertDialog = new AlertDialog.Builder(ShowAccountToursActivity.this).setNegativeButton
-                                    ("Update", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    UpdateTour(arrTour,position);
-                                }
-                            }).setNeutralButton("Invite", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    SendInvitation(arrTour,position);
-                                }
-                            }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create();
-                            alertDialog.show();
-
-                            Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                            Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                            Button btnNeutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-
-                            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
-                            layoutParams.weight = 10;
-                            btnPositive.setLayoutParams(layoutParams);
-                            btnNegative.setLayoutParams(layoutParams);
-                            btnNeutral.setLayoutParams(layoutParams);
-
-                            return true;
-                        }
-                    });
-                }
-                else{
-                    //TODO
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ShowAccountToursReq> call, Throwable throwable) {
-                //TODO
-            }
-        });
     }
 
+    private class LoadAccTourAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        private ProgressDialog dialog;
+
+        LoadAccTourAsyncTask(ShowAccountToursActivity activity) {
+            dialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Loading tours, please wait....");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String s;
+            s = LoginActivity.token;
+            if(s == null){
+                SharedPreferences sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+                s = sf.getString("login_access_token", "");
+            }
+
+            APIService mAPIService = ApiUtils.getAPIService();
+
+            mAPIService.getAccountTours(s,1, 200).enqueue(new Callback<ShowAccountToursReq>() {
+                @Override
+                public void onResponse(Call<ShowAccountToursReq> call, Response<ShowAccountToursReq> response) {
+                    if(response.code() == 200){
+                        t = response.body().getTours();
+                        totalAccTours = response.body().getTotal();
+
+                        for(int i = 0; i<t.length; i++){
+                            arrTour.add(t[i]);
+                        }
+
+                        CustomAdapterAccountTours customAdaperAccountTours =
+                                new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
+                        lvTour.setAdapter(customAdaperAccountTours);
+
+                        lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                sendTourInfo(arrTour, position);
+                            }
+                        });
+
+                        lvTour.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            @Override
+                            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                                AlertDialog alertDialog = new AlertDialog.Builder(ShowAccountToursActivity.this).setNegativeButton
+                                        ("Update", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                UpdateTour(arrTour,position);
+                                            }
+                                        }).setNeutralButton("Invite", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        SendInvitation(arrTour,position);
+                                    }
+                                }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create();
+                                alertDialog.show();
+
+                                Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                                Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                                Button btnNeutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                                layoutParams.weight = 10;
+                                btnPositive.setLayoutParams(layoutParams);
+                                btnNegative.setLayoutParams(layoutParams);
+                                btnNeutral.setLayoutParams(layoutParams);
+                                return true;
+                            }
+                        });
+
+                        dialog.dismiss();
+                    }
+                    else{
+                        //TODO
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ShowAccountToursReq> call, Throwable throwable) {
+                    //TODO
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // do UI work here
+            super.onPostExecute(result);
+        }
+    }
 
     private  void UpdateTour(ArrayList<Tour> arrTour,int position){
         Tour tt;

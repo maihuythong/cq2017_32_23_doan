@@ -24,13 +24,6 @@
             android:elevation="0dp"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/lv_tour"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_below="@+id/toolbar"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -45,7 +38,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/task_list">
         <Button
             android:id="@+id/show_account_tours"
             android:layout_width="wrap_content"
@@ -73,5 +68,40 @@
             android:text="User" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/task_list">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total tours: "
+                android:textSize="20dp"
+                android:textColor="@color/black_text_color"/>
+            <TextView
+                android:id="@+id/total_available_tours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="20dp"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_tour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
+    </LinearLayout>
 
 </RelativeLayout>
