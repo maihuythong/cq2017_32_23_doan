@@ -3,21 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
     tools:context=".invitationTour.InvitationActivity"
     android:padding="@dimen/margin_16dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/avatar_inviter"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/default_img"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#ffffff">
+    </de.hdodenhof.circleimageview.CircleImageView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/avatar_inviter"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:maxWidth="70dp"
-            android:maxHeight="70dp" />
 
         <LinearLayout
             android:id="@+id/rl_text_invitation"
@@ -34,17 +38,19 @@
                     android:id="@+id/inviter_name"
                     android:layout_width="wrap_content"
                     android:textStyle="bold"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="haha"/>
                 <TextView
                     android:id="@+id/content_invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" sent you an invitation for tour"/>
+                    android:text=" invited you to join tour "/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:id="@+id/invite_tour_name"/>
+                    android:id="@+id/invite_tour_name"
+                    android:text="haha"/>
             </LinearLayout>
 
             <LinearLayout
@@ -53,43 +59,45 @@
                 <TextView
                     android:id="@+id/time_invite"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="Tue 05/05/2019"/>
 
                 <TextView
                     android:id="@+id/time_invite_interval"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" ( hour ago)"/>
+                    android:text=" (5 hour ago)"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/button_invite_confirm"
+                        android:layout_width="110dp"
+                        android:layout_height="35dp"
+                        android:text="CONFIRM"
+                        style="@style/AppTheme.Button"
+                        android:layout_marginEnd="@dimen/margin_16dp"/>
+
+                    <Button
+                        android:id="@+id/button_invite_delete"
+                        android:layout_width="110dp"
+                        android:layout_height="35dp"
+                        android:text="DELETE"
+                        android:background="@drawable/button"
+                        style="@style/AppTheme.Button"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_16dp"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/button_invite_confirm"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="CONFIRM"
-                style="@style/AppTheme.Button"
-                android:layout_marginEnd="@dimen/margin_16dp"/>
-
-            <Button
-                android:id="@+id/button_invite_delete"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="DELETE"
-                android:background="@drawable/button"
-                style="@style/AppTheme.Button"/>
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:background="@drawable/action_bar_gradient"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:actionViewClass="android.support.v7.widget.SearchView">
+        app:navigationIcon="?attr/homeAsUpIndicator">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tours available"
+            android:text="Tours Available"
             android:textAlignment="center"
             android:paddingRight="70dp"
             android:textColor="@color/appbar_text_color"
@@ -24,58 +24,54 @@
             android:elevation="0dp"/>
     </androidx.appcompat.widget.Toolbar>
 
+    <ListView
+        android:id="@+id/lv_tour"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_below="@+id/toolbar"/>
 
-    <RelativeLayout
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="#FFFFFF"/>
 
-        <LinearLayout
-            android:id="@+id/tab_bar_tour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/show_account_tours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="A" />
-
-            <Button
-                android:id="@+id/show_invitation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/show_account_tours"
-                android:text="invite" />
-
-            <Button
-                android:id="@+id/show_userInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/show_invitation"
-                android:text="User" />
-
-        </LinearLayout>
-
-
-        <ListView
-            android:id="@+id/lv_tour"
-            android:layout_below="@+id/tab_bar_tour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/show_account_tours"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="16dp"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:tint="#FFFFFF"/>
+            android:text="a" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/test_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="b" />
+
+        <Button
+            android:id="@+id/show_invitation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/show_account_tours"
+            android:text="invite" />
+
+        <Button
+            android:id="@+id/show_userInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/show_invitation"
+            android:text="User" />
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</RelativeLayout>

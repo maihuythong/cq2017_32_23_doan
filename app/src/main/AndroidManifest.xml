@@ -100,9 +100,7 @@
             android:name=".rate_comment_review.RateCommentTour"
             android:label="Rate, review, comment a tour" />
 
-
-        <service
-            android:name=".firebase.MyFirebaseService">
+        <service android:name=".NotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -123,6 +121,10 @@
                 <action android:name="com.example.cancel" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".showTourInfo.ShowTourInfo"
+            android:label="Show all infomation of tour" />
     </application>
 
 </manifest>

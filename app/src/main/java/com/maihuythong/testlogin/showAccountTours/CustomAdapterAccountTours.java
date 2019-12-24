@@ -34,20 +34,17 @@ public class CustomAdapterAccountTours extends ArrayAdapter {
             convertView = LayoutInflater.from(context).inflate(this.resource, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            viewHolder.tvId = (TextView) convertView.findViewById(R.id.tvId);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         tour = arrTour.get(position);
         viewHolder.tvName.setText("Tên chuyến đi: " + tour.getName());
-        viewHolder.tvId.setText("Mã chuyến đi: " + tour.getID());
 
         return convertView;
     }
 
     public class ViewHolder {
-        public TextView tvId;
         TextView tvName;
         Button editTour;
     }
