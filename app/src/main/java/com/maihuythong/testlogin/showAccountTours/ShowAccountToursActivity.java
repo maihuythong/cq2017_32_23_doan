@@ -214,7 +214,6 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
         EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         textSearch.setTextColor(Color.WHITE);
 
-
         return true;
     }
     @Override

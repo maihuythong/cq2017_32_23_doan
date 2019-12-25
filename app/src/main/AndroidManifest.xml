@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".forgotPassword.RecoveryPasswordActivity"></activity>
+        <activity android:name=".showListStopPoints.showListStopPointsActivity"></activity>
+        <activity android:name=".forgotPassword.RecoveryPasswordActivity" />
         <activity android:name=".forgotPassword.RequestOTPActivity" />
         <activity android:name=".userInfo.InputVerifyCodeActivity" />
         <activity android:name=".userInfo.UpdateUserInfoActivity" />
@@ -47,11 +48,12 @@
         </activity>
         <activity
             android:name=".signup.sign_up"
-            android:label="Sign Up"/>
+            android:label="Sign Up" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -85,7 +87,7 @@
         <activity
             android:name=".CreateTourActivity"
             android:label="Create Tour"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".pop.ShowPopupActivity"
             android:label="Stop point infor" />
@@ -98,25 +100,24 @@
         <activity
             android:name=".rate_comment_review.RateCommentTour"
             android:label="Rate, review, comment a tour" />
-
-
-        <activity android:name=".showTourInfo.ShowTourInfo"
-            android:label="Show all infomation of tour"/>
-
+        <activity
+            android:name=".showTourInfo.ShowTourInfo"
+            android:label="Show all infomation of tour" />
         <activity
             android:name=".firebase.MessagingTour"
             android:label="Chat" />
 
-        <receiver android:name=".firebase.MyBroadcastReceiver"  android:exported="true">
+        <receiver
+            android:name=".firebase.MyBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
-            <intent-filter android:priority="999" >
+            <intent-filter android:priority="999">
                 <action android:name="com.example.cancel" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

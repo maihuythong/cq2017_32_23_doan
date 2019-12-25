@@ -24,6 +24,7 @@ import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.showListStopPoints.showListStopPointsActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.taufiqrahman.reviewratings.BarLabels;
@@ -54,6 +55,7 @@ public class RateCommentTour extends AppCompatActivity {
     EditText commentTour;
     Button sendReview;
     Button sendComment;
+    Button reviewStopPoint;
 
     ListView listViewComment;
 
@@ -80,6 +82,7 @@ public class RateCommentTour extends AppCompatActivity {
         sendReview = findViewById(R.id.send_review);
         sendComment = findViewById(R.id.send_comment_tour);
         listViewComment = findViewById(R.id.list_view_comment);
+        reviewStopPoint = (Button) findViewById(R.id.stop_points_review);
 
 
         token = LoginActivity.token;
@@ -133,6 +136,15 @@ public class RateCommentTour extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SendCommentTour();
+            }
+        });
+
+        reviewStopPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RateCommentTour.this, showListStopPointsActivity.class);
+                intent.putExtra("tourId",tourId);
+                startActivity(intent);
             }
         });
     }
