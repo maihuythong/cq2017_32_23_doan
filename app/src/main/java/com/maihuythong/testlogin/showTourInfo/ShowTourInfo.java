@@ -29,6 +29,7 @@ import com.maihuythong.testlogin.rate_comment_review.CommentAdapter;
 import com.maihuythong.testlogin.rate_comment_review.GetPointOfTour;
 import com.maihuythong.testlogin.rate_comment_review.SendCommentTour;
 import com.maihuythong.testlogin.rate_comment_review.SendReviewTour;
+import com.maihuythong.testlogin.showListStopPoints.showListStopPointsActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.taufiqrahman.reviewratings.BarLabels;
@@ -61,6 +62,7 @@ public class ShowTourInfo extends AppCompatActivity {
     private Button review;
     private Button comment;
     private Button chat;
+    private Button reviewStopPoint;
     private LinearLayout linearLayoutComment;
     private LinearLayout linearLayoutReview;
     private ImageButton sendComment;
@@ -110,6 +112,7 @@ public class ShowTourInfo extends AppCompatActivity {
         smallRating = findViewById(R.id.small_rating_bar);
         totalRating = findViewById(R.id.total_rating);
         chat = findViewById(R.id.tour_chat);
+        reviewStopPoint= findViewById(R.id.stop_points_acc_tour);
 
         token = LoginActivity.token;
         if(token == null){
@@ -166,6 +169,15 @@ public class ShowTourInfo extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             ClickReview();
+                        }
+                    });
+
+                    reviewStopPoint.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(ShowTourInfo.this, showListStopPointsActivity.class);
+                            intent.putExtra("tourId",tourId);
+                            startActivity(intent);
                         }
                     });
                 }

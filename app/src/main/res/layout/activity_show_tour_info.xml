@@ -79,6 +79,16 @@
 <!--                            android:layout_height="wrap_content"-->
 <!--                            android:id="@+id/tour_name_rating"/>-->
 
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/stop_points_acc_tour"
+                            android:background="@drawable/button"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:text="Stop points"
+                            android:layout_gravity="center_horizontal"/>
+
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
