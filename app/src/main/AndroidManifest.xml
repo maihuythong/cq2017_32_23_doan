@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".showListStopPoints.showListStopPointsActivity"></activity>
+        <activity android:name=".stopPointInfo.StopPointDetailActivity"></activity>
+        <activity android:name=".showListStopPoints.showListStopPointsActivity" />
         <activity android:name=".forgotPassword.RecoveryPasswordActivity" />
         <activity android:name=".forgotPassword.RequestOTPActivity" />
         <activity android:name=".userInfo.InputVerifyCodeActivity" />

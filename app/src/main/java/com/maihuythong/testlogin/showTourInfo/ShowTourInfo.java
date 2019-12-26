@@ -112,7 +112,7 @@ public class ShowTourInfo extends AppCompatActivity {
         smallRating = findViewById(R.id.small_rating_bar);
         totalRating = findViewById(R.id.total_rating);
         chat = findViewById(R.id.tour_chat);
-        reviewStopPoint= findViewById(R.id.stop_points_acc_tour);
+        reviewStopPoint= findViewById(R.id.stop_points_acc_tour_button);
 
         token = LoginActivity.token;
         if(token == null){

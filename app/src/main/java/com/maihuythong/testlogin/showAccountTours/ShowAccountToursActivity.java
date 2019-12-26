@@ -93,7 +93,7 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
                         t = response.body().getTours();
                         totalAccTours = response.body().getTotal();
 
-                        for(int i = 0; i<t.length; i++){
+                        for(int i= t.length-1; i>=0; i--){
                             arrTour.add(t[i]);
                         }
 

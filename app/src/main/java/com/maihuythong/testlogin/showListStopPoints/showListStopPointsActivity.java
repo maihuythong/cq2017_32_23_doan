@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.showTourInfo.StopPoint;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.stopPointInfo.StopPointDetailActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,8 +49,8 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
         setContentView(R.layout.activity_show_list_stop_points);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         lvStopPoints = (ListView)findViewById(R.id.lv_stop_points);
+
 
         Intent intent = getIntent();
         tourId = intent.getLongExtra("tourId",0);
@@ -67,10 +70,18 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
 
                     arrStopPoints = tourInfo.getStopPoints();
 
-                    ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
+                    final ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
 
                     StopPointAdapter stopPointAdapter = new StopPointAdapter(showListStopPointsActivity.this,R.layout.stop_point_card,arrayStopPoints);
                     lvStopPoints.setAdapter(stopPointAdapter);
+
+                    lvStopPoints.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            showInfoStopPoint(arrayStopPoints,position);
+                        }
+                    });
+
                     Toast.makeText(showListStopPointsActivity.this,"Get stop points finished!", Toast.LENGTH_LONG).show();
                 }
 
@@ -97,9 +108,27 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
             }
         });
 
+    }
 
+    private void showInfoStopPoint(ArrayList<StopPoint> arrayList,int position){
+        StopPoint newStopPoint;
+        newStopPoint = arrayList.get(position);
 
-
+        Intent intent = new Intent(showListStopPointsActivity.this, StopPointDetailActivity.class);
+        intent.putExtra("id",newStopPoint.getId());
+        intent.putExtra("serviceId",newStopPoint.getServiceId());
+        intent.putExtra("address",newStopPoint.getAddress());
+        intent.putExtra("provinceId",newStopPoint.getProvinceId());
+        intent.putExtra("name",newStopPoint.getName());
+        intent.putExtra("lat",newStopPoint.getLat().doubleValue());
+        intent.putExtra("long",newStopPoint.getLong().doubleValue());
+        intent.putExtra("arrivalAt",newStopPoint.getArrivalAt());
+        intent.putExtra("leaveAt",newStopPoint.getLeaveAt());
+        intent.putExtra("minCost",newStopPoint.getMinCost());
+        intent.putExtra("maxCost",newStopPoint.getMaxCost());
+        intent.putExtra("serviceTypeId",newStopPoint.getServiceTypeId());
+        intent.putExtra("avatar",newStopPoint.getAvatar());
+        startActivity(intent);
     }
 
     private String GetTokenLoginAccess(){

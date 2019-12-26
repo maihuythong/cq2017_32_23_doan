@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:orientation="vertical"
+    tools:context=".stopPointInfo.StopPointDetailActivity">
+
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +23,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="300dp"
-                    android:src="@drawable/default_img"
+                    android:src="@drawable/hotel_image"
                     android:scaleType="centerCrop"/>
 
                 <LinearLayout
@@ -30,25 +33,16 @@
                     android:background="@drawable/tour_name_gradient"
                     android:gravity="bottom">
                     <TextView
+                        android:id="@+id/title_stop_point_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Về Nhà Ăn Tếttttt"
+                        android:text="Về Nhà Ăn Tết"
                         android:textSize="26dp"
                         android:textColor="@color/black_text_color"
-                        android:layout_marginLeft="90dp"/>
+                        android:textAlignment="center"/>
                 </LinearLayout>
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/avatar_view_up"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:src="@drawable/default_avt"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="#E4E4E4"
-                    android:layout_marginLeft="@dimen/margin_16dp"
-                    android:layout_marginTop="230dp">
-                </de.hdodenhof.circleimageview.CircleImageView>
+
             </RelativeLayout>
 
             <LinearLayout
@@ -69,23 +63,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/tour_info_over_view"
+                        android:id="@+id/stop_point_info_over_view"
                         android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:id="@+id/tour_name_rating"/>-->
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/stop_points_acc_tour_button"
-                            android:background="@drawable/button"
-                            android:textStyle="bold"
-                            android:padding="10dp"
-                            android:text="Stop points"
-                            android:layout_gravity="center_horizontal"/>
+                        <!--                        <TextView-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:id="@+id/tour_name_rating"/>-->
 
                         <LinearLayout
                             android:orientation="horizontal"
@@ -100,12 +84,12 @@
                                 android:src="@drawable/key"/>
 
                             <TextView
-                                android:id="@+id/tour_info_host_name"
+                                android:id="@+id/stop_point_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="Le Trung Tien"/>
+                                android:text="1"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -126,7 +110,7 @@
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
                                 android:text="01/01/2001 - 02/02/2002"
-                                android:id="@+id/tour_info_day"
+                                android:id="@+id/stop_point_day"
                                 />
                         </LinearLayout>
 
@@ -148,8 +132,8 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="Tp.HCM - California"
-                                android:id="@+id/tour_info_SrcDes"
+                                android:text="123/Tran duy hung"
+                                android:id="@+id/stop_point_address"
                                 />
                         </LinearLayout>
 
@@ -164,7 +148,30 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/adult"
+                                android:src="@drawable/hand"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/margin_16dp"
+                                android:layout_marginLeft="@dimen/margin_16dp"
+                                android:text=""
+                                android:id="@+id/stop_point_serviceType"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="4dp"
+                            android:gravity="center_vertical"
+                            >
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/home"
                                 />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -172,7 +179,7 @@
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
                                 android:text="3"
-                                android:id="@+id/tour_info_adult"
+                                android:id="@+id/stop_point_province"
                                 />
                         </LinearLayout>
 
@@ -187,17 +194,17 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/baby"
+                                android:src="@drawable/id_card"
                                 android:padding="2dp"
                                 />
+
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/margin_16dp"
+                                android:id="@+id/stop_point_serviceId"
+                                android:layout_width="12dp"
+                                android:layout_height="24dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
                                 android:text="1"
-                                android:id="@+id/tour_info_child"
-                                />
+                                android:textSize="@dimen/margin_16dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -218,7 +225,7 @@
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
                                 android:text="1000 - 3000"
-                                android:id="@+id/tour_info_price"
+                                android:id="@+id/stop_point_price"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -226,45 +233,9 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linear_layout_control_tour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tour_info_overview"
-                    android:text="Info"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tour_info_member"
-                    android:text="Member"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tour_info_review"
-                    android:text="Review"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tour_info_comment"
-                    android:text="Comment"/>
-
-                <Button
-                    android:id="@+id/tour_chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chat"/>
-            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tour_info_linear_layout_review"
+                android:id="@+id/stop_point_linear_layout_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -273,7 +244,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/rl_rating">
+                    android:id="@+id/stop_point_rating">
                     <TextView
                         android:textStyle="bold"
                         android:textSize="20sp"
@@ -283,7 +254,7 @@
                         android:text="Rate this point"/>
 
                     <RatingBar
-                        android:id="@+id/ratingBar_tour_info"
+                        android:id="@+id/ratingBar_stop_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:numStars="5"
@@ -296,12 +267,12 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/review_content_tour_info"
-                            android:layout_toRightOf="@+id/send_review_tour_info"
+                            android:id="@+id/review_content_stop_point"
+                            android:layout_toRightOf="@+id/send_review_stop_point"
                             android:hint="Type your review"/>
 
                         <ImageButton
-                            android:id="@+id/send_review_tour_info"
+                            android:id="@+id/send_review_stop_point"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_send"
@@ -313,9 +284,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rl_rating_and_review">
+                    android:id="@+id/rl_rating_and_review_stop_point">
                     <TextView
-                        android:id="@+id/textview_rating"
+                        android:id="@+id/textview_rating_stop_point"
                         android:textStyle="bold"
                         android:textSize="20sp"
                         android:textColor="#000"
@@ -326,14 +297,14 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/textview_rating">
+                        android:layout_below="@+id/textview_rating_stop_point">
                         <RelativeLayout
-                            android:id="@+id/overview_rating"
+                            android:id="@+id/overview_rating_stop_point"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <LinearLayout
-                                android:id="@+id/linear_rating"
+                                android:id="@+id/linear_rating_stop_point"
                                 android:layout_width="wrap_content"
                                 android:orientation="vertical"
                                 android:layout_height="wrap_content"
@@ -343,19 +314,18 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textSize="26sp"
-                                    android:id="@+id/average_star"
+                                    android:id="@+id/average_star_stop_point"
                                     android:gravity="center_horizontal"
                                     />
                                 <RatingBar
-                                    android:id="@+id/small_rating_bar"
+                                    android:id="@+id/small_rating_bar_stop_point"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/average_star"
                                     android:stepSize="0.1"
                                     style="@style/Widget.AppCompat.RatingBar.Small"/>
                             </LinearLayout>
                             <LinearLayout
-                                android:layout_below="@+id/linear_rating"
+                                android:layout_below="@+id/linear_rating_stop_point"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
@@ -363,7 +333,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/small_rating_bar"
                                     android:id="@+id/total_rating"
                                     android:text="0"
                                     />
@@ -378,7 +347,7 @@
 
                         <com.taufiqrahman.reviewratings.RatingReviews
                             xmlns:bar="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/rating_reviews"
+                            android:id="@+id/rating_reviews_stop_point"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="42dp"
@@ -390,7 +359,7 @@
                             bar:text_size="10sp"
                             bar:width="15dp"
                             android:layout_centerHorizontal="true"
-                            android:layout_toRightOf="@+id/overview_rating"/>
+                            android:layout_toRightOf="@+id/overview_rating_stop_point"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -401,13 +370,13 @@
                 android:layout_height="fill_parent">
 
                 <LinearLayout
-                    android:id="@+id/tour_info_linear_layout_send_comment"
+                    android:id="@+id/stop_point_linear_layout_send_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="visible">
                     <TextView
-                        android:id="@+id/tour_info_comment_title"
+                        android:id="@+id/stop_point_comment_title"
                         android:textColor="#000"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -419,14 +388,14 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <EditText
-                            android:id="@+id/tour_info_comment_content"
+                            android:id="@+id/_stop_point_comment_content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/send_comment_tour_info"
+                            android:layout_toRightOf="@+id/send_comment_stop_point"
                             android:hint="Some text"/>
 
                         <ImageButton
-                            android:id="@+id/send_comment_tour_info"
+                            android:id="@+id/send_comment_stop_point"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_send"
@@ -435,13 +404,12 @@
                 </LinearLayout>
 
                 <ListView
-                    android:id="@+id/tour_info_list_view"
+                    android:id="@+id/stop_point_info_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 
 
 </LinearLayout>
