@@ -23,11 +23,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
 import com.maihuythong.testlogin.showTourInfo.ShowTourInfo;
+import com.maihuythong.testlogin.showTourInfomation.ShowTourInformation;
 import com.maihuythong.testlogin.showlist.Tour;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -213,6 +215,9 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
 
         EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         textSearch.setTextColor(Color.WHITE);
+
+        textSearch.setHint("Enter tour name to search");
+        textSearch.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.friend_serch_hint_text_color));
 
         return true;
     }

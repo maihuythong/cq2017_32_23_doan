@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Tours Available"
             android:textAlignment="center"
-            android:paddingRight="70dp"
+            android:paddingRight="30dp"
             android:textColor="@color/appbar_text_color"
             android:textSize="20dp"
             android:textStyle="bold"

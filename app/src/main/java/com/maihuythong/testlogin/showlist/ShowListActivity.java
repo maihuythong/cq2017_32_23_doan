@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,20 +18,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.showTourInfomation.ShowTourInformation;
 import com.maihuythong.testlogin.userInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.rate_comment_review.RateCommentTour;
@@ -50,6 +45,7 @@ import retrofit2.Response;
 import android.provider.Settings.Secure;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 
@@ -115,6 +111,16 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ShowListActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //init show user info button
+        Button testButton = findViewById(R.id.test_tab);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowListActivity.this, ShowTourInformation.class);
                 startActivity(intent);
             }
         });
@@ -225,7 +231,8 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
         EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         textSearch.setTextColor(Color.WHITE);
-
+        textSearch.setHint("Enter tour name to search");
+        textSearch.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.friend_serch_hint_text_color));
 
         return true;
     }

@@ -1,18 +1,21 @@
 package com.maihuythong.testlogin.ShowListUsers;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
@@ -49,6 +52,12 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
 
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
+
+        EditText textSearch =(EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        textSearch.setTextColor(Color.WHITE);
+
+        textSearch.setHint("Enter friend name to search");
+        textSearch.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.friend_serch_hint_text_color));
         return true;
     }
     @Override

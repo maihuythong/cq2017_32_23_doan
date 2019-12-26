@@ -1,11 +1,34 @@
 package com.maihuythong.testlogin.rate_comment_review;
 
-public class Comment {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Comment implements Parcelable {
     private long userId;
     private String name;
     private String comment;
     private String avatar;
     private long createOn;
+
+    protected Comment(Parcel in) {
+        userId = in.readLong();
+        name = in.readString();
+        comment = in.readString();
+        avatar = in.readString();
+        createOn = in.readLong();
+    }
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 
     public long getCreateOn() {
         return createOn;
@@ -53,5 +76,19 @@ public class Comment {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(userId);
+        dest.writeString(name);
+        dest.writeString(comment);
+        dest.writeString(avatar);
+        dest.writeLong(createOn);
     }
 }

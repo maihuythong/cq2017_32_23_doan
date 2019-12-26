@@ -37,6 +37,14 @@
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="collapsingToolbarLayoutTitleColor">
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/white_text_shadow</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
     <!--    <style name="ErrorText" parent="TextAppearance.AppCompat">-->
     <!--        <item name="android:textColor">@color/text_color</item>-->
     <!--        <item name="android:textSize">16sp</item>-->

@@ -48,6 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ShowTourInfo extends AppCompatActivity {
+    public int a = 5;
 
     private SharedPreferences sf;
     private String token;
@@ -130,6 +131,7 @@ public class ShowTourInfo extends AppCompatActivity {
 
                     listComments = tourInfo.getComments();
                     listMembers = tourInfo.getMembers();
+
                     String hostNameTour = getHostName(tourInfo.getMembers());
                     String startDateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(tourInfo.getStartDate()));
                     String endDateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(tourInfo.getEndDate()));
@@ -217,7 +219,7 @@ public class ShowTourInfo extends AppCompatActivity {
                 return m.getName();
             }
         }
-        return "";
+        return "Unnamed";
     }
 
     private void ClickMember(){
