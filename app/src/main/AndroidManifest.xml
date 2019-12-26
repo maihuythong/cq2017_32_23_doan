@@ -121,6 +121,21 @@
         </receiver>
 
         <activity android:name=".showTourInfomation.ShowTourInformation"/>
+
+        <service android:name=".TourCoordinate.LocationService" android:enabled="true" android:exported="true"></service>
+
+        <activity
+            android:name=".TourCoordinate.MapStartTour"
+            android:label="Map on road">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".TourCoordinate.NotificationOnRoad"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
     </application>
 
 </manifest>

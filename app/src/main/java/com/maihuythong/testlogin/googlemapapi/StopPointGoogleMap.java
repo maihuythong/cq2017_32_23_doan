@@ -251,12 +251,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
             if(mLocationPermissionGranted){
                 final Task location = fusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {

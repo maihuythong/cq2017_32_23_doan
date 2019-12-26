@@ -253,13 +253,18 @@
                     android:id="@+id/tour_info_comment"
                     android:text="Comment"/>
 
-                <Button
-                    android:id="@+id/tour_chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chat"/>
-            </LinearLayout>
+            <Button
+                android:id="@+id/tour_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chat"/>
 
+        </LinearLayout>
+            <Button
+                android:id="@+id/start_tour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Tour"/>
             <LinearLayout
                 android:id="@+id/tour_info_linear_layout_review"
                 android:layout_width="match_parent"

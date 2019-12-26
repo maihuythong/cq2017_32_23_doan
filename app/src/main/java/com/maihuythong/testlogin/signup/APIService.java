@@ -2,6 +2,9 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.TourCoordinate.GetNotificationList;
+import com.maihuythong.testlogin.TourCoordinate.PostCoordinate;
+import com.maihuythong.testlogin.TourCoordinate.SendMessage;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
@@ -21,6 +24,7 @@ import com.maihuythong.testlogin.showAccountTours.ShowAccountToursReq;
 import com.maihuythong.testlogin.showlist.ShowListReq;
 import com.maihuythong.testlogin.updateTour.UpdateTourReq;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -193,6 +197,30 @@ public interface APIService {
             @Field("appVersion") String appVersion
     );
 
+    @POST("/tour/current-users-coordinate")
+    @FormUrlEncoded
+    Call<ArrayList<PostCoordinate>> postCoordinate(
+            @Header("Authorization") String s,
+            @Field("userId") String userId,
+            @Field("tourId") String tourId,
+            @Field("lat") double latitude,
+            @Field("long") double longitude
+    );
+
+    @GET("/tour/notification-list")
+    Call<GetNotificationList> getNotificationList(@Header("Authorization") String s,
+                                          @Query("tourId") String tourId,
+                                          @Query("pageIndex") long pageIndex,
+                                          @Query("pageSize") String pageSize );
+
+    @POST("/tour/notification")
+    @FormUrlEncoded
+    Call<SendMessage> sendMessage(
+            @Header("Authorization") String s,
+            @Field("tourId") String tourId,
+            @Field("userId") String userId,
+            @Field("noti") String noti
+    );
 
     @GET("/tour/get/feedback-point-stats")
     Call<GetPointOfTour> getFeedbackPointOfService(@Header("Authorization") String s, @Query("serviceId") int serviceId);

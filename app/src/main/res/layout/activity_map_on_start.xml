@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".TourCoordinate.MapStartTour"
+android:orientation="vertical">
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/map"
+    tools:context=".MapsActivity"
+    android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/noti_btn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+     />
+
+<ImageView
+    android:contentDescription="@string/my_current_location"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_margin="20dp"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="10dp"
+    android:scaleType="centerCrop"
+    android:id="@+id/my_location"
+    android:src="@drawable/ic_my_location"
+    />
+
+
+</RelativeLayout>

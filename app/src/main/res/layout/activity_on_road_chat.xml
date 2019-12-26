@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".firebase.MessagingTour">
+    tools:context=".TourCoordinate.NotificationOnRoad">
 
 
 
@@ -30,13 +30,22 @@
         >
 
 
+        <ImageButton
+            android:id="@+id/recorder_btn"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_send"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="@android:color/white"
+            />
+
 
         <EditText
             android:id="@+id/input_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Aa"
             android:layout_margin="5dp"
+            android:hint="Aa"
             android:padding="15dp"
             android:maxLines="5"
             android:layout_toEndOf="@+id/send_files_btn"
@@ -47,13 +56,13 @@
         <ImageButton
             android:id="@+id/send_message_btn"
             android:layout_width="60dp"
+            android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_send"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:backgroundTint="@android:color/white"
             />
 
     </RelativeLayout>
-</RelativeLayout>
 
+</RelativeLayout>

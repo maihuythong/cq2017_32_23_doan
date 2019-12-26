@@ -8,24 +8,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.maihuythong.testlogin.LoginActivity;
-import com.maihuythong.testlogin.MainActivity;
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.invitationTour.Invitation;
+import com.maihuythong.testlogin.ShowListUsers.User;
+import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.userInfo.UserInfoRes;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,13 +32,142 @@ import retrofit2.Response;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
+    public User[] users;
+    private long userId;
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(final RemoteMessage remoteMessage) {
         // handle a notification payload.
-        Log.d(TAG,remoteMessage.getData().toString());
-        sendNotification(remoteMessage.getData().get("id"), remoteMessage.getData().get("name"), remoteMessage.getData().get("hostName"));
+        Log.d(TAG, remoteMessage.getData().toString());
+        switch (remoteMessage.getData().get("type")){
+            case "6":
+                sendNotificationInvitation(remoteMessage.getData().get("id"), remoteMessage.getData().get("name"), remoteMessage.getData().get("hostName"));
+                break;
+            case "4":
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String token = preferences.getString("login_access_token", null);
+                APIService service = ApiUtils.getAPIService();
+                service.getUserInfo(token).enqueue(new Callback<UserInfoRes>() {
+                    @Override
+                    public void onResponse(Call<UserInfoRes> call, Response<UserInfoRes> response) {
+                        UserInfoRes UserInfo = response.body();
+                        userId = UserInfo.getID();
+                        if (userId != Long.valueOf(remoteMessage.getData().get("userId")))
+                        {
+                            sendNotificationMessage(remoteMessage.getData().get("userId"), remoteMessage.getData().get("notification"), remoteMessage.getData().get("tourId"));
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<UserInfoRes> call, Throwable t) {
+                    }
+                });
+                break;
+        }
+
+
     }
+
+    private void sendNotificationMessage(final String userId, final String notification, final String tourId) {
+//        Intent btConfirm = new Intent(this, MyBroadcastReceiver.class);
+//        btConfirm.putExtra("tourId", String.valueOf(id));
+//        btConfirm.setAction("CONFIRM");
+//        PendingIntent confirm = PendingIntent.getBroadcast(this, 0, btConfirm, PendingIntent.FLAG_ONE_SHOT);
+//
+//        Intent btDelete = new Intent(this, MyBroadcastReceiver.class);
+//        btDelete.putExtra("tourId", String.valueOf(id));
+//        btDelete.setAction("DELETE");
+//        PendingIntent delete = PendingIntent.getBroadcast(this, 0, btDelete, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        APIService mAPIService = ApiUtils.getAPIService();
+        mAPIService.getListUsers("", 1, 2000).enqueue(new Callback<UserReq>() {
+            @Override
+            public void onResponse(Call<UserReq> call, Response<UserReq> response) {
+
+                if (response.code() == 200) {
+                    users = response.body().getUsers();
+                }
+
+                String userName = "";
+                for (int i = 0; i < users.length; ++i){
+                    if (users[i].getID() == Integer.valueOf(userId)){
+                        userName = users[i].getFullName();
+                    }
+                }
+                String channelId = getString(R.string.project_id);
+
+                Intent i = new Intent("broadCastName");
+                // Data you need to pass to activity
+                i.putExtra("message", notification);
+                i.putExtra("uid", userId);
+
+                getApplication().sendBroadcast(i);
+
+                Intent intent = new Intent(getApplicationContext(), MessagingTour.class);
+                intent.putExtra("tourId", tourId);
+                intent.putExtra("userId", userId);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+
+                RemoteInput remoteInput = new RemoteInput.Builder("key_text_reply")
+                        .setLabel("Type your answer...")
+                        .build();
+                Intent replyIntent = new Intent (getApplicationContext(), MyBroadcastReceiver.class);
+                replyIntent.putExtra("tourId", tourId);
+                replyIntent.putExtra("userId", userId);
+
+                PendingIntent replyPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
+                        0,replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                        R.drawable.ic_send,
+                        "REPLY",
+                        replyPendingIntent
+                ).addRemoteInput(remoteInput).build();
+
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(getApplicationContext(), channelId)
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                                .setContentTitle("Tour Message")
+                                .setContentText(userName + " : " + notification)
+                                .setContentIntent(pendingIntent)
+                                .setColor(getResources().getColor(R.color.colorPrimary))
+                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setGroup("MESSAGE")
+                                .addAction(replyAction)
+
+                                .setGroupSummary(true)
+                                .setAutoCancel(true);
+                notificationBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+
+                // Since android Oreo notification channel is needed.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            channelId,
+                            "Channel human readable title",
+                            NotificationManager.IMPORTANCE_HIGH);
+
+                    notificationManager.createNotificationChannel(channel);
+                }
+
+                notificationManager.notify(4, notificationBuilder.build());
+            }
+            @Override
+            public void onFailure(Call<UserReq> call, Throwable t) {
+            }
+
+        });
+
+
+    }
+
 
     @Override
     public void onNewToken(String token) {
@@ -74,8 +202,8 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     }
 
-    private void sendNotification(String id, String tourName, String hostName) {
-        Intent intent = new Intent(this, Invitation.class);
+    private void sendNotificationInvitation(String id, String tourName, String hostName) {
+        Intent intent = new Intent(this, InvitationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -102,6 +230,8 @@ public class MyFirebaseService extends FirebaseMessagingService {
                         .setColor(getResources().getColor(R.color.colorPrimary))
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setGroup("INVITATION")
+                        .setGroupSummary(true)
                         .addAction(R.drawable.ic_confirm,"Confirm",confirm)
                         .addAction(R.drawable.ic_delete, "Delete", delete)
                         .setAutoCancel(true);
@@ -122,4 +252,29 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
         notificationManager.notify(0, notificationBuilder.build());
     }
+
+//    public void getUserInfoFromId(String userId){
+//
+//        APIService mAPIService = ApiUtils.getAPIService();
+//        mAPIService.getListUsers("", 1, 2000).enqueue(new Callback<UserReq>() {
+//            @Override
+//            public void onResponse(Call<UserReq> call, Response<UserReq> response) {
+//
+//                if (response.code() == 200) {
+//                    users = response.body().getUsers();
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<UserReq> call, Throwable t) {
+//            }
+//
+//        });
+//
+////        for (int i = 0; i < users.length; ++i){
+////            if (users[i].getID() == Integer.valueOf(userId)){
+////                return users[i];
+////            }
+////        }
+//
+//    }
 }

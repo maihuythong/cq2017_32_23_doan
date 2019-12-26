@@ -1,18 +1,17 @@
 package com.maihuythong.testlogin.firebase;
 
 import android.app.NotificationManager;
+import android.app.RemoteInput;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.core.app.NotificationManagerCompat;
-
-import com.maihuythong.testlogin.invitationTour.Invitation;
+import com.maihuythong.testlogin.TourCoordinate.SendMessage;
 import com.maihuythong.testlogin.invitationTour.responseInvitation;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -23,8 +22,45 @@ import retrofit2.Response;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "MyBroadcastReceiver";
+
     @Override
     public void onReceive(final Context context, Intent intent) {
+
+        Log.d("INTENTTTTTTTTT", intent.toString());
+
+        Bundle bundle = RemoteInput.getResultsFromIntent(intent);
+        if (bundle != null){
+            final CharSequence charSequence = bundle.getCharSequence("key_text_reply");
+//            if (!TextUtils.isEmpty(intent.getAction()) && intent.getAction().equals("REPLY")){
+//                Log.d("REPLYYYYYYYYYYY click", "CLick");
+//            }
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String token = preferences.getString("login_access_token", null);
+            String tourId = intent.getStringExtra("tourId");
+            String userId = intent.getStringExtra("userId");
+            APIService apiService = ApiUtils.getAPIService();
+            //user Id se tu nhan qua token
+            apiService.sendMessage(token, tourId, "0", charSequence.toString()).enqueue(new Callback<SendMessage>() {
+                @Override
+                public void onResponse(Call<SendMessage> call, Response<SendMessage> response) {
+                    Log.d("Send mess success", response.body().toString());
+                    NotificationManager notificationManager = (NotificationManager)
+                            context.getSystemService(Context.
+                                    NOTIFICATION_SERVICE);
+                    notificationManager.cancelAll();
+                    Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+                    context.sendBroadcast(it);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<SendMessage> call, Throwable t) {
+                    Log.d("Send mess fail", t.toString());
+                }
+            });
+        }
+
         if (!TextUtils.isEmpty(intent.getAction()) && intent.getAction().equals("CONFIRM")) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             String token = preferences.getString("login_access_token", null);

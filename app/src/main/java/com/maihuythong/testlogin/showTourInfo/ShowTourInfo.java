@@ -1,10 +1,18 @@
 package com.maihuythong.testlogin.showTourInfo;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,13 +25,36 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowListUsers.User;
+import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.TourCoordinate.LocationService;
+import com.maihuythong.testlogin.TourCoordinate.MapStartTour;
 import com.maihuythong.testlogin.firebase.MessagingTour;
+import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
 import com.maihuythong.testlogin.rate_comment_review.Comment;
 import com.maihuythong.testlogin.rate_comment_review.CommentAdapter;
 import com.maihuythong.testlogin.rate_comment_review.GetPointOfTour;
@@ -32,9 +63,13 @@ import com.maihuythong.testlogin.rate_comment_review.SendReviewTour;
 import com.maihuythong.testlogin.showListStopPoints.showListStopPointsActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.userInfo.UserInfoRes;
 import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +77,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,6 +89,7 @@ public class ShowTourInfo extends AppCompatActivity {
     private SharedPreferences sf;
     private String token;
     private long tourId;
+    private long userId;
     private TextView hostName;
     private TextView date;
     private TextView adult;
@@ -63,6 +100,7 @@ public class ShowTourInfo extends AppCompatActivity {
     private Button review;
     private Button comment;
     private Button chat;
+    private Button startTour;
     private Button reviewStopPoint;
     private LinearLayout linearLayoutComment;
     private LinearLayout linearLayoutReview;
@@ -78,6 +116,19 @@ public class ShowTourInfo extends AppCompatActivity {
     private ArrayList<Member> listMembers;
     private ArrayList<Comment> listComments;
 
+    /**
+     * permissions request code
+     */
+    private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
+
+    /**
+     * Permissions that need to be explicitly requested from end user.
+     */
+    private static final String[] REQUIRED_SDK_PERMISSIONS = new String[] {
+            Manifest.permission.ACCESS_FINE_LOCATION };
+
+
+    public static final int REQUEST_LOCATION = 99;
     ListView listView;
 
     @Override
@@ -113,6 +164,7 @@ public class ShowTourInfo extends AppCompatActivity {
         smallRating = findViewById(R.id.small_rating_bar);
         totalRating = findViewById(R.id.total_rating);
         chat = findViewById(R.id.tour_chat);
+        startTour = findViewById(R.id.start_tour);
         reviewStopPoint= findViewById(R.id.stop_points_acc_tour_button);
 
         token = LoginActivity.token;
@@ -122,6 +174,20 @@ public class ShowTourInfo extends AppCompatActivity {
         }
         //get comment of tour
         APIService service = ApiUtils.getAPIService();
+
+        service.getUserInfo(token).enqueue(new Callback<UserInfoRes>() {
+            @Override
+            public void onResponse(Call<UserInfoRes> call, Response<UserInfoRes> response) {
+                UserInfoRes UserInfo = response.body();
+                userId = UserInfo.getID();
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoRes> call, Throwable t) {
+
+            }
+        });
+
         service.getTourInfo(token, tourId).enqueue(new Callback<GetTourInfo>() {
 
             @Override
@@ -205,11 +271,20 @@ public class ShowTourInfo extends AppCompatActivity {
                 openChat();
             }
         });
+
+        startTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissions();
+
+            }
+        });
     }
 
     private void openChat() {
         Intent intent = new Intent(ShowTourInfo.this, MessagingTour.class);
-        intent.putExtra("tourId", tourId);
+        intent.putExtra("tourId", String.valueOf(tourId));
+        intent.putExtra("userId", String.valueOf(userId));
         startActivity(intent);
     }
 
@@ -372,6 +447,144 @@ public class ShowTourInfo extends AppCompatActivity {
         } catch (Exception e) {
             // TODO: handle exception
 
+        }
+    }
+
+    // check location permission
+    protected void checkPermissions() {
+        final List<String> missingPermissions = new ArrayList<String>();
+        // check all required dynamic permissions
+        for (final String permission : REQUIRED_SDK_PERMISSIONS) {
+            final int result = ContextCompat.checkSelfPermission(this, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
+        }
+        if (!missingPermissions.isEmpty()) {
+            // request all missing permissions
+            final String[] permissions = missingPermissions
+                    .toArray(new String[missingPermissions.size()]);
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_ASK_PERMISSIONS);
+        } else {
+            final int[] grantResults = new int[REQUIRED_SDK_PERMISSIONS.length];
+            Arrays.fill(grantResults, PackageManager.PERMISSION_GRANTED);
+            onRequestPermissionsResult(REQUEST_CODE_ASK_PERMISSIONS, REQUIRED_SDK_PERMISSIONS,
+                    grantResults);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                for (int index = permissions.length - 1; index >= 0; --index) {
+                    if (grantResults[index] != PackageManager.PERMISSION_GRANTED) {
+                        // exit the app if one permission is not granted
+                        Toast.makeText(this, "Required permission '" + permissions[index]
+                                + "' not granted, exiting", Toast.LENGTH_LONG).show();
+                        finish();
+                        return;
+                    }
+                }
+                // all permissions were granted
+                LocationManager lm = (LocationManager)
+                        getSystemService(Context. LOCATION_SERVICE ) ;
+                boolean gps_enabled = false;
+                boolean network_enabled = false;
+                try {
+                    gps_enabled = lm.isProviderEnabled(LocationManager. GPS_PROVIDER ) ;
+                } catch (Exception e) {
+                    e.printStackTrace() ;
+                }
+                try {
+                    network_enabled = lm.isProviderEnabled(LocationManager. NETWORK_PROVIDER ) ;
+                } catch (Exception e) {
+                    e.printStackTrace() ;
+                }
+                if (!gps_enabled && !network_enabled) {
+                    new AlertDialog.Builder(this )
+                            .setMessage( "GPS Enable" )
+                            .setPositiveButton( "Settings" , new
+                                    DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick (DialogInterface paramDialogInterface , int paramInt) {
+
+                                            startActivityForResult(new Intent(Settings. ACTION_LOCATION_SOURCE_SETTINGS ), REQUEST_LOCATION);
+                                        }
+                                    })
+                            .setNegativeButton( "Cancel" , null )
+                            .show() ;
+                }else {
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                        Toast.makeText(this,"All permission granted",Toast.LENGTH_SHORT).show();
+                        String id = String.valueOf(tourId);
+                        String topic = "/topics/tour-id-" + id;
+
+                        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        String msg = "Success";
+                                        if (!task.isSuccessful()) {
+                                            msg = "Fail";
+                                        }
+                                        Log.d("MESSAGING", msg);
+                                        Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
+                                        intent1.putExtra("tourId", tourId);
+                                        startService(intent1);
+                                        Intent map = new Intent(ShowTourInfo.this, MapStartTour.class);
+                                        map.putExtra("tourId", tourId);
+                                        map.putExtra("userId", userId);
+                                        startActivity(map);
+                                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }else {
+                        Toast.makeText(this,"Fail permission location",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQUEST_LOCATION:
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+
+                    Toast.makeText(this,"All permission granted",Toast.LENGTH_SHORT).show();
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String id = String.valueOf(tourId);
+                    String topic = "/topics/tour-id-" + id;
+
+                    FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    String msg = "Success";
+                                    if (!task.isSuccessful()) {
+                                        msg = "Fail";
+                                    }
+                                    Log.d("MESSAGING", msg);
+                                    Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
+                                    intent1.putExtra("tourId", tourId);
+                                    startService(intent1);
+                                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }else {
+                    Toast.makeText(this,"Fail permission location",Toast.LENGTH_SHORT).show();
+                }
         }
     }
 }
