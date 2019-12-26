@@ -119,6 +119,8 @@
                 <action android:name="com.example.cancel" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".showTourInfomation.ShowTourInformation"/>
     </application>
 
 </manifest>
