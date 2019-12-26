@@ -331,8 +331,8 @@ public class ShowTourInfo extends AppCompatActivity {
                     GetPointOfTour getPointOfTour = response.body();
 
                     GetPointOfTour.Point point[] = getPointOfTour.getPointStats();
-                    final int raters[] = {point[0].getTotal(), point[1].getTotal(), point[2].getTotal(),
-                            point[3].getTotal(), point[4].getTotal()};
+                    final int raters[] = {point[4].getTotal(), point[3].getTotal(), point[2].getTotal(),
+                            point[1].getTotal(), point[0].getTotal()};
 
                     double total = 0.0;
                     for (double t : raters){

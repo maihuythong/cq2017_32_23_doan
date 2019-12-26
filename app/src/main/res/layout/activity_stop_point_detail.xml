@@ -88,8 +88,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
-                                android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="1"/>
+                                android:layout_marginLeft="@dimen/margin_16dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -109,7 +108,6 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="01/01/2001 - 02/02/2002"
                                 android:id="@+id/stop_point_day"
                                 />
                         </LinearLayout>
@@ -132,7 +130,6 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="123/Tran duy hung"
                                 android:id="@+id/stop_point_address"
                                 />
                         </LinearLayout>
@@ -178,7 +175,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="3"
+                                android:text=""
                                 android:id="@+id/stop_point_province"
                                 />
                         </LinearLayout>
@@ -200,10 +197,10 @@
 
                             <TextView
                                 android:id="@+id/stop_point_serviceId"
-                                android:layout_width="12dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="24dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
-                                android:text="1"
+                                android:text=""
                                 android:textSize="@dimen/margin_16dp" />
                         </LinearLayout>
 
@@ -267,7 +264,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/review_content_stop_point"
+                            android:id="@+id/feedback_content_stop_point"
                             android:layout_toRightOf="@+id/send_review_stop_point"
                             android:hint="Type your review"/>
 
@@ -333,7 +330,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/total_rating"
+                                    android:id="@+id/total_rating_stop_point"
                                     android:text="0"
                                     />
                                 <androidx.appcompat.widget.AppCompatImageView
@@ -349,6 +346,7 @@
                             xmlns:bar="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/rating_reviews_stop_point"
                             android:layout_width="match_parent"
+                            android:visibility="visible"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="42dp"
                             bar:animation="true"
@@ -369,42 +367,9 @@
                 android:orientation="vertical"
                 android:layout_height="fill_parent">
 
-                <LinearLayout
-                    android:id="@+id/stop_point_linear_layout_send_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-                    <TextView
-                        android:id="@+id/stop_point_comment_title"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add comment:"/>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <EditText
-                            android:id="@+id/_stop_point_comment_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/send_comment_stop_point"
-                            android:hint="Some text"/>
-
-                        <ImageButton
-                            android:id="@+id/send_comment_stop_point"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_send"
-                            android:background="@null"/>
-                    </RelativeLayout>
-                </LinearLayout>
 
                 <ListView
-                    android:id="@+id/stop_point_info_list_view"
+                    android:id="@+id/feed_back_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </LinearLayout>

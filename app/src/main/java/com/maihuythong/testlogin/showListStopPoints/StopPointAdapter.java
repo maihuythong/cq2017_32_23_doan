@@ -40,8 +40,8 @@ public class StopPointAdapter extends ArrayAdapter<StopPoint> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        StopPoint tour = arrStopPoint.get(position);
-        viewHolder.titleStopPoint.setText(tour.getId()+" "+"-"+" "+tour.getName());
+        StopPoint stopPoint = arrStopPoint.get(position);
+        viewHolder.titleStopPoint.setText(stopPoint.getId()+" "+"-"+" "+ stopPoint.getServiceId() +" "+"-"+" "+stopPoint.getName());
         return convertView;
     }
 

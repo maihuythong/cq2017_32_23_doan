@@ -193,4 +193,8 @@ public interface APIService {
             @Field("appVersion") String appVersion
     );
 
+
+    @GET("/tour/get/feedback-point-stats")
+    Call<GetPointOfTour> getFeedbackPointOfService(@Header("Authorization") String s, @Query("serviceId") int serviceId);
+
 }

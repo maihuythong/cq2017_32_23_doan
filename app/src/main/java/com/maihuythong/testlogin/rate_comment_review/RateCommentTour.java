@@ -207,8 +207,8 @@ public class RateCommentTour extends AppCompatActivity {
                     GetPointOfTour getPointOfTour = response.body();
 
                     GetPointOfTour.Point point[] = getPointOfTour.getPointStats();
-                    final int raters[] = {point[0].getTotal(), point[1].getTotal(), point[2].getTotal(),
-                                            point[3].getTotal(), point[4].getTotal()};
+                    final int raters[] = {point[4].getTotal(), point[3].getTotal(), point[2].getTotal(),
+                                            point[1].getTotal(), point[0].getTotal()};
 
                     ratingReviews.createRatingBars(100, BarLabels.STYPE1, colors, raters);
                 }
