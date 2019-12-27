@@ -8,6 +8,7 @@ import com.maihuythong.testlogin.TourCoordinate.SendMessage;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
+import com.maihuythong.testlogin.stopPointInfo.feedbackListRes;
 import com.maihuythong.testlogin.userInfo.GetVerifyCodeRes;
 import com.maihuythong.testlogin.userInfo.SendVerifyCodeRes;
 import com.maihuythong.testlogin.userInfo.UpdateUserInfoRes;
@@ -224,5 +225,25 @@ public interface APIService {
 
     @GET("/tour/get/feedback-point-stats")
     Call<GetPointOfTour> getFeedbackPointOfService(@Header("Authorization") String s, @Query("serviceId") int serviceId);
+
+
+    @POST("/tour/add/feedback-service")
+    @FormUrlEncoded
+    Call<UpdateUserInfoRes> sendfeedback(
+            @Header("Authorization") String s,
+            @Field("serviceId") long serviceId,
+            @Field("point") int point,
+            @Field("feedback") String feedback
+    );
+
+    @GET("/tour/get/feedback-service")
+    Call<feedbackListRes> getFeedBackList(
+            @Header("Authorization") String s,
+            @Query("serviceId") Number serviceId,
+            @Query("pageIndex") Number pageIndex,
+            @Query("pageSize") Number pageSize
+    );
+
+
 
 }

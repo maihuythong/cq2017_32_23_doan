@@ -1,13 +1,20 @@
 package com.maihuythong.testlogin.stopPointInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +24,19 @@ import com.maihuythong.testlogin.rate_comment_review.GetPointOfTour;
 import com.maihuythong.testlogin.showListStopPoints.showListStopPointsActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.userInfo.UpdateUserInfoRes;
 import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
 
 import com.maihuythong.testlogin.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -45,6 +59,7 @@ public class StopPointDetailActivity extends AppCompatActivity {
     private long maxCost;
     private int serviceTypeId;
     private String avatar;
+    private Feedback[] arrFeedback;
 
 
     private TextView titleView;
@@ -61,6 +76,11 @@ public class StopPointDetailActivity extends AppCompatActivity {
     private TextView averageStarView;
     private RatingBar smallRatingView;
     private TextView totalRatingView;
+    private ImageButton sendFeedBackButton;
+    private RecyclerView feedbackLv;
+    private RecyclerView.LayoutManager layoutManager;
+
+
 
 
     @Override
@@ -82,15 +102,21 @@ public class StopPointDetailActivity extends AppCompatActivity {
         totalRatingView = findViewById(R.id.total_rating_stop_point);
         feedbackContentView = findViewById(R.id.feedback_content_stop_point);
         ratingBar = findViewById(R.id.ratingBar_stop_point);
-
-
-
+        sendFeedBackButton = findViewById(R.id.send_feedback_stop_point);
+        feedbackContentView = findViewById(R.id.feedback_content_stop_point);
+        feedbackLv = findViewById(R.id.feed_back_list_view);
 
         setData();
         setRatingReviews();
 
+        sendFeedBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendFeedback();
+            }
+        });
 
-
+        getFeedbackList();
 
 
     }
@@ -171,21 +197,18 @@ public class StopPointDetailActivity extends AppCompatActivity {
                             point[1].getTotal(), point[0].getTotal()};
 
 
-                    double total = 0.0;
-                    for (double t : raters){
-                        total+= t;
-                    }
-                    total = total/5;
-
-                    smallRatingView.setRating((float)total);
-                    averageStarView.setText(String.valueOf(total));
-
-                    int count = 0;
-                    for (GetPointOfTour.Point i : point){
-                        count += i.getTotal();
+                    int totalPoint = 0;
+                    int capacityPoint = 0;
+                    for (int i =0;i<point.length;i++){
+                       totalPoint = point[i].getPoint()*point[i].getTotal() + totalPoint;
+                       capacityPoint=capacityPoint+point[i].getTotal();
                     }
 
-                    totalRatingView.setText(String.valueOf(count));
+
+                    smallRatingView.setRating((float)totalPoint/capacityPoint);
+                    averageStarView.setText(String.valueOf(totalPoint/capacityPoint));
+
+                    totalRatingView.setText(String.valueOf(capacityPoint));
                     ratingReviewsView.createRatingBars(100, BarLabels.STYPE1, colors, raters);
                 }
                 if(response.code()==500)
@@ -218,5 +241,108 @@ public class StopPointDetailActivity extends AppCompatActivity {
     }
 
 
+    private void sendFeedback(){
 
+        hideInputKeyboard();
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        int numStar = (int)ratingBar.getRating();
+        if(numStar == 0){
+            Toast.makeText(getApplicationContext(),"Please choose your star rating!",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String token = GetTokenLoginAccess();
+        long svid = serviceId;
+        String feedback = feedbackContentView.getText().toString();
+        if(feedback.isEmpty()) return;
+
+        mAPIService.sendfeedback(token,svid,numStar,feedback).enqueue(new Callback<UpdateUserInfoRes>() {
+            @Override
+            public void onResponse(Call<UpdateUserInfoRes> call, Response<UpdateUserInfoRes> response) {
+
+                if(response.code()==200) {
+                    Toast.makeText(getApplicationContext(),response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    overridePendingTransition(0, 0);
+                }
+                if(response.code()==404)
+                    Toast.makeText(getApplicationContext(),"1 start is not available!, 2 starts or more start", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<UpdateUserInfoRes> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Send feedback failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+
+    private void getFeedbackList(){
+
+        String token = GetTokenLoginAccess();
+
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        mAPIService.getFeedBackList(token,serviceId,1,100).enqueue(new Callback<feedbackListRes>() {
+            @Override
+            public void onResponse(Call<feedbackListRes> call, Response<feedbackListRes> response) {
+                if(response.code()==200)
+                {
+
+                    arrFeedback = response.body().getFeedbacks();
+
+                    final ArrayList<Feedback> arrayFeedbacks = new ArrayList<>();
+
+                    for (int i=arrFeedback.length-1;i>=0;i--){
+                        arrayFeedbacks.add(arrFeedback[i]);
+                    }
+
+                    feedbackLv.setHasFixedSize(true);
+                    layoutManager = new LinearLayoutManager(getApplicationContext());
+                    feedbackLv.setLayoutManager(layoutManager);
+
+                    FeedbackUserAdapter feedbackUserAdapter = new FeedbackUserAdapter(arrayFeedbacks);
+                    feedbackLv.setAdapter(feedbackUserAdapter);
+
+                    Toast.makeText(getApplicationContext(),"List feedbacks was got success!", Toast.LENGTH_SHORT).show();
+                }
+                if(response.code()==500)
+                {
+                    String message = "Send failed!";
+                    try {
+                        assert response.errorBody() != null;
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        message = jObjError.getString("message");
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(message.isEmpty()) message="Send failed!";
+                    Toast.makeText(getApplicationContext(), "Error: " + message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<feedbackListRes> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+
+
+    void hideInputKeyboard(){
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            // TODO: handle exception
+
+        }
+    }
 }

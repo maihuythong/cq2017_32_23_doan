@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/background_color">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_background"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/default_avt"
+            android:id="@+id/user_avatar_feedback"
+            />
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/name_user_feedback"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="@dimen/margin_16dp"
+                android:text="" />
+
+            <RatingBar
+                android:id="@+id/small_rating_bar_user_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stepSize="0.1"
+                style="@style/Widget.AppCompat.RatingBar.Small"/>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:id="@+id/feed_back_user_create_on"
+                android:textSize="@dimen/margin_16dp"
+                android:text="date" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/feed_back_of_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_text_color"
+            android:text="feedback"/>
+
+    </LinearLayout>
+</LinearLayout>

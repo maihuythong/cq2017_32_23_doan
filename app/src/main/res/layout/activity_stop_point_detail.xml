@@ -9,7 +9,7 @@
 
 
 
-    <ScrollView
+    <ScrollView android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -265,11 +265,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/feedback_content_stop_point"
-                            android:layout_toRightOf="@+id/send_review_stop_point"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/send_feedback_stop_point"
                             android:hint="Type your review"/>
 
                         <ImageButton
-                            android:id="@+id/send_review_stop_point"
+                            android:id="@+id/send_feedback_stop_point"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_send"
@@ -363,15 +364,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_height="fill_parent">
 
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/feed_back_list_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
