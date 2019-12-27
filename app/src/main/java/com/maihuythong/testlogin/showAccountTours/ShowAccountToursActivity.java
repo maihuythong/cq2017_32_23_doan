@@ -253,11 +253,9 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
             }
         }
 
-        if(!arrTour.isEmpty()) {
             CustomAdapterAccountTours customAdaperAccountTours =
                     new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
             lvTour.setAdapter(customAdaperAccountTours);
-        }
 
         return true;
 
@@ -282,11 +280,10 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
             }
         }
 
-        if(!arrTour.isEmpty()) {
             CustomAdapterAccountTours customAdaperAccountTours =
                     new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
             lvTour.setAdapter(customAdaperAccountTours);
-        }
+
 
         return true;
     }

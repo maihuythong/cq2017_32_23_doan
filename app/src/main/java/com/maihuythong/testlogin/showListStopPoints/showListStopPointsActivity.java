@@ -200,11 +200,9 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
             }
         }
 
-        if(!arrayStopPoints.isEmpty()) {
-            StopPointAdapter stopPointAdapter = new StopPointAdapter(showListStopPointsActivity.this,R.layout.stop_point_card,arrayStopPoints);
-            lvStopPoints.setAdapter(stopPointAdapter);
-            lvStopPoints.setAdapter(stopPointAdapter);
-        }
+        StopPointAdapter stopPointAdapter = new StopPointAdapter(showListStopPointsActivity.this,R.layout.stop_point_card,arrayStopPoints);
+        lvStopPoints.setAdapter(stopPointAdapter);
+
 
         return true;
     }

@@ -274,10 +274,8 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         }
 
-        if(!foundedTours.isEmpty()) {
             CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
             lvTour.setAdapter(customAdaper);
-        }
         if(!foundedTours.isEmpty()) {
             lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -308,10 +306,8 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         }
 
-        if(!foundedTours.isEmpty()) {
             CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
             lvTour.setAdapter(customAdaper);
-        }
         if(!foundedTours.isEmpty()) {
             lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

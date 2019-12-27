@@ -97,28 +97,27 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
     @Override
     public boolean onQueryTextChange(String newText) {
         String userInput = newText.toString();
-        ArrayList<StopPoint> arrayStopPoints;
-        arrayStopPoints = new ArrayList<>();
+        ArrayList<StopPoint> foundedStopPoints;
+        foundedStopPoints= new ArrayList<>();
 
         if(userInput.isEmpty())
         {
-            arrayStopPoints.addAll(Arrays.asList(arrStopPoints));
+            foundedStopPoints.addAll(Arrays.asList(arrStopPoints));
 
         }else{
             for (int i =0;i < arrStopPoints.length;i++){
                 if(!Objects.isNull(arrStopPoints[i].getName()))
                     if(arrStopPoints[i].getName().contains(userInput))
-                        arrayStopPoints.add(arrStopPoints[i]);
+                        foundedStopPoints.add(arrStopPoints[i]);
                 if(Long.toString(arrStopPoints[i].getId()).contains(userInput))
-                    arrayStopPoints.add(arrStopPoints[i]);
+                    foundedStopPoints.add(arrStopPoints[i]);
             }
         }
 
-        if(!arrayStopPoints.isEmpty()) {
-            StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,arrayStopPoints);
-            lvStopPoints.setAdapter(stopPointAdapter);
-            lvStopPoints.setAdapter(stopPointAdapter);
-        }
+
+        StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,foundedStopPoints);
+        lvStopPoints.setAdapter(stopPointAdapter);
+
 
         return true;
     }
