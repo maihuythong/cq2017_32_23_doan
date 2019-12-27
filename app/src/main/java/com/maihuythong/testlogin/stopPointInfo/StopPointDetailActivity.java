@@ -156,7 +156,8 @@ public class StopPointDetailActivity extends AppCompatActivity {
         addressView.setText(address);
         dateView.setText(dateArrival + " - " +dateLeave);
         serviceTypeView.setText(serviceArray[serviceTypeId-1]);
-        provinceIdView.setText(provinceArray[provinceId-1]);
+        if(provinceId<1||provinceId>63) provinceIdView.setText("");
+        else provinceIdView.setText(provinceArray[provinceId-1]);
         priceView.setText(minCost + " - " + maxCost);
 
 
@@ -204,12 +205,13 @@ public class StopPointDetailActivity extends AppCompatActivity {
                        capacityPoint=capacityPoint+point[i].getTotal();
                     }
 
+                    if(capacityPoint>0) {
+                        smallRatingView.setRating((float) totalPoint / capacityPoint);
+                        averageStarView.setText(String.valueOf(totalPoint / capacityPoint));
 
-                    smallRatingView.setRating((float)totalPoint/capacityPoint);
-                    averageStarView.setText(String.valueOf(totalPoint/capacityPoint));
-
-                    totalRatingView.setText(String.valueOf(capacityPoint));
-                    ratingReviewsView.createRatingBars(100, BarLabels.STYPE1, colors, raters);
+                        totalRatingView.setText(String.valueOf(capacityPoint));
+                        ratingReviewsView.createRatingBars(100, BarLabels.STYPE1, colors, raters);
+                    }
                 }
                 if(response.code()==500)
                 {

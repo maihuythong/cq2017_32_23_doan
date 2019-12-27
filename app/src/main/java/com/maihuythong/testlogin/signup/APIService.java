@@ -6,6 +6,7 @@ import com.maihuythong.testlogin.TourCoordinate.GetNotificationList;
 import com.maihuythong.testlogin.TourCoordinate.PostCoordinate;
 import com.maihuythong.testlogin.TourCoordinate.SendMessage;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
+import com.maihuythong.testlogin.showListStopPointSystem.StopPointSystemRes;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
 import com.maihuythong.testlogin.stopPointInfo.feedbackListRes;
@@ -240,6 +241,17 @@ public interface APIService {
     Call<feedbackListRes> getFeedBackList(
             @Header("Authorization") String s,
             @Query("serviceId") Number serviceId,
+            @Query("pageIndex") Number pageIndex,
+            @Query("pageSize") Number pageSize
+    );
+
+
+    @GET("/tour/search/service")
+    Call<StopPointSystemRes> searchDestination(
+            @Header("Authorization") String s,
+            @Query("searchKey") String searchKey,
+            @Query("provinceId") Number provinceId,
+            @Query("provinceName") String provinceName,
             @Query("pageIndex") Number pageIndex,
             @Query("pageSize") Number pageSize
     );

@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.showListStopPointSystem.ListStopPointSystemActivity;
 import com.maihuythong.testlogin.showTourInfomation.ShowTourInformation;
 import com.maihuythong.testlogin.userInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
@@ -115,12 +116,12 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         });
 
-        //init show user info button
-        Button testButton = findViewById(R.id.test_tab);
-        testButton.setOnClickListener(new View.OnClickListener() {
+        //init show stop point system
+        Button showListStopPointButton = findViewById(R.id.show_stop_point_system);
+        showListStopPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowListActivity.this, ShowTourInformation.class);
+                Intent intent = new Intent(getApplicationContext(), ListStopPointSystemActivity.class);
                 startActivity(intent);
             }
         });

@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".stopPointInfo.StopPointDetailActivity"></activity>
+        <activity android:name=".showListStopPointSystem.ListStopPointSystemActivity"></activity>
+        <activity android:name=".stopPointInfo.StopPointDetailActivity" />
         <activity android:name=".showListStopPoints.showListStopPointsActivity" />
         <activity android:name=".forgotPassword.RecoveryPasswordActivity" />
         <activity android:name=".forgotPassword.RequestOTPActivity" />
@@ -120,9 +121,12 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".showTourInfomation.ShowTourInformation"/>
+        <activity android:name=".showTourInfomation.ShowTourInformation" />
 
-        <service android:name=".TourCoordinate.LocationService" android:enabled="true" android:exported="true"></service>
+        <service
+            android:name=".TourCoordinate.LocationService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".TourCoordinate.MapStartTour"
@@ -133,9 +137,9 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".TourCoordinate.NotificationOnRoad"
-            android:theme="@style/AppTheme.PopupTheme"
-            />
+        <activity
+            android:name=".TourCoordinate.NotificationOnRoad"
+            android:theme="@style/AppTheme.PopupTheme" />
     </application>
 
 </manifest>

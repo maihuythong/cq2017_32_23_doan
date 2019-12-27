@@ -48,10 +48,10 @@
             android:text="a" />
 
         <Button
-            android:id="@+id/test_tab"
+            android:id="@+id/show_stop_point_system"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="b" />
+            android:text="SP" />
 
         <Button
             android:id="@+id/show_invitation"
