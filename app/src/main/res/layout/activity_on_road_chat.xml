@@ -48,7 +48,7 @@
             android:hint="Aa"
             android:padding="15dp"
             android:maxLines="5"
-            android:layout_toEndOf="@+id/send_files_btn"
+            android:layout_toEndOf="@+id/recorder_btn"
             android:layout_toStartOf="@+id/send_message_btn"
             />
 

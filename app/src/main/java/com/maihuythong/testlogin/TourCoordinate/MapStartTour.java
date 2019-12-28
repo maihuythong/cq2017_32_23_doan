@@ -1,57 +1,19 @@
 package com.maihuythong.testlogin.TourCoordinate;
 
-import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
+
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.LayoutDirection;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Result;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,39 +22,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.googlemapapi.DirectionFinder;
-import com.maihuythong.testlogin.googlemapapi.GetNearbyPlaces;
-import com.maihuythong.testlogin.googlemapapi.Route;
-import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
-import com.maihuythong.testlogin.model.StopPoints;
-import com.maihuythong.testlogin.pop.ShowPopupActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class MapStartTour extends FragmentActivity implements  OnMapReadyCallback  {
 
@@ -104,6 +44,8 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
 
     private static final float DEFAULT_ZOOM = 15f;
     private ServiceToActivity serviceReceiver;
+    private LimitSpeedEnd endLimitSpeedReceiver;
+    private LimitSpeedStart startLimitSpeedReceiver;
     ArrayList<PostCoordinate> data;
     ArrayList<PostCoordinate> tempData;
     private boolean isMapReady = false;
@@ -111,6 +53,9 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
     ArrayList<Marker> listMemberPos = new ArrayList<>();
     private long tourId;
     private long userId;
+    private ImageView start_speed_limit;
+    private ImageView end_speed_limit;
+    LatLng currentLatlng;
 
 
 
@@ -125,7 +70,47 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         serviceReceiver = new ServiceToActivity();
         IntentFilter intentSFilter = new IntentFilter("ServiceToActivityAction");
         registerReceiver(serviceReceiver, intentSFilter);
+
+        IntentFilter intentFilterLocation = new IntentFilter("LocationDevice");
+        registerReceiver(serviceReceiver, intentFilterLocation);
+
+        startLimitSpeedReceiver = new LimitSpeedStart();
+        IntentFilter intentFilterStartLimit = new IntentFilter("StartLimit");
+        registerReceiver(startLimitSpeedReceiver, intentFilterStartLimit);
+
+        endLimitSpeedReceiver = new LimitSpeedEnd();
+        IntentFilter intentFilterEndLimit = new IntentFilter("EndLimit");
+        registerReceiver(endLimitSpeedReceiver, intentFilterEndLimit);
         //searchText = findViewById(R.id.input_search);
+
+        start_speed_limit = findViewById(R.id.speed_limit_60);
+        end_speed_limit = findViewById(R.id.end_speed_limit_60);
+
+        start_speed_limit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MapStartTour.this, SendSpeedLimitStart.class);
+                intent1.putExtra("tourId", tourId);
+                intent1.putExtra("userId", userId);
+                intent1.putExtra("latitude", currentLatlng.latitude);
+                intent1.putExtra("longitude", currentLatlng.longitude);
+                startActivity(intent1);
+            }
+        });
+
+        end_speed_limit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MapStartTour.this, SendSpeedLimitEnd.class);
+                intent1.putExtra("tourId", tourId);
+                intent1.putExtra("userId", userId);
+                intent1.putExtra("latitude", currentLatlng.latitude);
+                intent1.putExtra("longitude", currentLatlng.longitude);
+                startActivity(intent1);
+            }
+        });
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -138,6 +123,15 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
                 Intent intent1 = new Intent(MapStartTour.this, NotificationOnRoad.class);
                 intent1.putExtra("tourId", tourId);
                 intent1.putExtra("userId", userId);
+                startActivity(intent1);
+            }
+        });
+
+        FloatingActionButton fabrc = findViewById(R.id.send_record);
+        fabrc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MapStartTour.this, Record.class);
                 startActivity(intent1);
             }
         });
@@ -169,6 +163,10 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
             data = (ArrayList<PostCoordinate>) intent.getSerializableExtra("ServiceToActivityKey");
 
             // newData is from the service
+            double latitude = intent.getDoubleExtra("LocationLat",0);
+            double longitude = intent.getDoubleExtra("LocationLong",0);
+            currentLatlng = new LatLng(latitude,longitude);
+
 
             if (data!=null){
                 if (firstTime){
@@ -218,6 +216,38 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         }
     }
 
+    public class LimitSpeedStart extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            double startLimitLat = Double.valueOf(intent.getStringExtra("startLimitLocationLat"));
+            double startLimitLong = Double.valueOf(intent.getStringExtra("startLimitLocationLong"));
+            long startLimitUserId = Long.valueOf(intent.getStringExtra("startLimitUserId"));
+            String startLitmitUserName = intent.getStringExtra("startLimitUserName");
+
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(startLimitLat, startLimitLong))
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.max60))
+                    .title("Start limit speed by: " + startLitmitUserName + " (" + startLimitUserId + " )"));
+
+        }
+    }
+
+    public class LimitSpeedEnd extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            double endLimitLat = Double.valueOf(intent.getStringExtra("endLimitLocationLat"));
+            double endLimitLong = Double.valueOf(intent.getStringExtra("endLimitLocationLong"));
+            long endLimitUserId = Long.valueOf(intent.getStringExtra("endLimitUserId"));
+            String endLitmitUserName = intent.getStringExtra("endLimitUserName");
+
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(endLimitLat, endLimitLong))
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.mkhet60))
+                    .title("End limit speed by: " + endLitmitUserName + " (" + endLimitUserId + " )"));
+        }
+    }
     private boolean isExistMarker(String idTitle){
         for (Marker m : listMemberPos){
             if (m.getTitle().equals(idTitle))

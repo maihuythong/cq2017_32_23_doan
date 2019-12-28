@@ -5,6 +5,7 @@ import com.maihuythong.testlogin.ShowListUsers.UserReq;
 import com.maihuythong.testlogin.TourCoordinate.GetNotificationList;
 import com.maihuythong.testlogin.TourCoordinate.PostCoordinate;
 import com.maihuythong.testlogin.TourCoordinate.SendMessage;
+import com.maihuythong.testlogin.TourCoordinate.SendNotificationOnRoad;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.showListStopPointSystem.StopPointSystemRes;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
@@ -226,6 +227,19 @@ public interface APIService {
 
     @GET("/tour/get/feedback-point-stats")
     Call<GetPointOfTour> getFeedbackPointOfService(@Header("Authorization") String s, @Query("serviceId") int serviceId);
+
+    @POST("tour/add/notification-on-road")
+    @FormUrlEncoded
+    Call<SendNotificationOnRoad> sendNotificationOnRoad(
+            @Header("Authorization") String s,
+            @Field("lat") double latitude,
+            @Field("long") double longitude,
+            @Field("tourId") long tourId,
+            @Field("userId") long userId,
+            @Field("notificationType") int notificationType,
+            @Field("speed") int speed,
+            @Field("note") String note
+    );
 
 
     @POST("/tour/add/feedback-service")

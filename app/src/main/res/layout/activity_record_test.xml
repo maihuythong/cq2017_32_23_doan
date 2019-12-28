@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".TourCoordinate.Record">
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        style="@style/AppTheme.Button"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:text="Record"
+        android:textSize="20sp"
+        android:textColor="#63ff00"
+        android:id="@+id/record"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        />
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        style="@style/AppTheme.Button"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:text="Stop"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
+        android:id="@+id/stop"
+        android:layout_below="@id/record"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        style="@style/AppTheme.Button"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:text="Play"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:id="@+id/play"
+        android:layout_below="@id/stop"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

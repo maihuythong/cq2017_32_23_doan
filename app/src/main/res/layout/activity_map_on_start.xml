@@ -21,6 +21,36 @@ android:orientation="vertical">
         android:layout_margin="20dp"
      />
 
+    <ImageView
+        android:id="@+id/speed_limit_60"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="20dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/max60kmh"
+        android:layout_toEndOf="@+id/noti_btn"
+        android:contentDescription="Speed limit 60km/h" />
+
+    <ImageView
+        android:id="@+id/end_speed_limit_60"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="20dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/het60kmh"
+        android:layout_toEndOf="@+id/speed_limit_60"
+        android:contentDescription="Speed limit 60km/h" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/send_record"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentRight="true"
+        />
+
 <ImageView
     android:contentDescription="@string/my_current_location"
     android:layout_width="30dp"
@@ -31,6 +61,7 @@ android:orientation="vertical">
     android:scaleType="centerCrop"
     android:id="@+id/my_location"
     android:src="@drawable/ic_my_location"
+    android:layout_alignParentBottom="true"
     />
 
 

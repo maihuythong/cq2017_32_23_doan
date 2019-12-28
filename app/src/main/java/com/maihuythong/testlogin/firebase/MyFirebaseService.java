@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.User;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.TourCoordinate.MapStartTour;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -40,6 +41,9 @@ public class MyFirebaseService extends FirebaseMessagingService {
         // handle a notification payload.
         Log.d(TAG, remoteMessage.getData().toString());
         switch (remoteMessage.getData().get("type")){
+            case "3":
+                sendNotificationSpeedLimit(remoteMessage.getData().get("tourId"), remoteMessage.getData().get("userId"), remoteMessage.getData().get("lat"),
+                        remoteMessage.getData().get("long"), remoteMessage.getData().get("note"));
             case "6":
                 sendNotificationInvitation(remoteMessage.getData().get("id"), remoteMessage.getData().get("name"), remoteMessage.getData().get("hostName"));
                 break;
@@ -64,6 +68,99 @@ public class MyFirebaseService extends FirebaseMessagingService {
                 break;
         }
 
+
+    }
+
+    private void sendNotificationSpeedLimit(String tourId, final String userId, final String latitude, final String longitude, String note) {
+        Intent intent = new Intent(this, MapStartTour.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        final String channelId = getString(R.string.project_id);
+        APIService mAPIService = ApiUtils.getAPIService();
+        char c = note.charAt(0);
+        boolean typeSpeed = true;
+        String title = "", textContent = "";
+        if (c == 'e'){
+            typeSpeed = false;
+            title = "End limit speed 60km/h";
+        }else {
+            title = "Limit speed 60km/h";
+        }
+
+        textContent = note.substring(1);
+        final String finalTitle = title;
+        final String finalTextContent = textContent;
+        final boolean finalTypeSpeed = typeSpeed;
+        mAPIService.getListUsers("", 1, 2000).enqueue(new Callback<UserReq>() {
+            @Override
+            public void onResponse(Call<UserReq> call, Response<UserReq> response) {
+
+                if (response.code() == 200) {
+                    users = response.body().getUsers();
+                }
+
+                String userName = "";
+                for (int i = 0; i < users.length; ++i){
+                    if (users[i].getID() == Long.valueOf(userId)){
+                        userName = users[i].getFullName();
+                    }
+                }
+
+                if (!finalTypeSpeed){
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("EndLimit");
+                    broadcastIntent.putExtra("endLimitLocationLat", latitude);
+                    broadcastIntent.putExtra("endLimitLocationLong", longitude);
+                    broadcastIntent.putExtra("endLimitUserId", userId);
+                    broadcastIntent.putExtra("endLimitUserName", userName);
+                    sendBroadcast(broadcastIntent);
+                }else {
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("StartLimit");
+                    broadcastIntent.putExtra("startLimitLocationLat", latitude);
+                    broadcastIntent.putExtra("startLimitLocationLong", longitude);
+                    broadcastIntent.putExtra("startLimitUserId", userId);
+                    broadcastIntent.putExtra("startLimitUserName", userName);
+                    sendBroadcast(broadcastIntent);
+                }
+
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat.Builder(getApplicationContext(), channelId)
+                                .setSmallIcon(R.drawable.ic_launcher_background)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+                                .setContentTitle(finalTitle)
+                                .setContentText(userName + " : " + finalTextContent)
+                                .setContentIntent(pendingIntent)
+                                .setColor(getResources().getColor(R.color.colorPrimary))
+                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setGroup("ALERT")
+                                .setGroupSummary(true)
+                                .setAutoCancel(true);
+                notificationBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                // Since android Oreo notification channel is needed.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel(
+                            channelId,
+                            "Channel human readable title",
+                            NotificationManager.IMPORTANCE_HIGH);
+
+                    notificationManager.createNotificationChannel(channel);
+                }
+
+
+                notificationManager.notify(0, notificationBuilder.build());
+            }
+
+            @Override
+            public void onFailure(Call<UserReq> call, Throwable t) {
+
+            }
+        });
 
     }
 
@@ -203,6 +300,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
     private void sendNotificationInvitation(String id, String tourName, String hostName) {
+        int idOfNoti = (int) System.currentTimeMillis();
         Intent intent = new Intent(this, InvitationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -210,11 +308,13 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
         Intent btConfirm = new Intent(this, MyBroadcastReceiver.class);
         btConfirm.putExtra("tourId", String.valueOf(id));
+        btConfirm.putExtra("ifOfNoti", idOfNoti);
         btConfirm.setAction("CONFIRM");
         PendingIntent confirm = PendingIntent.getBroadcast(this, 0, btConfirm, PendingIntent.FLAG_ONE_SHOT);
 
         Intent btDelete = new Intent(this, MyBroadcastReceiver.class);
         btDelete.putExtra("tourId", String.valueOf(id));
+        btDelete.putExtra("ifOfNoti", idOfNoti);
         btDelete.setAction("DELETE");
         PendingIntent delete = PendingIntent.getBroadcast(this, 0, btDelete, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -250,7 +350,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         }
 
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(idOfNoti, notificationBuilder.build());
     }
 
 //    public void getUserInfoFromId(String userId){

@@ -106,11 +106,21 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("LocationDevice");
+        broadcastIntent.putExtra("LocationLat", currentLatLng.latitude);
+        broadcastIntent.putExtra("LocationLong", currentLatLng.longitude);
+        sendBroadcast(broadcastIntent);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude","status");
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("LocationDevice");
+        broadcastIntent.putExtra("LocationLat", currentLatLng.latitude);
+        broadcastIntent.putExtra("LocationLong", currentLatLng.longitude);
+        sendBroadcast(broadcastIntent);
     }
 
     @Override
@@ -294,7 +304,7 @@ public class LocationService extends Service implements LocationListener {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        if (currentLatLng == null){
+        if (location == null){
             currentLatLng = new LatLng(0,0);
         }
 

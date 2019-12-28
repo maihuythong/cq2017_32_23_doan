@@ -4,13 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -68,13 +65,9 @@ import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +108,8 @@ public class ShowTourInfo extends AppCompatActivity {
 
     private ArrayList<Member> listMembers;
     private ArrayList<Comment> listComments;
+
+    private Button testrc;
 
     /**
      * permissions request code
@@ -411,19 +406,23 @@ public class ShowTourInfo extends AppCompatActivity {
                     final int raters[] = {point[4].getTotal(), point[3].getTotal(), point[2].getTotal(),
                             point[1].getTotal(), point[0].getTotal()};
 
-                    double total = 0.0;
-                    for (double t : raters){
-                        total+= t;
-                    }
-                    total = total/5;
-                    smallRating.setRating((float)total);
 
-                    averageStar.setText(String.valueOf(total));
 
                     int count = 0;
                     for (GetPointOfTour.Point i : point){
                         count += i.getTotal();
                     }
+
+                    double total = 0.0;
+                    for (GetPointOfTour.Point p : point){
+                        if (p.getTotal()!=0){
+                            total += p.getPoint()*p.getTotal();
+                        }
+                    }
+                    total = total/count;
+                    smallRating.setRating((float)total);
+
+                    averageStar.setText(String.valueOf(total));
 
                     totalRating.setText(String.valueOf(count));
 

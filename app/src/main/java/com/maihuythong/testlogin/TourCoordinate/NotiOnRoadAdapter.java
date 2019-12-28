@@ -1,7 +1,6 @@
 package com.maihuythong.testlogin.TourCoordinate;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maihuythong.testlogin.R;
-import com.maihuythong.testlogin.signup.APIService;
-import com.maihuythong.testlogin.signup.ApiUtils;
-import com.maihuythong.testlogin.userInfo.UserInfoRes;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class NotiOnRoadAdapter extends RecyclerView.Adapter<NotiOnRoadAdapter.ViewHolder> {
     private ArrayList<noti> notis;

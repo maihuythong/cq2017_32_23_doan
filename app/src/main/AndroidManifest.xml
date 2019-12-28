@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".manager.MyApplication"
@@ -121,6 +124,14 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".showTourInfomation.ShowTourInformation"/>
+        <service
+            android:name=".firebase.MyFirebaseService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name=".TourCoordinate.LocationService" android:enabled="true" android:exported="true"></service>
         <activity android:name=".showTourInfomation.ShowTourInformation" />
 
         <service
@@ -137,6 +148,19 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+        <activity android:name=".TourCoordinate.NotificationOnRoad"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+
+        <activity android:name=".TourCoordinate.SendSpeedLimitEnd"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+
+        <activity android:name=".TourCoordinate.SendSpeedLimitStart"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+        <activity android:name=".TourCoordinate.Record"
+            android:theme="@style/AppTheme.PopupTheme"/>
         <activity
             android:name=".TourCoordinate.NotificationOnRoad"
             android:theme="@style/AppTheme.PopupTheme" />

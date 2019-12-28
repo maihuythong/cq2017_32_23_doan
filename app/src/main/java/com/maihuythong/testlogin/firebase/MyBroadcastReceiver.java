@@ -65,6 +65,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             String token = preferences.getString("login_access_token", null);
             int tourId = Integer.parseInt(intent.getStringExtra("tourId"));
+            final int idOfNoti = intent.getIntExtra("ifOfNoti",1);
             APIService mAPIService = ApiUtils.getAPIService();
             mAPIService.responseInvitation(token, tourId, true).enqueue(new Callback<responseInvitation>() {
                 @Override
@@ -74,8 +75,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     NotificationManager notificationManager = (NotificationManager)
                             context.getSystemService(Context.
                                     NOTIFICATION_SERVICE);
-                    notificationManager.cancelAll();
-
+                  //  notificationManager.cancelAll();
+                    notificationManager.cancel(idOfNoti);
                     Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
                     context.sendBroadcast(it);
                 }
@@ -91,6 +92,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             String token = preferences.getString("login_access_token", null);
             int tourId = Integer.parseInt(intent.getStringExtra("tourId"));
+            final int idOfNoti = intent.getIntExtra("ifOfNoti",1);
             APIService mAPIService = ApiUtils.getAPIService();
             mAPIService.responseInvitation(token, tourId, false).enqueue(new Callback<responseInvitation>() {
                 @Override
@@ -99,8 +101,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     NotificationManager notificationManager = (NotificationManager)
                             context.getSystemService(Context.
                                     NOTIFICATION_SERVICE);
-                    notificationManager.cancelAll();
-
+            //        notificationManager.cancelAll();
+                    notificationManager.cancel(idOfNoti);
                     Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
                     context.sendBroadcast(it);
                 }

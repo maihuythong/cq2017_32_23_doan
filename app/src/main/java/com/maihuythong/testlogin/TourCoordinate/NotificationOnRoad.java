@@ -1,11 +1,17 @@
 package com.maihuythong.testlogin.TourCoordinate;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +29,7 @@ import com.maihuythong.testlogin.manager.MyApplication;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -36,6 +45,33 @@ public class NotificationOnRoad extends Activity {
     private ImageButton sendMessage;
     private EditText messText;
     private ArrayList<noti> arrayList = new ArrayList<>();
+    private ImageButton recorderbtn;
+
+//    private static final String LOG_TAG = "AudioRecordTest";
+//    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+//    private static String fileName = null;
+//
+//    private MediaRecorder recorder = null;
+//
+//    private MediaPlayer player = null;
+
+
+    // Requesting permission to RECORD_AUDIO
+    private boolean permissionToRecordAccepted = false;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode){
+//            case REQUEST_RECORD_AUDIO_PERMISSION:
+//                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                break;
+//        }
+//        if (!permissionToRecordAccepted ) finish();
+//
+//    }
 
     @Override
     protected  void onCreate(Bundle savedInstanceState){
@@ -44,6 +80,8 @@ public class NotificationOnRoad extends Activity {
         MyApplication app = (MyApplication)getApplication();
         sendMessage = findViewById(R.id.send_message_btn);
         messText = findViewById(R.id.input_message);
+        recorderbtn = findViewById(R.id.recorder_btn);
+
         token = app.getToken();
         if(token == null){
             sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
@@ -72,6 +110,7 @@ public class NotificationOnRoad extends Activity {
                 sendMes();
             }
         });
+
 
 
     }
