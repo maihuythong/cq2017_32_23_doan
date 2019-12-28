@@ -278,4 +278,14 @@ public interface APIService {
                                       @Field("tourId") String tourId,
                                       @Field("stopPoints") ArrayList<UpdateStopPointInfo> stopPoints);
 
+
+
+    @POST("/tour/update-tour")
+    @FormUrlEncoded
+    Call<UpdateTourReq> DeleteTour(@Header("Authorization") String s,
+                                   @Field("id") long id,
+                                   @Field("status") Number status
+    );
+
+
 }

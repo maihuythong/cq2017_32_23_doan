@@ -352,6 +352,10 @@ public class ShowTourInfo extends AppCompatActivity {
                 listView.setAdapter(adapterComment);
                 commentContent.setText("");
                 Toast.makeText(getApplicationContext(),"Sent your comment", Toast.LENGTH_SHORT).show();
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                overridePendingTransition(0, 0);
             }
 
             @Override

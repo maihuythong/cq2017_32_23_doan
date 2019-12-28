@@ -133,7 +133,6 @@
             </intent-filter>
         </service>
         <service android:name=".TourCoordinate.LocationService" android:enabled="true" android:exported="true"></service>
-        <activity android:name=".showTourInfomation.ShowTourInformation" />
 
         <service
             android:name=".TourCoordinate.LocationService"
@@ -162,9 +161,7 @@
             />
         <activity android:name=".TourCoordinate.Record"
             android:theme="@style/AppTheme.PopupTheme"/>
-        <activity
-            android:name=".TourCoordinate.NotificationOnRoad"
-            android:theme="@style/AppTheme.PopupTheme" />
+
     </application>
 
 </manifest>

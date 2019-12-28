@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,8 @@ import com.maihuythong.testlogin.showlist.Tour;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.maihuythong.testlogin.updateTour.UpdateTour;
+import com.maihuythong.testlogin.updateTour.UpdateTourReq;
+import com.maihuythong.testlogin.userInfo.InputVerifyCodeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,7 +99,8 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
                         totalAccTours = response.body().getTotal();
 
                         for(int i= t.length-1; i>=0; i--){
-                            arrTour.add(t[i]);
+                            if(t[i].getStatus()!=-1)
+                                arrTour.add(t[i]);
                         }
 
                         CustomAdapterAccountTours customAdaperAccountTours =
@@ -125,10 +129,10 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
                                     public void onClick(DialogInterface dialog, int which) {
                                         SendInvitation(arrTour,position);
                                     }
-                                }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
+                                        deleteTour(arrTour,position);
                                     }
                                 }).create();
                                 alertDialog.show();
@@ -185,6 +189,41 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
         intent.putExtra("isPrivate", tt.getIsPrivate());
         intent.putExtra("avatar", tt.getAvatar());
         startActivity(intent);
+    }
+
+    private void deleteTour(ArrayList<Tour> arrTour,int position){
+
+        String s;
+        s = LoginActivity.token;
+        if(s == null){
+            SharedPreferences sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+            s = sf.getString("login_access_token", "");
+        }
+
+        Tour tour;
+        tour = arrTour.get(position);
+
+        APIService mApiService = ApiUtils.getAPIService();
+
+        mApiService.DeleteTour(s,tour.getID(),-1).enqueue(new Callback<UpdateTourReq>() {
+            @Override
+            public void onResponse(Call<UpdateTourReq> call, Response<UpdateTourReq> response) {
+                if(response.code()==200)
+                {
+                    Toast.makeText(getApplicationContext(),"Delete tour success!", Toast.LENGTH_LONG).show();
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    overridePendingTransition(0, 0);
+                }else {
+                    Toast.makeText(getApplicationContext(),"Delete failed!", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UpdateTourReq> call, Throwable t) {
+            }
+        });
+
     }
 
     //Send invitation
@@ -287,6 +326,7 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
 
         return true;
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {

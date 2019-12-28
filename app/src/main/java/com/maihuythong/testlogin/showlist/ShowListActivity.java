@@ -165,7 +165,10 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                         totalToursView.setText(Long.toString(totalTours));
                         lvTour = (ListView) findViewById(R.id.lv_tour);
 
-                        arrTour.addAll(Arrays.asList(t));
+                        for(int i= t.length-1; i>=0; i--){
+                            if(t[i].getStatus()!=-1)
+                                arrTour.add(t[i]);
+                        }
                         CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
                         lvTour.setAdapter(customAdaper);
                         lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
