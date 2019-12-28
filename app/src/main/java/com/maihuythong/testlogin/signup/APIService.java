@@ -10,6 +10,7 @@ import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.showListStopPointSystem.StopPointSystemRes;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.forgotPassword.SendRequestOTPRes;
+import com.maihuythong.testlogin.stopPointInfo.UpdateStopPointInfo;
 import com.maihuythong.testlogin.stopPointInfo.feedbackListRes;
 import com.maihuythong.testlogin.userInfo.GetVerifyCodeRes;
 import com.maihuythong.testlogin.userInfo.SendVerifyCodeRes;
@@ -271,5 +272,10 @@ public interface APIService {
     );
 
 
+    @POST("/tour/set-stop-points")
+    @FormUrlEncoded
+    Call<GetVerifyCodeRes> UpdateStopPoint(@Header("Authorization") String s,
+                                      @Field("tourId") String tourId,
+                                      @Field("stopPoints") ArrayList<UpdateStopPointInfo> stopPoints);
 
 }

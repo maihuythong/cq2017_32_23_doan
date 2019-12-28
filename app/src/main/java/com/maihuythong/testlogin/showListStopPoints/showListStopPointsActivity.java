@@ -1,9 +1,11 @@
 package com.maihuythong.testlogin.showListStopPoints;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.maihuythong.testlogin.showTourInfo.StopPoint;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.maihuythong.testlogin.stopPointInfo.StopPointDetailActivity;
+import com.maihuythong.testlogin.stopPointInfo.UpdateStopPointActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +48,8 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
     long tourId;
     ListView lvStopPoints;
     private Toolbar toolbar;
+    private boolean isAccTour=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +58,9 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
         setSupportActionBar(toolbar);
         lvStopPoints = (ListView)findViewById(R.id.lv_stop_points);
 
-
         Intent intent = getIntent();
         tourId = intent.getLongExtra("tourId",0);
+        isAccTour= intent.getBooleanExtra("isAccTour",false);
         GetStopPoints(tourId);
 
     }
@@ -81,6 +88,8 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
                             showInfoStopPoint(arrayStopPoints,position);
                         }
                     });
+
+                    if(isAccTour) setLongClick();
 
                     Toast.makeText(showListStopPointsActivity.this,"Get stop points finished!", Toast.LENGTH_LONG).show();
                 }
@@ -205,5 +214,60 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
 
 
         return true;
+    }
+
+    private void setLongClick(){
+
+        lvStopPoints.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(showListStopPointsActivity.this).setNegativeButton
+                        ("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                UpdateStopPoint(position);
+                            }
+                        }).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+                alertDialog.show();
+
+                Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                layoutParams.weight = 10;
+                btnPositive.setLayoutParams(layoutParams);
+                btnNegative.setLayoutParams(layoutParams);
+                return true;
+            }
+        });
+    }
+
+
+    private void UpdateStopPoint(int position){
+
+        final ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
+        StopPoint newStopPoint;
+        newStopPoint = arrayStopPoints.get(position);
+
+        Intent intent = new Intent(getApplicationContext(), UpdateStopPointActivity.class);
+        intent.putExtra("address",newStopPoint.getAddress());
+        intent.putExtra("provinceId",newStopPoint.getProvinceId());
+        intent.putExtra("name",newStopPoint.getName());
+        intent.putExtra("arrivalAt",newStopPoint.getArrivalAt());
+        intent.putExtra("lat",newStopPoint.getLat());
+        intent.putExtra("long",newStopPoint.getLong());
+        intent.putExtra("leaveAt",newStopPoint.getLeaveAt());
+        intent.putExtra("minCost",newStopPoint.getMinCost());
+        intent.putExtra("maxCost",newStopPoint.getMaxCost());
+        intent.putExtra("id",newStopPoint.getId());
+        intent.putExtra("serviceTypeId",newStopPoint.getServiceTypeId());
+        intent.putExtra("tourId",tourId);
+        startActivity(intent);
     }
 }

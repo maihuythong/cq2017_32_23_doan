@@ -79,6 +79,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 intent.putExtra("dob",UserInfo.getDob());
                 intent.putExtra("avatar",UserInfo.getAvatar());
                 startActivity(intent);
+                finish();
             }
         });
         Button LogOutButton = (Button)findViewById(R.id.logout_button);

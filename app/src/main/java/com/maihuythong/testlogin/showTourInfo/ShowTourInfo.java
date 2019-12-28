@@ -239,6 +239,7 @@ public class ShowTourInfo extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(ShowTourInfo.this, showListStopPointsActivity.class);
+                            intent.putExtra("isAccTour",true);
                             intent.putExtra("tourId",tourId);
                             startActivity(intent);
                         }

@@ -159,6 +159,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             public void onResponse(Call<UpdateUserInfoRes> call, Response<UpdateUserInfoRes> response) {
                 if(response.code()==200) {
                     Toast.makeText(UpdateUserInfoActivity.this, "Update information success", Toast.LENGTH_LONG).show();
+                    finish();
                     Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
                     startActivity(intent);
                 }

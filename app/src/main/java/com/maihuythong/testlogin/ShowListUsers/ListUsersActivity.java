@@ -39,8 +39,8 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
         lvUsers = (ListView) findViewById(R.id.lv_users);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+            toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
 
     }

@@ -143,6 +143,7 @@ public class RateCommentTour extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RateCommentTour.this, showListStopPointsActivity.class);
+                intent.putExtra("isAccTour",false);
                 intent.putExtra("tourId",tourId);
                 startActivity(intent);
             }
