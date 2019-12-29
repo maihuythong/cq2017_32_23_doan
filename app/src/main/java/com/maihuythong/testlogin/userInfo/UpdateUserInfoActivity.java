@@ -117,6 +117,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -201,6 +203,13 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             // TODO: handle exception
             Toast.makeText(UpdateUserInfoActivity.this,"Cant hide keyboard!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
+        startActivity(intent);
     }
 
     @Override
