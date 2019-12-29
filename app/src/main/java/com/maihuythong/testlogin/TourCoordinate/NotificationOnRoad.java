@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -100,7 +102,10 @@ public class NotificationOnRoad extends Activity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        getWindow().setLayout((int)(width*0.9), (int)(height*0.8));
+        getWindow().setLayout((int)(width*0.9), (int)(height*0.64));
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.y = -140;
+        getWindow().setAttributes(params);
 
         setNotification();
 

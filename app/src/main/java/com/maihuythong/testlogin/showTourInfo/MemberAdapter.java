@@ -28,8 +28,6 @@ public class MemberAdapter extends ArrayAdapter {
         this.layoutInvite = layoutInvite;
         this.context = context;
         this.data = data;
-
-
     }
 
     class ViewHolder{
@@ -38,6 +36,7 @@ public class MemberAdapter extends ArrayAdapter {
         TextView userName;
         TextView isHost;
         TextView phone;
+        TextView email;
     }
 
 
@@ -54,6 +53,7 @@ public class MemberAdapter extends ArrayAdapter {
             viewHolder.userName = convertView.findViewById(R.id.member_name);
             viewHolder.phone = convertView.findViewById(R.id.member_phone);
             viewHolder.isHost = convertView.findViewById(R.id.member_host);
+            viewHolder.email = convertView.findViewById(R.id.member_email);
 
             convertView.setTag(viewHolder);
 
@@ -62,19 +62,23 @@ public class MemberAdapter extends ArrayAdapter {
         }
         final Member member = data.get(position);
 //        holder.avatar.setImageResource(null);
-        viewHolder.userName.setText("Name: " + member.getName());
-        viewHolder.phone.setText("Phone: " + member.getPhone());
+        viewHolder.userName.setText(member.getName());
+        if(member.getPhone() != ""){
+            viewHolder.phone.setText("Phone: " + member.getPhone());
+        }
+        else{
+            viewHolder.phone.setText("No phone number");
+        }
         if (member.getAvatar() != null){
             Picasso.get().load(member.getAvatar()).into(viewHolder.userAvatar);
         }else {
             viewHolder.userAvatar = null;                                               // Add default avatar here
         }
-        viewHolder.userId.setText("ID: " + member.getId());
+        viewHolder.userId.setText(member.getId() + "");
         if (member.isHost()){
-            viewHolder.isHost.setText("Host: Yes");
-        }else{
-            viewHolder.isHost.setText("Host: No");
+            viewHolder.userName.setText(member.getName() + " (Host)");
         }
+        viewHolder.email.setText(member.getEmail());
 
         return convertView;
     }

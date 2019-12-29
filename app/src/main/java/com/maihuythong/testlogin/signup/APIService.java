@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.ShowNotiOnRoadList.NotiOnRoadList;
 import com.maihuythong.testlogin.TourCoordinate.GetNotificationList;
 import com.maihuythong.testlogin.TourCoordinate.PostCoordinate;
 import com.maihuythong.testlogin.TourCoordinate.SendMessage;
@@ -271,6 +272,11 @@ public interface APIService {
             @Query("pageSize") Number pageSize
     );
 
+    @GET("/tour/get/noti-on-road")
+    Call<NotiOnRoadList> getNotiOnRoad(@Header("Authorization") String s,
+                                       @Query("tourId") String tourId,
+                                       @Query("pageIndex") long pageIndex,
+                                       @Query("pageSize") String pageSize );
 
     @POST("/tour/set-stop-points")
     @FormUrlEncoded

@@ -16,6 +16,7 @@ import android.util.LayoutDirection;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -67,8 +68,10 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.TourCoordinate.ShowSelectedSP;
 import com.maihuythong.testlogin.model.StopPoints;
 import com.maihuythong.testlogin.pop.ShowPopupActivity;
+import com.maihuythong.testlogin.showTourInfo.StopPoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +93,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
 
     public static final int TEXT_REQUEST = 1;
     private JSONArray stopPointsArray = new JSONArray();
+    private ArrayList<StopPoint> stopPointsArray_2 = new ArrayList<>();
     private String addressFromMarker;
     private double mLat, mLng;
 
@@ -158,9 +162,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(5 * 1000);
-
-
-
 
 //        getLocationPermission();        // check permission before init map
 //        myLocation = findViewById(R.id.my_location);
@@ -421,6 +422,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
             StartPoint = new LatLng(latLng.latitude, latLng.longitude);
             StartPoint = new LatLng(latLng.latitude, latLng.longitude);
             JSONObject tmp = new JSONObject();
+            StopPoint tmp2 = new StopPoint("Start Tour", addressFromMarker, mLat, mLng, 1579242161, 15775192, 1);
             try{
                 tmp.put("name", "Start Tour");
                 tmp.put("lat", mLat);
@@ -430,6 +432,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                 tmp.put("serviceTypeId", 1);
                 tmp.put("address", addressFromMarker);
                 stopPointsArray.put(tmp);
+                stopPointsArray_2.add(tmp2);
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -674,6 +677,21 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                 Toast.makeText(this, "Showing Nearby Places...", Toast.LENGTH_SHORT).show();
                 break;
 
+
+            case R.id.complete_add_stop_point_1:
+                Intent intent111 = new Intent(StopPointGoogleMap.this, ShowSelectedSP.class);
+
+                intent111.putParcelableArrayListExtra("selected_stop_points", stopPointsArray_2);
+
+                Intent intent222 = getIntent();
+                int tourId222 = intent222.getIntExtra("tourId", 1387);
+                intent111.putExtra("tourId", tourId222);
+
+                startActivity(intent111);
+
+                break;
+
+
             case R.id.complete_add_stop_point:
                 StopPoints stopPoints = new StopPoints();
                 //TODO:hihih
@@ -691,6 +709,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                     tmp.put("serviceTypeId", serviceType);
                     tmp.put("address", addressFromMarker);
                     stopPointsArray.put(tmp);
+                    stopPointsArray_2.add(new StopPoint("End Tour", addressFromMarker, mLat, mLng, arrivalAt, leaveAt, serviceType));
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -757,8 +776,6 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                     }
                 };
                 requestQueue.add(jsonObjectRequest);
-
-
         }
     }
 
@@ -809,6 +826,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
 
 
             JSONObject tmp = new JSONObject();
+            StopPoint tmp22 = new StopPoint(stopPointName, addressFromMarker, mLat, mLng, arrivalAt, leaveAt, serviceType);
             try{
                 tmp.put("name", stopPointName);
                 tmp.put("lat", mLat);
@@ -818,6 +836,7 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                 tmp.put("serviceTypeId", serviceType);
                 tmp.put("address", addressFromMarker);
                 stopPointsArray.put(tmp);
+                stopPointsArray_2.add(tmp22);
             }
             catch (JSONException e) {
                 e.printStackTrace();

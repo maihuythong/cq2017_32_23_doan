@@ -34,26 +34,22 @@ public class StopPointAdapter extends ArrayAdapter<StopPoint> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(this.resource, parent, false);
             viewHolder = new ViewHolder();
-
-            viewHolder.nameStopPoint= (TextView) convertView.findViewById(R.id.card_stop_point_name);
-            viewHolder.idStopPoint = (TextView) convertView.findViewById(R.id.card_stop_point_id);
-            viewHolder.serviceIdStopPoint = (TextView) convertView.findViewById(R.id.card_stop_point_serviceId);
+            viewHolder.titleStopPoint= (TextView) convertView.findViewById(R.id.title_stop_point);
+            viewHolder.addrStopPoint= (TextView) convertView.findViewById(R.id.addr_stop_point);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         StopPoint stopPoint = arrStopPoint.get(position);
-        viewHolder.nameStopPoint.setText(stopPoint.getName());
-        viewHolder.idStopPoint.setText(String.valueOf(stopPoint.getId()));
-        viewHolder.serviceIdStopPoint.setText(String.valueOf(stopPoint.getServiceId()));
+        viewHolder.titleStopPoint.setText(stopPoint.getName());
+        viewHolder.addrStopPoint.setText(stopPoint.getAddress());
         return convertView;
     }
 
     public class ViewHolder {
-        public TextView nameStopPoint;
-        public TextView idStopPoint;
-        public TextView serviceIdStopPoint;
+        public TextView titleStopPoint;
+        private TextView addrStopPoint;
     }
 
     public StopPoint getItem(int position){

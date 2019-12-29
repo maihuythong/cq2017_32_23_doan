@@ -7,6 +7,42 @@ public class TourOverview {
     private String child;
     private String price;
     private String name;
+    private long id;
+    private long status;
+    private String minCost;
+    private String maxCost;
+
+    public String getMaxCost() {
+        return maxCost;
+    }
+
+    public void setMinCost(String minCost) {
+        this.minCost = minCost;
+    }
+
+    public String getMinCost() {
+        return minCost;
+    }
+
+    public void setMaxCost(String maxCost) {
+        this.maxCost = maxCost;
+    }
+
+    public long getStatus() {
+        return status;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

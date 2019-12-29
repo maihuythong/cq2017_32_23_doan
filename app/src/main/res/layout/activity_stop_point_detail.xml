@@ -23,14 +23,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="300dp"
-                    android:src="@drawable/hotel_image"
+                    android:src="@drawable/default_restaurant"
                     android:scaleType="centerCrop"/>
 
                 <LinearLayout
                     android:layout_marginTop="250dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/tour_name_gradient"
                     android:gravity="bottom">
                     <TextView
                         android:id="@+id/title_stop_point_info"
@@ -160,24 +159,23 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginBottom="4dp"
                             android:gravity="center_vertical"
-                            >
+                            android:orientation="horizontal">
+
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/home"
-                                />
+                                android:src="@drawable/home" />
+
                             <TextView
+                                android:id="@+id/stop_point_province"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/margin_16dp"
                                 android:layout_marginLeft="@dimen/margin_16dp"
                                 android:text=""
-                                android:id="@+id/stop_point_province"
-                                />
+                                android:textSize="@dimen/margin_16dp" />
                         </LinearLayout>
 
                         <LinearLayout

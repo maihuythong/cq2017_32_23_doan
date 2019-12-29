@@ -1,5 +1,6 @@
 package com.maihuythong.testlogin.showAccountTours;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -238,7 +239,7 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
     private  void sendTourInfo(ArrayList<Tour> arrTour,int position){
         Tour tour;
         tour = arrTour.get(position);
-        Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInfo.class);
+        Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInformation.class);
         intent.putExtra("id",tour.getID());
         startActivity(intent);
     }

@@ -6,11 +6,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -33,6 +43,13 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowNotiOnRoadList.ShowNotiOnRoad;
+import com.maihuythong.testlogin.googlemapapi.DirectionFinder;
+import com.maihuythong.testlogin.googlemapapi.GetNearbyPlaces;
+import com.maihuythong.testlogin.googlemapapi.Route;
+import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
+import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.pop.ShowPopupActivity;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.showTourInfo.StopPoint;
 import com.maihuythong.testlogin.signup.APIService;
@@ -129,7 +146,7 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        FloatingActionButton fab = findViewById(R.id.noti_btn);
+        ImageButton fab = findViewById(R.id.noti_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +157,17 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
             }
         });
 
-        FloatingActionButton fabrc = findViewById(R.id.send_record);
+        ImageButton showNotiListButton = findViewById(R.id.show_noti_list);
+        showNotiListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MapStartTour.this, ShowNotiOnRoad.class);
+                intent1.putExtra("tourId", tourId);
+                startActivity(intent1);
+            }
+        });
+
+        ImageButton fabrc = findViewById(R.id.send_record);
         fabrc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

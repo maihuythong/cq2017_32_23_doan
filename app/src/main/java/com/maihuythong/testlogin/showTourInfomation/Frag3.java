@@ -90,16 +90,28 @@ public class Frag3 extends Fragment {
         CommentAdapter adapter =
                 new CommentAdapter(mView.getContext(), R.layout.custom_comment, mListComment);
         mListView = mView.findViewById(R.id.tour_info_list_view);
-        mListView.setAdapter(adapter);
-        mListView.setOnTouchListener(new View.OnTouchListener() {
-
+        mListView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    return true; // Indicates that this has been handled by you and will not be forwarded further.
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
                 }
-                return false;
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
             }
         });
+        mListView.setAdapter(adapter);
 
         commentContent = mView.findViewById(R.id.tour_info_comment_content);
         ImageButton sendComment = mView.findViewById(R.id.send_comment_tour_info);

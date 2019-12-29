@@ -28,8 +28,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowSystemTourInfo.ShowSystemTourInfo;
 import com.maihuythong.testlogin.showListStopPointSystem.ListStopPointSystemActivity;
 import com.maihuythong.testlogin.showTourInfomation.ShowTourInformation;
+import com.maihuythong.testlogin.userInfo.UpdateUserInfoActivity;
 import com.maihuythong.testlogin.userInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.rate_comment_review.RateCommentTour;
@@ -121,7 +123,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         showUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowListActivity.this, UserInfoActivity.class);
+                Intent intent = new Intent(ShowListActivity.this, UpdateUserInfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -166,7 +168,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             APIService mAPIService = ApiUtils.getAPIService();
             Intent intent = getIntent();
 
-            mAPIService.getList(s,4000, 1).enqueue(new Callback<ShowListReq>() {
+            mAPIService.getList(s,5000, 1).enqueue(new Callback<ShowListReq>() {
                 @Override
                 public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                     if(response.code() == 200){
@@ -216,7 +218,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     private  void openRateCommentTour(ArrayList<Tour> arrTour,int position){
         Tour tt;
         tt = arrTour.get(position);
-        Intent intent = new Intent(ShowListActivity.this, RateCommentTour.class);
+        Intent intent = new Intent(ShowListActivity.this, ShowSystemTourInfo.class);
         intent.putExtra("pos", position);
         intent.putExtra("id", tt.getID());
         intent.putExtra("status", tt.getStatus());

@@ -30,38 +30,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/task_list">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Stop point: "
-                android:textSize="20dp"
+                android:text="Total: "
                 android:textColor="@color/black_text_color"/>
+
             <TextView
                 android:id="@+id/total_stop_point_system"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="20dp"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Display: "
+                android:textColor="@color/black_text_color"
+                android:layout_marginStart="270dp"/>
 
             <TextView
                 android:id="@+id/item_visitble_capacity_list_stop_point"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textSize="20dp"
-                android:textColor="@color/black_text_color"
-                android:layout_marginStart="100dp"
-                />
+                android:text="0"
+                android:textColor="@color/colorPrimary"/>
         </LinearLayout>
 
         <ListView

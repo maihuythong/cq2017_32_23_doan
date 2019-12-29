@@ -378,11 +378,12 @@ public class UpdateStopPointActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Toast.makeText(getApplicationContext(), "Update Success!", Toast.LENGTH_LONG).show();
                 overridePendingTransition(0, 0);
-                Intent intent = new Intent(getApplicationContext(), showListStopPointsActivity.class);
-                intent.putExtra("isAccTour",true);
-                intent.putExtra("tourId",tourId);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+//                Intent intent = new Intent(getApplicationContext(), showListStopPointsActivity.class);
+//                intent.putExtra("isAccTour",true);
+//                intent.putExtra("tourId",tourId);
+//                startActivity(intent);
+//                overridePendingTransition(0, 0);
+                setResult(RESULT_OK);
                 finish();
             }
         }, new Response.ErrorListener() {

@@ -23,8 +23,10 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".stopPointInfo.UpdateStopPointActivity"></activity>
+        <activity android:name=".ShowNotiOnRoadList.ShowNotiOnRoad"
+            android:theme="@style/AppTheme.PopupTheme"></activity>
         <activity android:name=".showListStopPointSystem.ListStopPointSystemActivity" />
+        <activity android:name=".stopPointInfo.UpdateStopPointActivity"></activity>
         <activity android:name=".stopPointInfo.StopPointDetailActivity" />
         <activity android:name=".showListStopPoints.showListStopPointsActivity" />
         <activity android:name=".forgotPassword.RecoveryPasswordActivity" />
@@ -125,7 +127,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".showTourInfomation.ShowTourInformation"/>
+        <activity android:name=".showTourInfomation.ShowTourInformation" />
+        <activity android:name=".ShowSPInformation.ShowSPInformation" />
+        <activity android:name=".ShowSystemTourInfo.ShowSystemTourInfo" />
         <service
             android:name=".firebase.MyFirebaseService" android:stopWithTask="true">
             <intent-filter>
@@ -162,6 +166,10 @@
         <activity android:name=".TourCoordinate.Record"
             android:theme="@style/AppTheme.PopupTheme"/>
 
+        <activity android:name=".MainTabbedLayout.MainTabbedActivity"/>
+
+        <activity android:name=".TourCoordinate.ShowSelectedSP"
+            android:theme="@style/AppTheme.PopupTheme"/>
     </application>
 
 </manifest>

@@ -1,68 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".TourCoordinate.NotificationOnRoad">
+    tools:context=".TourCoordinate.NotificationOnRoad"
+    android:orientation="vertical"
+    android:elevation="10dp">
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view_chat"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/chat_linear_layout"
-        android:layout_marginBottom="6dp"
-        >
-    </androidx.recyclerview.widget.RecyclerView>
+        android:orientation="vertical"
+        android:background="@drawable/card_background_no_shadow"
+        android:layout_margin="8dp">
 
-
-    <RelativeLayout
-        android:id="@+id/chat_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/background_light"
-        android:orientation="horizontal"
-        >
-
-
-        <ImageButton
-            android:id="@+id/recorder_btn"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_send"
-            android:layout_alignParentStart="true"
-            android:backgroundTint="@android:color/white"
-            />
-
-
-        <EditText
-            android:id="@+id/input_message"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:hint="Aa"
-            android:padding="15dp"
-            android:maxLines="5"
-            android:layout_toEndOf="@+id/recorder_btn"
-            android:layout_toStartOf="@+id/send_message_btn"
-            />
+            android:text="Chats"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/black_text_color"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view_chat"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_above="@+id/chat_linear_layout"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
 
 
-        <ImageButton
-            android:id="@+id/send_message_btn"
-            android:layout_width="60dp"
-            android:layout_centerVertical="true"
+        <LinearLayout
+            android:id="@+id/chat_linear_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_send"
-            android:layout_alignParentEnd="true"
-            android:backgroundTint="@android:color/white"
-            />
+            android:orientation="horizontal"
+            >
 
-    </RelativeLayout>
 
-</RelativeLayout>
+            <ImageButton
+                android:id="@+id/recorder_btn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/micro"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@android:color/white"
+                android:layout_weight="1"
+                />
+
+
+            <EditText
+                android:id="@+id/input_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:hint="Your message"
+                android:padding="15dp"
+                android:maxLines="5"
+                />
+
+
+            <ImageButton
+                android:id="@+id/send_message_btn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:src="@drawable/send"
+                android:backgroundTint="@android:color/white"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

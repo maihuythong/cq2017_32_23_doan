@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ import java.io.IOException;
 
 public class Record extends AppCompatActivity {
 
-    private Button play, stop, record;
+    private ImageButton play, stop, record;
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
@@ -113,6 +114,8 @@ public class Record extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_test);
+        getSupportActionBar().hide();
+
         requestAudioPermissions();
         play = findViewById(R.id.play);
         stop = findViewById(R.id.stop);
@@ -123,7 +126,7 @@ public class Record extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        getWindow().setLayout((int)(width*0.9), (int)(height*0.3));
+        getWindow().setLayout((int)(width*0.9), (int)(height*0.2));
         fileName = getExternalCacheDir().getAbsolutePath();
         fileName += "/audiorecordtest.3gp";
 

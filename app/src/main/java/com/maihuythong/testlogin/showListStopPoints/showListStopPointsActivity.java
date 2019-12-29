@@ -49,6 +49,7 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
     long tourId;
     ListView lvStopPoints;
     private Toolbar toolbar;
+
     private boolean isAccTour=false;
 
     @Override

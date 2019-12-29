@@ -1,8 +1,11 @@
 package com.maihuythong.testlogin.showTourInfo;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StopPoint {
+public class StopPoint implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -59,6 +62,44 @@ public class StopPoint {
     @SerializedName("index")
     @Expose
     private  int index;
+
+    public StopPoint(String name, String address, Number lat, Number Long,
+                     long arrivalAt, long leaveAt, int serviceTypeId){
+        this.name = name;
+        this.address = address;
+        this.lat = lat;
+        this.Long = Long;
+        this.arrivalAt = arrivalAt;
+        this.leaveAt = leaveAt;
+        this.serviceTypeId = serviceTypeId;
+    }
+
+    protected StopPoint(Parcel in) {
+        id = in.readInt();
+        serviceId = in.readInt();
+        address = in.readString();
+        provinceId = in.readInt();
+        name = in.readString();
+        arrivalAt = in.readLong();
+        leaveAt = in.readLong();
+        minCost = in.readLong();
+        maxCost = in.readLong();
+        serviceTypeId = in.readInt();
+        avatar = in.readString();
+        index = in.readInt();
+    }
+
+    public static final Creator<StopPoint> CREATOR = new Creator<StopPoint>() {
+        @Override
+        public StopPoint createFromParcel(Parcel in) {
+            return new StopPoint(in);
+        }
+
+        @Override
+        public StopPoint[] newArray(int size) {
+            return new StopPoint[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -141,5 +182,26 @@ public class StopPoint {
     }
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(serviceId);
+        dest.writeString(address);
+        dest.writeInt(provinceId);
+        dest.writeString(name);
+        dest.writeLong(arrivalAt);
+        dest.writeLong(leaveAt);
+        dest.writeLong(minCost);
+        dest.writeLong(maxCost);
+        dest.writeInt(serviceTypeId);
+        dest.writeString(avatar);
+        dest.writeInt(index);
     }
 }

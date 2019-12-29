@@ -17,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.maihuythong.testlogin.MainTabbedLayout.MainTabbedActivity;
 import com.maihuythong.testlogin.firebase.MyFirebaseService;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.network.MyAPIClient;
@@ -72,7 +73,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
 
-            Intent intent = new Intent(this, ShowListActivity.class);
+            Intent intent = new Intent(this, MainTabbedActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
