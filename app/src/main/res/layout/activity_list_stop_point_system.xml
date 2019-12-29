@@ -52,6 +52,16 @@
                 android:textSize="20dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:id="@+id/item_visitble_capacity_list_stop_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textSize="20dp"
+                android:textColor="@color/black_text_color"
+                android:layout_marginStart="100dp"
+                />
         </LinearLayout>
 
         <ListView

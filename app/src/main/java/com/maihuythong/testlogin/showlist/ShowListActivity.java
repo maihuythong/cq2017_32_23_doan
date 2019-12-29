@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,9 +57,16 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     private SharedPreferences sf;
     private Toolbar toolbar;
     private TextView totalToursView;
+    private TextView visibleItemView;
     private long totalTours;
-    private final ArrayList<Tour> arrTour = new ArrayList<>();
+    private final ArrayList<Tour> toursTotalArray = new ArrayList<>();
+    private final ArrayList<Tour> toursVisitble = new ArrayList<>();
 
+    private int visitbleItemCapacity = 10;
+
+
+    private int currentPos=0;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +75,9 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         totalToursView = findViewById(R.id.total_available_tours);
+        visibleItemView = findViewById(R.id.item_visitble_capacity_list_tour);
 
+        visibleItemView.setText(String.valueOf(visitbleItemCapacity));
         try {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
@@ -165,16 +175,15 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
                         totalToursView.setText(Long.toString(totalTours));
                         lvTour = (ListView) findViewById(R.id.lv_tour);
 
-                        for(int i= t.length-1; i>=0; i--){
-                            if(t[i].getStatus()!=-1)
-                                arrTour.add(t[i]);
-                        }
-                        CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this,R.layout.row_listview,arrTour);
-                        lvTour.setAdapter(customAdaper);
+                        for (int i =0 ; i< t.length;i++)
+                            if(t[i].getStatus()!=-1) toursTotalArray.add(t[i]);
+
+                        LoadData();
+
                         lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                openRateCommentTour(arrTour, position);
+                                openRateCommentTour(toursVisitble, position);
                             }
                         });
                         Toast.makeText(ShowListActivity.this,"Get tours finished!", Toast.LENGTH_LONG).show();
@@ -260,30 +269,36 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+
+        visibleItemView.setText(String.valueOf(visitbleItemCapacity));
+        toursVisitble.clear();
+        toursTotalArray.clear();
         String userInput = query.toString();
-        final ArrayList<Tour> foundedTours = new ArrayList<>();
 
         if(userInput.isEmpty())
         {
-            foundedTours.addAll(Arrays.asList(t));
-
+            for (int i =0 ; i< t.length;i++)
+                if(t[i].getStatus()!=-1) toursTotalArray.add(t[i]);
         }else{
             for (int i =0;i < totalTours;i++){
-                if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().contains(userInput))
-                        foundedTours.add(t[i]);
-                if(Long.toString(t[i].getID()).contains(userInput))
-                    foundedTours.add(t[i]);
+                if(t[i].getStatus()!=-1) {
+                    if (!Objects.isNull(t[i].getName()))
+                        if (t[i].getName().contains(userInput))
+                            toursTotalArray.add(t[i]);
+                    if (Long.toString(t[i].getID()).contains(userInput))
+                        toursTotalArray.add(t[i]);
+                }
             }
         }
 
-            CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
-            lvTour.setAdapter(customAdaper);
-        if(!foundedTours.isEmpty()) {
+
+        LoadData();
+
+        if(!toursTotalArray.isEmpty()) {
             lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    openRateCommentTour(foundedTours, position);
+                    openRateCommentTour(toursTotalArray, position);
                 }
             });
         }
@@ -292,33 +307,99 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        visibleItemView.setText(String.valueOf(visitbleItemCapacity));
+        toursVisitble.clear();
+        toursTotalArray.clear();
         String userInput = newText.toString();
-        final ArrayList<Tour> foundedTours = new ArrayList<>();
 
         if(userInput.isEmpty())
         {
-            foundedTours.addAll(Arrays.asList(t));
-
+            for (int i =0 ; i< t.length;i++)
+                if(t[i].getStatus()!=-1) toursTotalArray.add(t[i]);
         }else{
             for (int i =0;i < totalTours;i++){
-                if(!Objects.isNull(t[i].getName()))
-                    if(t[i].getName().contains(userInput))
-                        foundedTours.add(t[i]);
-                if(Long.toString(t[i].getID()).contains(userInput))
-                    foundedTours.add(t[i]);
+                if(t[i].getStatus()!=-1) {
+                    if (!Objects.isNull(t[i].getName()))
+                        if (t[i].getName().contains(userInput))
+                            toursTotalArray.add(t[i]);
+                    if (Long.toString(t[i].getID()).contains(userInput))
+                        toursTotalArray.add(t[i]);
+                }
             }
         }
 
-            CustomAdapter customAdaper = new CustomAdapter(ShowListActivity.this, R.layout.row_listview, foundedTours);
-            lvTour.setAdapter(customAdaper);
-        if(!foundedTours.isEmpty()) {
+
+        LoadData();
+
+        if(!toursTotalArray.isEmpty()) {
             lvTour.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    openRateCommentTour(foundedTours, position);
+                    openRateCommentTour(toursTotalArray, position);
                 }
             });
         }
         return true;
+    }
+
+     private void LoadData(){
+
+        if(toursTotalArray.size()<visitbleItemCapacity)
+        {
+            toursVisitble.addAll(toursTotalArray);
+            currentPos=toursVisitble.size()-1;
+
+        }else {
+
+            for (int i = 0; i < visitbleItemCapacity; i++) {
+                toursVisitble.add(toursTotalArray.get(i));
+                currentPos = i;
+            }
+        }
+        CustomAdapter customAdaper = new CustomAdapter(getApplicationContext(),R.layout.row_listview,toursVisitble);
+        lvTour.setAdapter(customAdaper);
+
+        lvTour.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (lvTour.getAdapter() == null)
+                    return ;
+
+                if (lvTour.getAdapter().getCount() == 0)
+                    return ;
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                int l = visibleItemCount + firstVisibleItem;
+                if (l >= totalItemCount && !isLoading) {
+                    // It is time to add new data. We call the listener
+                    isLoading = true;
+                    loadMoreData();
+                }
+            }
+        });
+
+    }
+
+    private void loadMoreData(){
+        if(toursTotalArray.size()<toursVisitble.size()) return;
+
+        if(toursTotalArray.size()<= currentPos + visitbleItemCapacity)
+        {
+            toursVisitble.addAll(toursTotalArray);
+        }else{
+            for (int i=currentPos;i<currentPos + visitbleItemCapacity;i++){
+                toursVisitble.add(toursTotalArray.get(i));
+            }
+        }
+
+        currentPos = toursVisitble.size()-1;
+        CustomAdapter customAdaper = new CustomAdapter(getApplicationContext(),R.layout.row_listview,toursVisitble);
+        lvTour.setAdapter(customAdaper);
+        lvTour.setSelection(currentPos-visitbleItemCapacity);
+        isLoading=false;
+        visibleItemView.setText(String.valueOf(toursVisitble.size()));
     }
 }

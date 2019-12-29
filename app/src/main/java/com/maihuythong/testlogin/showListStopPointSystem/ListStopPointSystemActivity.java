@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -46,7 +47,14 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
     ListView lvStopPoints;
 
     private TextView totalStopPointView;
+    private TextView visibleStopPointView;
     private long totalStopPoint;
+
+    ArrayList<StopPoint> totalStopPointArray = new ArrayList<>();
+    ArrayList<StopPoint> visitbleStopPointArray  = new ArrayList<>();
+    private int visitbleItemCapacity=10;
+    private int currentPos=0;
+    private boolean isLoading =false;
 
 
     @Override
@@ -59,7 +67,9 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
 
         lvStopPoints = (ListView)findViewById(R.id.lv_stop_point_system);
         totalStopPointView = findViewById(R.id.total_stop_point_system);
+        visibleStopPointView =findViewById(R.id.item_visitble_capacity_list_stop_point);
         new LoadStopPointSystemAsyncTask(this).execute();
+        visibleStopPointView.setText(String.valueOf(visitbleItemCapacity));
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,28 +106,30 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        visibleStopPointView.setText(String.valueOf(visitbleItemCapacity));
+        visitbleStopPointArray.clear();
+        totalStopPointArray.clear();
+
         String userInput = newText.toString();
-        ArrayList<StopPoint> foundedStopPoints;
-        foundedStopPoints= new ArrayList<>();
+
 
         if(userInput.isEmpty())
         {
-            foundedStopPoints.addAll(Arrays.asList(arrStopPoints));
+            totalStopPointArray.addAll(Arrays.asList(arrStopPoints));
 
         }else{
             for (int i =0;i < arrStopPoints.length;i++){
                 if(!Objects.isNull(arrStopPoints[i].getName()))
                     if(arrStopPoints[i].getName().contains(userInput))
-                        foundedStopPoints.add(arrStopPoints[i]);
+                        totalStopPointArray.add(arrStopPoints[i]);
                 if(Long.toString(arrStopPoints[i].getId()).contains(userInput))
-                    foundedStopPoints.add(arrStopPoints[i]);
+                    totalStopPointArray.add(arrStopPoints[i]);
             }
         }
 
 
-        StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,foundedStopPoints);
-        lvStopPoints.setAdapter(stopPointAdapter);
-
+        LoadData();
 
         return true;
     }
@@ -166,13 +178,13 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
                     totalStopPoint=response.body().getTotal();
 
                     totalStopPointView.setText(String.valueOf(totalStopPoint));
-                    final ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
-                    StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,arrayStopPoints);
-                    lvStopPoints.setAdapter(stopPointAdapter);
+
+                    totalStopPointArray = new ArrayList<>(Arrays.asList(arrStopPoints));
+                    LoadData();
                     lvStopPoints.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            showInfoStopPoint(arrayStopPoints,position);
+                            showInfoStopPoint(totalStopPointArray,position);
                         }
                     });
 
@@ -239,4 +251,69 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
         onBackPressed();
         return true;
     }
+
+
+
+    private void LoadData(){
+
+        if(totalStopPointArray.size()<visitbleItemCapacity)
+        {
+            visitbleStopPointArray.addAll(totalStopPointArray);
+            currentPos=visitbleStopPointArray.size()-1;
+
+        }else {
+
+            for (int i = 0; i < visitbleItemCapacity; i++) {
+                visitbleStopPointArray.add(totalStopPointArray.get(i));
+                currentPos = i;
+            }
+        }
+        StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,visitbleStopPointArray);
+        lvStopPoints.setAdapter(stopPointAdapter);
+
+        lvStopPoints.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (lvStopPoints.getAdapter() == null)
+                    return ;
+
+                if (lvStopPoints.getAdapter().getCount() == 0)
+                    return ;
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                int l = visibleItemCount + firstVisibleItem;
+                if (l >= totalItemCount && !isLoading) {
+                    // It is time to add new data. We call the listener
+                    isLoading = true;
+                    loadMoreData();
+                }
+            }
+        });
+
+    }
+
+    private void loadMoreData(){
+        if(totalStopPointArray.size()<visitbleStopPointArray.size()) return;
+
+        if(totalStopPointArray.size()<= currentPos + visitbleItemCapacity)
+        {
+            visitbleStopPointArray.addAll(totalStopPointArray);
+        }else{
+            for (int i=currentPos;i<currentPos + visitbleItemCapacity;i++){
+                visitbleStopPointArray.add(totalStopPointArray.get(i));
+            }
+        }
+
+        currentPos = visitbleStopPointArray.size()-1;
+        StopPointAdapter stopPointAdapter = new StopPointAdapter(getApplicationContext(),R.layout.stop_point_card,visitbleStopPointArray);
+        lvStopPoints.setAdapter(stopPointAdapter);
+        lvStopPoints.setSelection(currentPos-visitbleItemCapacity);
+        isLoading=false;
+        visibleStopPointView.setText(String.valueOf(visitbleStopPointArray.size()));
+    }
+
+
 }
