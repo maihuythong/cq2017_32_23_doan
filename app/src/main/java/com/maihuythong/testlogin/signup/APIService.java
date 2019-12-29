@@ -287,5 +287,11 @@ public interface APIService {
                                    @Field("status") Number status
     );
 
+    @GET("/tour/remove-stop-point")
+    Call<SendInvationRes> DeleteStopPoint(
+            @Header("Authorization") String s,
+            @Query("stopPointId") String stopPointId
+    );
+
 
 }

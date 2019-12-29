@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.forgotPassword.RecoveryPasswordActivity;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.showTourInfo.StopPoint;
@@ -233,22 +234,71 @@ public class showListStopPointsActivity extends AppCompatActivity implements Sea
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
+                }).setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DeleteStopPoint(position);
+                    }
                 }).create();
                 alertDialog.show();
 
                 Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                Button btnNeutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
 
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
                 layoutParams.weight = 10;
                 btnPositive.setLayoutParams(layoutParams);
                 btnNegative.setLayoutParams(layoutParams);
+                btnNeutral.setLayoutParams(layoutParams);
                 return true;
             }
         });
     }
 
 
+    private void DeleteStopPoint(int position){
+        final ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
+        StopPoint newStopPoint;
+        newStopPoint = arrayStopPoints.get(position);
+        String token = GetTokenLoginAccess();
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        mAPIService.DeleteStopPoint(token,String.valueOf(newStopPoint.getId())).enqueue(new Callback<SendInvationRes>() {
+            @Override
+            public void onResponse(Call<SendInvationRes> call, Response<SendInvationRes> response) {
+
+                if(response.code()==200){
+
+                    Toast.makeText(getApplicationContext(),"Delete suscess", Toast.LENGTH_LONG).show();
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    overridePendingTransition(0, 0);
+                }
+
+                if(response.code()==400||response.code()==404||response.code()==403 || response.code()==500) {
+                    String message = "Send failed!";
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        message = jObjError.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getApplicationContext(),"Error: "+ message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendInvationRes> call, Throwable t) {
+
+            }
+        });
+
+
+    }
     private void UpdateStopPoint(int position){
 
         final ArrayList<StopPoint> arrayStopPoints = new ArrayList<>(Arrays.asList(arrStopPoints));
