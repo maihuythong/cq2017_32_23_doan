@@ -127,17 +127,17 @@
 
         <activity android:name=".showTourInfomation.ShowTourInformation"/>
         <service
-            android:name=".firebase.MyFirebaseService">
+            android:name=".firebase.MyFirebaseService" android:stopWithTask="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name=".TourCoordinate.LocationService" android:enabled="true" android:exported="true"></service>
+
 
         <service
             android:name=".TourCoordinate.LocationService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" android:stopWithTask="true"/>
 
         <activity
             android:name=".TourCoordinate.MapStartTour"

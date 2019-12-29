@@ -135,7 +135,11 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
     protected LocationRequest locationRequest;
     int REQUEST_CHECK_SETTINGS = 100;
 
-
+    private String stopPointName;
+    private int serviceType;
+    private int province;
+    private long arrivalAt;
+    private long leaveAt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -415,6 +419,21 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
                     .title("Start Tour")
                     .draggable(true));
             StartPoint = new LatLng(latLng.latitude, latLng.longitude);
+            StartPoint = new LatLng(latLng.latitude, latLng.longitude);
+            JSONObject tmp = new JSONObject();
+            try{
+                tmp.put("name", "Start Tour");
+                tmp.put("lat", mLat);
+                tmp.put("long", mLng);
+                tmp.put("leaveAt", "1577519242161");
+                tmp.put("arrivalAt", "1577519242161");
+                tmp.put("serviceTypeId", 1);
+                tmp.put("address", addressFromMarker);
+                stopPointsArray.put(tmp);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
         }else {
             currentLatlngSelected = new LatLng(latLng.latitude, latLng.longitude);
             tempstopPoints.add(new LatLng(latLng.latitude, latLng.longitude));
@@ -459,6 +478,9 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
 
                 intent.putExtra("EXTRA_ADDRESS", address);
                 addressFromMarker = address;
+
+
+
                 startActivityForResult(intent, 1);
 
 
@@ -659,7 +681,20 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
 //                stopPoints.setStopPoints(arrayStopPoint);
 
 
-
+                JSONObject tmp = new JSONObject();
+                try{
+                    tmp.put("name", "End Tour");
+                    tmp.put("lat", mLat);
+                    tmp.put("long", mLng);
+                    tmp.put("leaveAt", arrivalAt);
+                    tmp.put("arrivalAt", leaveAt);
+                    tmp.put("serviceTypeId", serviceType);
+                    tmp.put("address", addressFromMarker);
+                    stopPointsArray.put(tmp);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
 
@@ -749,11 +784,11 @@ public class StopPointGoogleMap extends AppCompatActivity implements GoogleApiCl
         // Test for the right intent reply.
         // Test to make sure the intent reply result was good.
         if (resultCode == RESULT_OK && requestCode == 1) {
-            String stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
-            int serviceType = data.getIntExtra("REPLY_SERVICE_TYPE", 1);
-            int province = data.getIntExtra("REPLY_PROVINCE", 1);
-            long arrivalAt = data.getLongExtra("REPLY_ARRIVAL_AT", 1000000);
-            long leaveAt = data.getLongExtra("REPLY_LEAVE_AT", 2000000);
+            stopPointName = data.getStringExtra("REPLY_STOP_POINT_NAME");
+            serviceType = data.getIntExtra("REPLY_SERVICE_TYPE", 1);
+            province = data.getIntExtra("REPLY_PROVINCE", 1);
+            arrivalAt = data.getLongExtra("REPLY_ARRIVAL_AT", 1000000);
+            leaveAt = data.getLongExtra("REPLY_LEAVE_AT", 2000000);
 
             currentStopPoint.setTitle("Stop point: " + stopPointName);
 

@@ -43,11 +43,11 @@ import android.location.LocationManager;
 
 public class LocationService extends Service implements LocationListener {
     public static final int notify = 10000;  //interval between two services(Here Service run every 5 seconds)
-    int count = 0;  //number of times service is display
+    //int count = 0;  //number of times service is display
     private Handler mHandler = new Handler();   //run on another Thread to avoid crash
     private Timer mTimer = null;    //timer handling
     private SharedPreferences sf;
-    private LatLng currentLatLng;
+    private LatLng currentLatLng = new LatLng(0,0);
     private LatLng lastLatlng;
     private String tourId;
     protected LocationManager locationManager;
@@ -100,12 +100,13 @@ public class LocationService extends Service implements LocationListener {
     public void onDestroy() {
         super.onDestroy();
         mTimer.cancel();    //For Cancel Timer
-        Toast.makeText(this, "Service is Destroyed", Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(this, "Service is Destroyed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLocationChanged(Location location) {
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("CURRENT LOCATION",currentLatLng.toString());
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("LocationDevice");
         broadcastIntent.putExtra("LocationLat", currentLatLng.latitude);
@@ -143,7 +144,7 @@ public class LocationService extends Service implements LocationListener {
                 @Override
                 public void run() {
                     // display toast
-                    Toast.makeText(LocationService.this, "Service is running", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LocationService.this, "Service is running", Toast.LENGTH_SHORT).show();
 
                     String token = LoginActivity.token;
                     if (token == null) {
@@ -151,7 +152,7 @@ public class LocationService extends Service implements LocationListener {
                         token = sf.getString("login_access_token", "");
                     }
 
-                    currentLatLng = getDeviceLocation();
+                    //currentLatLng = getDeviceLocation();
                     double latitude = currentLatLng.latitude;
                     double longitude = currentLatLng.longitude;
                     //if (!currentLatLng.equals(lastLatlng)) {

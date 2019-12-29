@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,8 +33,17 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
+import com.maihuythong.testlogin.showTourInfo.StopPoint;
+import com.maihuythong.testlogin.signup.APIService;
+import com.maihuythong.testlogin.signup.ApiUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapStartTour extends FragmentActivity implements  OnMapReadyCallback  {
 
@@ -56,14 +67,16 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
     private ImageView start_speed_limit;
     private ImageView end_speed_limit;
     LatLng currentLatlng;
-
-
+    private String token;
+    private SharedPreferences sf;
+    private boolean isFirstTime = true;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_on_start);
+        myLocation = findViewById(R.id.my_location);
         final Intent intent = getIntent();
         tourId = intent.getLongExtra("tourId", 0);
         userId = intent.getLongExtra("userId", 0);
@@ -151,6 +164,18 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
                     }
                 });
 
+        myLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatlng, 15f));
+//                map.moveCamera(CameraUpdateFactory
+//                        .newCameraPosition
+//                                (new CameraPosition.Builder()
+//                                        .target(currentLatlng)
+//                                        .zoom(15.5f)
+//                                        .build()));
+            }
+        });
     }
 
     public class ServiceToActivity extends BroadcastReceiver
@@ -338,19 +363,72 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         // get current location
 
 
-            if(!Places.isInitialized()){
-                Places.initialize(getApplicationContext(),getResources().getString(R.string.google_maps_key));
-            }
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getResources().getString(R.string.google_maps_key));
+        }
 
-            //placesClient = Places.createClient(this);
+        //placesClient = Places.createClient(this);
 
 
-            map.getUiSettings().setMyLocationButtonEnabled(false);
-            map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setZoomControlsEnabled(true);
 
-            init();
-            initMap();
-            isMapReady = true;
+        init();
+        initMap();
+        isMapReady = true;
+
+        if (token == null) {
+            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+            token = sf.getString("login_access_token", "");
+        }
+
+        if (isFirstTime){
+            isFirstTime = false;
+            APIService apiService = ApiUtils.getAPIService();
+            apiService.getTourInfo(token,tourId).enqueue(new Callback<GetTourInfo>() {
+                @Override
+                public void onResponse(Call<GetTourInfo> call, Response<GetTourInfo> response) {
+                    StopPoint[] stopPoints = response.body().getStopPoints();
+                    boolean isFirstPos = true;
+                    for (StopPoint point : stopPoints)
+                    {
+                        if (isFirstPos){
+                            map.moveCamera(CameraUpdateFactory
+                                    .newCameraPosition
+                                            (new CameraPosition.Builder()
+                                                    .target(new LatLng(point.getLat().doubleValue(), point.getLong().doubleValue()))
+                                                    .zoom(15.5f)
+                                                    .build()));
+                            isFirstPos = false;
+                        }
+                        if (point.getName().equals("Start Tour")){
+                            map.addMarker(new MarkerOptions()
+                                    .position(new LatLng(point.getLat().doubleValue(), point.getLong().doubleValue()))
+                                    .flat(true)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.start_end))
+                                    .title("Start tour"));
+                        }else if (point.getName().equals("End Tour")){
+                            map.addMarker(new MarkerOptions()
+                                    .position(new LatLng(point.getLat().doubleValue(), point.getLong().doubleValue()))
+                                    .flat(true)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.start_end))
+                                    .title("End tour"));
+                        }else {
+                            map.addMarker(new MarkerOptions()
+                                    .position(new LatLng(point.getLat().doubleValue(), point.getLong().doubleValue()))
+                                    .flat(true)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.stoppoint))
+                                    .title("Start tour"));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetTourInfo> call, Throwable t) {
+
+                }
+            });
+        }
 
     }
 

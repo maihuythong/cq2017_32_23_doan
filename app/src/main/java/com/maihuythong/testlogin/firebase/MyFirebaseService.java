@@ -44,6 +44,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
             case "3":
                 sendNotificationSpeedLimit(remoteMessage.getData().get("tourId"), remoteMessage.getData().get("userId"), remoteMessage.getData().get("lat"),
                         remoteMessage.getData().get("long"), remoteMessage.getData().get("note"));
+                break;
             case "6":
                 sendNotificationInvitation(remoteMessage.getData().get("id"), remoteMessage.getData().get("name"), remoteMessage.getData().get("hostName"));
                 break;

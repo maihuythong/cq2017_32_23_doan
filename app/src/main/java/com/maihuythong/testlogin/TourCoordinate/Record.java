@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.maihuythong.testlogin.R;
 import java.io.IOException;
 
@@ -56,9 +59,13 @@ public class Record extends AppCompatActivity {
 
     private void onPlay(boolean start) {
         if (start) {
+            stop.setEnabled(false);
+            record.setEnabled(false);
             startPlaying();
         } else {
             stopPlaying();
+            stop.setEnabled(true);
+            record.setEnabled(true);
         }
     }
 
@@ -106,6 +113,7 @@ public class Record extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_test);
+        requestAudioPermissions();
         play = findViewById(R.id.play);
         stop = findViewById(R.id.stop);
         record = findViewById(R.id.record);
@@ -124,25 +132,28 @@ public class Record extends AppCompatActivity {
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stop.setEnabled(true);
-                record.setEnabled(false);
-                onRecord(mStartRecording);
                 if (mStartRecording) {
+                    onRecord(mStartRecording);
+                    record.setEnabled(false);
+                    stop.setEnabled(true);
+                    play.setEnabled(false);
                     Toast.makeText(getApplicationContext(), "Start recording...", Toast.LENGTH_SHORT).show();
                 }
+                mStartRecording = !mStartRecording;
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStartRecording = !mStartRecording;
-                onStop();
                 if (!mStartRecording) {
+                    onStop();
                     Toast.makeText(getApplicationContext(), "Stop recording...", Toast.LENGTH_SHORT).show();
                 }
+                mStartRecording = !mStartRecording;
                 record.setEnabled(true);
                 stop.setEnabled(false);
+                play.setEnabled(true);
                 hasRecord = true;
             }
         });
@@ -152,9 +163,7 @@ public class Record extends AppCompatActivity {
             public void onClick(View v) {
                 if(hasRecord) {
                     onPlay(mStartPlaying);
-                    if (mStartPlaying) {
-                        Toast.makeText(getApplicationContext(), "Playing...", Toast.LENGTH_SHORT).show();
-                    }
+                    mStartPlaying = !mStartPlaying;
                 }
             }
         });
@@ -172,6 +181,34 @@ public class Record extends AppCompatActivity {
         if (player != null) {
             player.release();
             player = null;
+        }
+    }
+
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            //When permission is not granted by user, show them message why this permission is needed.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                Toast.makeText(this, "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
+
+                //Give user option to still opt-in the permissions
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        REQUEST_RECORD_AUDIO_PERMISSION);
+
+            } else {
+                // Show user dialog to grant permission to record audio
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        REQUEST_RECORD_AUDIO_PERMISSION);
+            }
+        }
+        //If permission is granted, then go ahead recording audio
+        else if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED) {
         }
     }
 }

@@ -50,6 +50,7 @@ import com.maihuythong.testlogin.ShowListUsers.User;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
 import com.maihuythong.testlogin.TourCoordinate.LocationService;
 import com.maihuythong.testlogin.TourCoordinate.MapStartTour;
+import com.maihuythong.testlogin.TourCoordinate.Record;
 import com.maihuythong.testlogin.firebase.MessagingTour;
 import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
 import com.maihuythong.testlogin.rate_comment_review.Comment;
@@ -278,7 +279,8 @@ public class ShowTourInfo extends AppCompatActivity {
     }
 
     private void openChat() {
-        Intent intent = new Intent(ShowTourInfo.this, MessagingTour.class);
+       // Intent intent = new Intent(ShowTourInfo.this, MessagingTour.class);
+        Intent intent = new Intent(ShowTourInfo.this, Record.class);
         intent.putExtra("tourId", String.valueOf(tourId));
         intent.putExtra("userId", String.valueOf(userId));
         startActivity(intent);
@@ -535,16 +537,17 @@ public class ShowTourInfo extends AppCompatActivity {
                                             msg = "Fail";
                                         }
                                         Log.d("MESSAGING", msg);
-                                        Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
-                                        intent1.putExtra("tourId", tourId);
-                                        startService(intent1);
-                                        Intent map = new Intent(ShowTourInfo.this, MapStartTour.class);
-                                        map.putExtra("tourId", tourId);
-                                        map.putExtra("userId", userId);
-                                        startActivity(map);
+
                                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                        Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
+                        intent1.putExtra("tourId", tourId);
+                        startService(intent1);
+                        Intent map = new Intent(ShowTourInfo.this, MapStartTour.class);
+                        map.putExtra("tourId", tourId);
+                        map.putExtra("userId", userId);
+                        startActivity(map);
                     }else {
                         Toast.makeText(this,"Fail permission location",Toast.LENGTH_SHORT).show();
                     }
@@ -563,11 +566,6 @@ public class ShowTourInfo extends AppCompatActivity {
 
                     Toast.makeText(this,"All permission granted",Toast.LENGTH_SHORT).show();
 
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     String id = String.valueOf(tourId);
                     String topic = "/topics/tour-id-" + id;
 
@@ -580,12 +578,16 @@ public class ShowTourInfo extends AppCompatActivity {
                                         msg = "Fail";
                                     }
                                     Log.d("MESSAGING", msg);
-                                    Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
-                                    intent1.putExtra("tourId", tourId);
-                                    startService(intent1);
-                                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
                                 }
                             });
+                    Intent intent1 = new Intent(getApplicationContext(), LocationService.class);
+                    intent1.putExtra("tourId", tourId);
+                    startService(intent1);
+                    Intent map = new Intent(ShowTourInfo.this, MapStartTour.class);
+                    map.putExtra("tourId", tourId);
+                    map.putExtra("userId", userId);
+                    startActivity(map);
                 }else {
                     Toast.makeText(this,"Fail permission location",Toast.LENGTH_SHORT).show();
                 }
