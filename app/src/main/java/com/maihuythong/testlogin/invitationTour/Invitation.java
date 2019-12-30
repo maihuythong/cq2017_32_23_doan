@@ -3,7 +3,7 @@ package com.maihuythong.testlogin.invitationTour;
 public class Invitation {
     private long id;
     private String hostName;
-    private String tourName;
+    private String name;
     private long timeInvite;
 
     public long getId() {
@@ -22,12 +22,12 @@ public class Invitation {
         this.hostName = hostName;
     }
 
-    public String getTourName() {
-        return tourName;
+    public String getName() {
+        return name;
     }
 
-    public void setTourName(String tourName) {
-        this.tourName = tourName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getTimeInvite() {

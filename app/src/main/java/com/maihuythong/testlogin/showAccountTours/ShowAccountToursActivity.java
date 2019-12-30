@@ -1,5 +1,6 @@
 package com.maihuythong.testlogin.showAccountTours;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.ListUsersActivity;
@@ -192,7 +195,6 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
     }
 
     private void deleteTour(ArrayList<Tour> arrTour,int position){
-
         String s;
         s = LoginActivity.token;
         if(s == null){
@@ -224,6 +226,19 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
             }
         });
 
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTour();
+            }
+        });
+
+    }
+
+    private void AddTour() {
+        startActivity(new Intent(this, CreateTourActivity.class));
     }
 
     //Send invitation
@@ -238,12 +253,12 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
     private  void sendTourInfo(ArrayList<Tour> arrTour,int position){
         Tour tour;
         tour = arrTour.get(position);
-        Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInfo.class);
+        Intent intent = new Intent(ShowAccountToursActivity.this, ShowTourInformation.class);
         intent.putExtra("id",tour.getID());
         startActivity(intent);
     }
 
-
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search_user, menu);
@@ -293,7 +308,7 @@ public class ShowAccountToursActivity extends AppCompatActivity implements Searc
         }
 
             CustomAdapterAccountTours customAdaperAccountTours =
-                    new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours,arrTour);
+                    new CustomAdapterAccountTours(ShowAccountToursActivity.this,R.layout.row_listview_account_tours, arrTour);
             lvTour.setAdapter(customAdaperAccountTours);
 
         return true;

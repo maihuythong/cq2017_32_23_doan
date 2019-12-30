@@ -12,14 +12,12 @@
         android:id="@+id/toolbar"
         android:background="@drawable/action_bar_gradient"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator">
+        android:layout_height="?attr/actionBarSize">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="User Information"
             android:textAlignment="center"
-            android:paddingRight="60dp"
             android:textColor="@color/appbar_text_color"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -160,17 +158,60 @@
 
 
 
-            <Button
-                android:id="@+id/submit_update_user_info"
-                style="?android:textAppearanceSmall"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:text="Update"
-                android:background="@drawable/button"
-                android:textColor="@color/button_text"
-                android:textStyle="bold"
-                android:textSize="@dimen/margin_16dp"/>
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/verify_email"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="VERIFY EMAIL"
+                        style="@style/AppTheme.Button"
+                        android:layout_marginRight="@dimen/margin_16dp"/>
+
+                    <Button
+                        android:id="@+id/verify_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:text="VERIFY PHONE"
+                        style="@style/AppTheme.Button"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/submit_update_user_info"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:text="Update"
+                    android:background="@drawable/button"
+                    android:textColor="@color/button_text"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/margin_16dp"/>
+
+                <Button
+                    android:id="@+id/logout_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:text="LOG OUT"
+                    style="@style/AppTheme.Button"
+                    android:textSize="@dimen/margin_16dp"/>
+            </LinearLayout>
+
 
             <TextView
                 android:layout_marginTop="8dp"
@@ -178,9 +219,195 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:id="@+id/error_dialogue" />
-
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/avatar_user"
+            android:layout_width="wrap_content"
+            android:layout_height="110dp"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_img"/>
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="ID:"
+                    />
+
+                <TextView
+                    android:id="@+id/userInfo_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorAccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Email:" />
+
+                <TextView
+                    android:id="@+id/emailInfo_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Name:" />
+
+                <TextView
+                    android:id="@+id/nameInfo_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone:" />
+
+                <TextView
+                    android:id="@+id/phoneInfo_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Gender:" />
+
+                <TextView
+                    android:id="@+id/genderInfo_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Birthday:" />
+
+                <TextView
+                    android:id="@+id/dobInfo_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Verify email"
+            android:textSize="15dp"
+            android:textColor="@color/quantum_white_text"
+            android:background="@color/colorAccent"
+            android:layout_margin="10dp"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Verify phone"
+            android:textSize="15dp"
+            android:textColor="@color/quantum_white_text"
+            android:background="@color/colorAccent"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="40dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/update_user_info_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="Update information"
+            android:textColor="@color/quantum_white_text"
+            android:textSize="15dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="Log out"
+            android:textColor="@color/quantum_white_text"
+            android:textSize="15dp" />
+    </LinearLayout>
 
 
 </LinearLayout>

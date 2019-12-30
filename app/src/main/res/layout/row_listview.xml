@@ -13,10 +13,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
+            android:background="@drawable/card_background_no_shadow"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:elevation="4dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -41,7 +42,7 @@
                     android:textColor="#000000"
                     android:textStyle="bold"
                     android:textSize="@dimen/margin_16dp"
-                    android:text="Ve nha an tet" />
+                    android:text="null" />
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tvSrc"
                         android:textColor="#000000"
-                        android:text="01/01/2001"/>
+                        android:text="null"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -81,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tvDes"
                         android:textColor="#000000"
-                        android:text="01/02/2003"/>
+                        android:text="null"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -98,13 +99,13 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/colorAccent"
-                        android:text="Start:   "/>
+                        android:text="Min cost:   "/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvStartDate"
                         android:textColor="#000000"
-                        android:text="Start"/>
+                        android:text="null"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,13 +117,54 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/colorAccent"
-                        android:text="End:   "/>
+                        android:text="Max cost:   "/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvEndDate"
                         android:textColor="#000000"
-                        android:text="End"/>
+                        android:text="null"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:text="Adults:   "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvAdult"
+                        android:textColor="#000000"
+                        android:text="null"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
+                        android:text="Children:   "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvChildren"
+                        android:textColor="#000000"
+                        android:text="null"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

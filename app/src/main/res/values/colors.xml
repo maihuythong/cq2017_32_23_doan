@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000bff</color>
+    <color name="colorPrimary">#317CD3</color>
     <color name="colorPrimaryDark">#000bff</color>
-    <color name="colorAccent">#FF9C00</color>
+    <color name="colorAccent">#FF9800</color>
     <color name="button_text">#ffffff</color>
     <color name="text_color">#6D6D6D</color>
     <color name="appbar_text_color">#ffffff</color>

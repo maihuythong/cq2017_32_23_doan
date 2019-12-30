@@ -3,21 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".TourCoordinate.SendSpeedLimitStart"
+    android:gravity="center"
+    android:background="#ffffff"
     >
     <EditText
         android:id="@+id/text_start_limit_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="5"
+        android:hint="Your message"
         />
     <Button
         android:id="@+id/send_speed_limit"
         android:layout_width="110dp"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Send"
-        style="@style/AppTheme.Button"
-        android:layout_marginEnd="@dimen/margin_16dp"/>
+        android:text="SEND"
+        style="@style/AppTheme.Button"/>
 </LinearLayout>

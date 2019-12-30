@@ -43,8 +43,8 @@ public class UsersAdapter extends ArrayAdapter<User> {
         }
 
         User user = arrUser.get(position);
-        viewHolder.userId.setText("Mã người dùng: " + user.getID());
-        viewHolder.userName.setText("Tên người dùng: " + user.getFullName());
+        viewHolder.userId.setText("ID: " + user.getID());
+        viewHolder.userName.setText(user.getFullName());
         return convertView;
     }
 

@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,7 +47,7 @@ public class NotificationOnRoad extends Activity {
     private ImageButton sendMessage;
     private EditText messText;
     private ArrayList<noti> arrayList = new ArrayList<>();
-    private ImageButton recorderbtn;
+    //private ImageButton recorderbtn;
 
 //    private static final String LOG_TAG = "AudioRecordTest";
 //    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -80,7 +82,7 @@ public class NotificationOnRoad extends Activity {
         MyApplication app = (MyApplication)getApplication();
         sendMessage = findViewById(R.id.send_message_btn);
         messText = findViewById(R.id.input_message);
-        recorderbtn = findViewById(R.id.recorder_btn);
+        //recorderbtn = findViewById(R.id.recorder_btn);
 
         token = app.getToken();
         if(token == null){
@@ -100,7 +102,10 @@ public class NotificationOnRoad extends Activity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        getWindow().setLayout((int)(width*0.9), (int)(height*0.8));
+        getWindow().setLayout((int)(width*0.9), (int)(height*0.64));
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.y = -140;
+        getWindow().setAttributes(params);
 
         setNotification();
 

@@ -22,6 +22,7 @@ import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.ShowListUsers.User;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
 import com.maihuythong.testlogin.TourCoordinate.MapStartTour;
+import com.maihuythong.testlogin.TourCoordinate.noti;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
@@ -73,7 +74,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
     private void sendNotificationSpeedLimit(String tourId, final String userId, final String latitude, final String longitude, String note) {
-        Intent intent = new Intent(this, MapStartTour.class);
+        Intent intent = new Intent(this, noti.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -84,14 +85,14 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String title = "", textContent = "";
         if (c == 'e'){
             typeSpeed = false;
-            title = "End limit speed 60km/h";
+            title = "End limit speed";
         }else {
-            title = "Limit speed 60km/h";
+            title = "Limit speed";
         }
 
         textContent = note.substring(1);
         final String finalTitle = title;
-        final String finalTextContent = textContent;
+        final String finalTextContent = "Limit speed: " + textContent;
         final boolean finalTypeSpeed = typeSpeed;
         mAPIService.getListUsers("", 1, 2000).enqueue(new Callback<UserReq>() {
             @Override
@@ -114,6 +115,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
                     broadcastIntent.putExtra("endLimitLocationLat", latitude);
                     broadcastIntent.putExtra("endLimitLocationLong", longitude);
                     broadcastIntent.putExtra("endLimitUserId", userId);
+                    broadcastIntent.putExtra("endLimitNoti", finalTextContent);
                     broadcastIntent.putExtra("endLimitUserName", userName);
                     sendBroadcast(broadcastIntent);
                 }else {
@@ -122,6 +124,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
                     broadcastIntent.putExtra("startLimitLocationLat", latitude);
                     broadcastIntent.putExtra("startLimitLocationLong", longitude);
                     broadcastIntent.putExtra("startLimitUserId", userId);
+                    broadcastIntent.putExtra("startLimitNoti", finalTextContent);
                     broadcastIntent.putExtra("startLimitUserName", userName);
                     sendBroadcast(broadcastIntent);
                 }

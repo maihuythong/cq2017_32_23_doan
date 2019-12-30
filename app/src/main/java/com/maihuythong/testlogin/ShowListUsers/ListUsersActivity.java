@@ -39,10 +39,14 @@ public class ListUsersActivity extends AppCompatActivity implements SearchView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
         lvUsers = (ListView) findViewById(R.id.lv_users);
-            toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
-
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        findViewById(R.id.finish_adding).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

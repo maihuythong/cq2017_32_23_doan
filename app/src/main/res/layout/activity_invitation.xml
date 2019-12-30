@@ -12,14 +12,12 @@
         android:background="@drawable/action_bar_gradient"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:navigationIcon="?attr/homeAsUpIndicator">
+        app:actionViewClass="android.support.v7.widget.SearchView">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tour invitations"
             android:textAlignment="center"
-            android:paddingRight="70dp"
             android:textColor="@color/appbar_text_color"
             android:textSize="20dp"
             android:textStyle="bold"

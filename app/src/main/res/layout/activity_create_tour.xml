@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-
     tools:context="com.maihuythong.testlogin.CreateTourActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:background="@drawable/action_bar_gradient"
@@ -232,6 +232,7 @@
 
 
                     <Button
+                        android:id="@+id/chooseImage_button"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         style="@style/AppTheme.Button"
@@ -271,12 +272,19 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"/>
 
-                    <Button
-                        android:id="@+id/create_tour_button"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="CREATE TOUR"
-                        style="@style/AppTheme.Button"/>
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/create_tour_button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="CREATE TOUR"
+                            style="@style/AppTheme.Button"
+                            android:layout_weight="5"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

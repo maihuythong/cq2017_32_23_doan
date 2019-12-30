@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -156,7 +157,8 @@ public class CreateTourActivity  extends AppCompatActivity {
                             Intent intent = new Intent(CreateTourActivity.this, StopPointGoogleMap.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("tourId", Integer.parseInt(Tourid.toString()));
-                            startActivity(intent);
+                            startActivityForResult(intent, 222);
+                            setResult(RESULT_OK);
                             finish();
                         }
                         if (response.code()==400)

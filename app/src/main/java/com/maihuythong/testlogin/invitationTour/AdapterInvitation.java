@@ -87,7 +87,7 @@ public class AdapterInvitation extends ArrayAdapter {
         final Invitation invitation = data.get(position);
 //        holder.avatar.setImageResource(null);
         viewHolder.inviter.setText(invitation.getHostName());
-        viewHolder.tourName.setText(invitation.getTourName());
+        viewHolder.tourName.setText(invitation.getName());
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
         String dateString = new SimpleDateFormat("MM/dd/yyyy").format(new Date(invitation.getTimeInvite()));
         String timeString = new SimpleDateFormat("HH:mm").format(new Date(invitation.getTimeInvite()));

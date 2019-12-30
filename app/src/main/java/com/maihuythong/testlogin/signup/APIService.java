@@ -2,6 +2,7 @@ package com.maihuythong.testlogin.signup;
 
 import com.maihuythong.testlogin.ShowListUsers.SendInvationRes;
 import com.maihuythong.testlogin.ShowListUsers.UserReq;
+import com.maihuythong.testlogin.ShowNotiOnRoadList.NotiOnRoadList;
 import com.maihuythong.testlogin.TourCoordinate.GetNotificationList;
 import com.maihuythong.testlogin.TourCoordinate.PostCoordinate;
 import com.maihuythong.testlogin.TourCoordinate.SendMessage;
@@ -46,7 +47,9 @@ public interface APIService {
     @FormUrlEncoded
     Call<Post> signUp(@Field("email") String email,
                       @Field("password") String password,
-                      @Field("phone") String phone);
+                      @Field("phone") String phone,
+                      @Field("dob") String dob
+                      );
 
 
     @POST("/tour/set-stop-points")
@@ -271,6 +274,11 @@ public interface APIService {
             @Query("pageSize") Number pageSize
     );
 
+    @GET("/tour/get/noti-on-road")
+    Call<NotiOnRoadList> getNotiOnRoad(@Header("Authorization") String s,
+                                       @Query("tourId") String tourId,
+                                       @Query("pageIndex") long pageIndex,
+                                       @Query("pageSize") String pageSize );
 
     @POST("/tour/set-stop-points")
     @FormUrlEncoded
@@ -285,6 +293,12 @@ public interface APIService {
     Call<UpdateTourReq> DeleteTour(@Header("Authorization") String s,
                                    @Field("id") long id,
                                    @Field("status") Number status
+    );
+
+    @GET("/tour/remove-stop-point")
+    Call<SendInvationRes> DeleteStopPoint(
+            @Header("Authorization") String s,
+            @Query("stopPointId") String stopPointId
     );
 
 

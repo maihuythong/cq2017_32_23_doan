@@ -18,12 +18,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_margin="@dimen/margin_16dp"
         android:orientation="horizontal"
         android:elevation="10dp"
-        android:background="#FFF"
+        android:background="@drawable/card_background"
         android:id="@+id/rlLayoutSearch"
         >
 
@@ -73,74 +71,111 @@
 
     <ImageView
         android:contentDescription="@string/my_current_location"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_below="@+id/rlLayoutSearch"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:id="@+id/my_location"
-        android:src="@drawable/ic_my_location"
+        android:src="@drawable/marker_cute"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_16dp"
+        android:padding="3dp"
+        android:background="@drawable/card_background"
         />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:id="@+id/suggestion_layout"
+        android:background="@drawable/card_background"
+        android:layout_margin="@dimen/margin_16dp"
+        android:padding="@dimen/margin_16dp"
+        android:elevation="10dp"
         >
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_hotel"
-            android:id="@+id/hotel"
-            android:contentDescription="@string/hotel"
-            android:onClick="onClick"
-            android:layout_margin="5dp"
-            />
-        <ImageView
-            android:layout_width="wrap_content"
+            android:text="Near by"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_restaurant"
-            android:id="@+id/restaurant"
-            android:onClick="onClick"
-            android:contentDescription="@string/restaurant"
-            android:layout_margin="5dp"
-            />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/rest_station"
-            android:id="@+id/rest_station"
-            android:onClick="onClick"
-            android:contentDescription="@string/rest_station"
-            android:layout_margin="5dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="8dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/hotel_icon"
+                android:id="@+id/hotel"
+                android:contentDescription="@string/hotel"
+                android:onClick="onClick"
+                android:layout_margin="8dp"
+                />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/restaurant_icon"
+                android:id="@+id/restaurant"
+                android:onClick="onClick"
+                android:contentDescription="@string/restaurant"
+                android:padding="2dp"
+                android:layout_margin="8dp"
+                />
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/rest_station_icon"
+                android:id="@+id/rest_station"
+                android:onClick="onClick"
+                android:contentDescription="@string/rest_station"
+                android:padding="2dp"
+                android:layout_margin="8dp"
+                />
+            <ImageView
+                android:id="@+id/other"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/other_places"
+                android:onClick="onClick"
+                android:src="@drawable/other_icon" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/other"
-            android:layout_width="24dp"
-            android:layout_height="27dp"
-            android:layout_margin="5dp"
-            android:contentDescription="@string/other_places"
-            android:onClick="onClick"
-            android:src="@drawable/other" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/complete_add_stop_point_1"
+                style="@style/AppTheme.Button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="STOP POINTS" />
+
+            <Button
+                android:id="@+id/complete_add_stop_point"
+                style="@style/AppTheme.Button"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:text="COMPLETE"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/complete_add_stop_point"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/complete_adding_stop_points"
-        android:layout_below="@+id/rlLayoutSearch"
-        android:onClick="onClick"
-        android:textColor="@color/colorAccent"
-        />
 
 
 

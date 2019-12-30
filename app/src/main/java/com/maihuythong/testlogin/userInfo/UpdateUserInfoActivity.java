@@ -1,9 +1,11 @@
 package com.maihuythong.testlogin.userInfo;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,17 +17,26 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.android.material.snackbar.Snackbar;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +48,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UpdateUserInfoActivity extends AppCompatActivity {
-
     private ImageView avatarView;
     private AutoCompleteTextView fullNameView;
     private AutoCompleteTextView emailView;
@@ -52,6 +62,13 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     private String avatarUser;
     private long genderUser;
 
+    public ProgressDialog mProgressDialog;
+
+    private TextView userIdView;
+    private TextView genderView;
+
+    UserInfoRes UserInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +77,9 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
+        userIdView = (TextView)findViewById(R.id.userInfo_id);
+        genderView = (TextView)findViewById(R.id.genderInfo_user);
+        avatarView = (ImageView)findViewById(R.id.avatar_user);
         avatarView = (ImageView)findViewById(R.id.avatar_view_up);
         fullNameView = (AutoCompleteTextView)findViewById(R.id.full_name_up);
         emailView = (AutoCompleteTextView)findViewById(R.id.email_up);
@@ -68,12 +87,28 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         dobView = (EditText)findViewById(R.id.dob_up);
         genderGroup = (RadioGroup)findViewById(R.id.radio_group_gender_up);
 
-        fullNameView.setText(intent.getStringExtra("fullName"));
-        emailView.setText(intent.getStringExtra("email"));
-        phoneView.setText(intent.getStringExtra("phone"));
-        dobView.setText(intent.getStringExtra("dob"));
-        if(!Objects.isNull(intent.getStringExtra("avatar")))
-            Picasso.get().load(intent.getStringExtra("avatar")).into(avatarView);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+
+        GetUserInfo();
+
+        Button LogOutButton = (Button)findViewById(R.id.logout_button);
+        LogOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogOut();
+            }
+        });
+
+        Button VerifyEmail =(Button)findViewById(R.id.verify_email);
+
+        VerifyEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getVerifyCode("email");
+            }
+        });
+
         genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -112,11 +147,117 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
 
     }
 
+    private void LogOut(){
+        mProgressDialog.show();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(UpdateUserInfoActivity.this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(UpdateUserInfoActivity.this.getString(R.string.saved_access_token));
+        editor.remove(UpdateUserInfoActivity.this.getString(R.string.saved_access_token_time));
+        editor.commit();
+        LogOutFaceBook();
+        // Open LoginActivity
+        Intent intent = new Intent(UpdateUserInfoActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        UpdateUserInfoActivity.this.startActivity(intent);
+        UpdateUserInfoActivity.this.finish();
+        mProgressDialog.hide();
+    }
+
+    private void LogOutFaceBook(){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        LoginManager.getInstance().logOut();
+        AccessToken.setCurrentAccessToken(null);
+    }
+
+    private void getVerifyCode(final String typeVerify){
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        mAPIService.getVerify(UserInfo.getID(),typeVerify).enqueue(new Callback<GetVerifyCodeRes>() {
+            @Override
+            public void onResponse(Call<GetVerifyCodeRes> call, Response<GetVerifyCodeRes> response) {
+                if(response.code()==200) {
+//                    Toast.makeText(UpdateUserInfoActivity.this, "Verify was sent, please check email to get verify code!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content).getRootView(),
+                            "Verify was sent, please check email to get verify code!", Snackbar.LENGTH_LONG).show();
+                    Intent intent = new Intent(UpdateUserInfoActivity.this,InputVerifyCodeActivity.class);
+                    intent.putExtra("userId",UserInfo.getID());
+                    intent.putExtra("typeVerify",typeVerify);
+                    startActivity(intent);
+                }
+
+                if(response.code()==400) {
+                    String message = "Send failed!";
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        message = jObjError.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(UpdateUserInfoActivity.this,"Error "+ message, Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetVerifyCodeRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void GetUserInfo(){
+        String token = GetTokenLoginAccess();
+        APIService mAPIService = ApiUtils.getAPIService();
+
+        mAPIService.getUserInfo(token).enqueue(new Callback<UserInfoRes>() {
+            @Override
+            public void onResponse(Call<UserInfoRes> call, Response<UserInfoRes> response) {
+                if(response.code()==200) {
+                    Toast.makeText(UpdateUserInfoActivity.this, "Get info success", Toast.LENGTH_LONG).show();
+                    UserInfo = response.body();
+                    if(!Objects.isNull(UserInfo.getAvatar()))
+                        Picasso.get().load(UserInfo.getAvatar()).into(avatarView);
+
+                    if(!Objects.isNull(UserInfo.getID()))
+                        userIdView.setText(String.valueOf(UserInfo.getID()));
+                    if(!Objects.isNull(UserInfo.getEmail()))
+                        emailView.setText(UserInfo.getEmail());
+                    if(!Objects.isNull(UserInfo.getFullName()))
+                        fullNameView.setText(UserInfo.getFullName());
+                    if(!Objects.isNull(UserInfo.getPhone()))
+                        phoneView.setText(UserInfo.getPhone());
+                    if(!Objects.isNull(UserInfo.getGender()))
+                        if(UserInfo.getGender()==0)
+                            genderView.setText("Nam");
+                        else genderView.setText("Nữ");
+                    if(!Objects.isNull(UserInfo.getDob()))
+                        dobView.setText(UserInfo.getDob());
+
+                }
+
+                if(response.code()==401)
+                    Toast.makeText(UpdateUserInfoActivity.this,"No authorization token was found", Toast.LENGTH_LONG).show();
+
+                if(response.code()==503)
+                    Toast.makeText(UpdateUserInfoActivity.this,"Server error on creating user", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoRes> call, Throwable t) {
+                Toast.makeText(UpdateUserInfoActivity.this,"Error get information user", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -158,10 +299,11 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UpdateUserInfoRes> call, Response<UpdateUserInfoRes> response) {
                 if(response.code()==200) {
-                    Toast.makeText(UpdateUserInfoActivity.this, "Update information success", Toast.LENGTH_LONG).show();
-                    finish();
-                    Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
-                    startActivity(intent);
+//                    Toast.makeText(UpdateUserInfoActivity.this, "Update information success", Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content),
+                            "Update infomation successfully", Snackbar.LENGTH_LONG).show();
+//                    Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
+//                    startActivity(intent);
                 }
                 if(response.code()==400)
                     Toast.makeText(UpdateUserInfoActivity.this, "Invalid params", Toast.LENGTH_LONG).show();
@@ -204,8 +346,22 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(UpdateUserInfoActivity.this,UserInfoActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mProgressDialog != null)
+            mProgressDialog.dismiss();
     }
 }

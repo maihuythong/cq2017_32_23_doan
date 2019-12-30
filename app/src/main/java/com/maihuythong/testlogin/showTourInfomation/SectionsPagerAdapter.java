@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.maihuythong.testlogin.rate_comment_review.Comment;
+import com.maihuythong.testlogin.showTourInfo.Member;
 
 import java.util.ArrayList;
 
@@ -22,10 +23,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private String mToken;
     private long mTourId;
     private ArrayList<Comment> mListComment;
+    private ArrayList<Member> mListMembers;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm,
                                 TourOverview tourOverview, ArrayList<Comment> listComment,
-                                String token, long tourId) {
+                                String token, long tourId, ArrayList<Member> listMembers) {
         super(fm);
         mContext = context;
         mAdult = tourOverview.getAdult();
@@ -37,6 +39,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         mListComment = listComment;
         mToken = token;
         mTourId = tourId;
+        mListMembers = listMembers;
     }
 
     @Override
@@ -46,16 +49,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = Frag1.newInstance(mHostName, mAdult, mChild, mDate, mPrice, mName);
+                fragment = Frag1.newInstance(mHostName, mAdult, mChild, mDate, mPrice, mName, mListMembers);
                 break;
             case 2:
                 fragment = Frag3.newInstance(mListComment, mToken, mTourId);
                 break;
             case 1:
-                fragment = new Frag2();
+                fragment = Frag2.newInstance(mToken, mTourId);
                 break;
             case 3:
-                fragment = new Frag4();
+                fragment = Frag5.newInstance(mTourId);
                 break;
         }
         return fragment;
@@ -72,7 +75,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return "Comments";
             case 3:
-                return "Members";
+                return "StopPoint";
         }
         return "Frag0";
     }

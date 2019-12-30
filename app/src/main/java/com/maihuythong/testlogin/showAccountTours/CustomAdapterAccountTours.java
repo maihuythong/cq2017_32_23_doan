@@ -11,7 +11,11 @@ import android.widget.TextView;
 import com.maihuythong.testlogin.R;
 import com.maihuythong.testlogin.showlist.Tour;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CustomAdapterAccountTours extends ArrayAdapter {
@@ -34,19 +38,56 @@ public class CustomAdapterAccountTours extends ArrayAdapter {
             convertView = LayoutInflater.from(context).inflate(this.resource, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            viewHolder.tvSrc = convertView.findViewById(R.id.tvSrc);
+            viewHolder.tvDes = convertView.findViewById(R.id.tvDes);
+            viewHolder.tvMinCost = convertView.findViewById(R.id.tvStartDate);
+            viewHolder.tvMaxCost = convertView.findViewById(R.id.tvEndDate);
+            viewHolder.tvAdult = convertView.findViewById(R.id.tvAdult);
+            viewHolder.tvChildren = convertView.findViewById(R.id.tvChildren);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         tour = arrTour.get(position);
-        viewHolder.tvName.setText("Tên chuyến đi: " + tour.getName());
+        viewHolder.tvName.setText(tour.getName());
+
+        if(tour.getStartDate() != null && !tour.getStartDate().equals("")){
+            String tmpDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date(Long.parseLong(tour.getStartDate())));
+
+            if(tmpDate != null){
+                viewHolder.tvSrc.setText(tmpDate);
+            }
+            else{
+                viewHolder.tvSrc.setText("No Date");
+            }
+        }
+
+        if(tour.getEndDate() != null && !tour.getEndDate().equals("")){
+            String tmpDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date(Long.parseLong(tour.getEndDate())));
+            if(tmpDate != null){
+                viewHolder.tvDes.setText(tmpDate);
+            }
+            else{
+                viewHolder.tvDes.setText("No Date");
+            }
+        }
+
+        viewHolder.tvMinCost.setText(tour.getMinCost());
+        viewHolder.tvMaxCost.setText(tour.getMaxCost());
+        viewHolder.tvAdult.setText(tour.getAdults() + "");
+        viewHolder.tvChildren.setText(tour.getChilds() + "");
 
         return convertView;
     }
 
     public class ViewHolder {
         TextView tvName;
-        Button editTour;
+        TextView tvSrc;
+        TextView tvDes;
+        TextView tvMinCost;
+        TextView tvMaxCost;
+        TextView tvAdult;
+        TextView tvChildren;
     }
 
     public Tour getItem(int position){

@@ -43,6 +43,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.maihuythong.testlogin.MainTabbedLayout.MainTabbedActivity;
 import com.maihuythong.testlogin.firebase.MyFirebaseService;
 import com.maihuythong.testlogin.firebase.PutTokenFirebase;
 import com.maihuythong.testlogin.forgotPassword.RequestOTPActivity;
@@ -204,12 +205,12 @@ public class LoginActivity extends AppCompatActivity {
                         MyApplication app = (MyApplication) LoginActivity.this.getApplication();
                         app.setToken(result.getToken());
                         token = result.getToken();
-                        Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainTabbedActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("string_Token",result.getToken());
 
                         startActivity(intent);
-//                        LoginActivity.this.finish();
+                       // finish();
 
 
 
@@ -482,7 +483,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
 //                        myFirebaseService.onNewToken(FirebaseInstanceId.getInstance().getToken());
-                        Intent intent = new Intent(LoginActivity.this, ShowListActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainTabbedActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         LoginActivity.this.finish();

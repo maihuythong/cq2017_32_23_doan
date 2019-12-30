@@ -152,8 +152,8 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
 
         @Override
         protected Void doInBackground(Void... voids) {
-            getStopPointSystem();
-            dialog.dismiss();
+            getStopPointSystem(dialog);
+
             return null;
         }
 
@@ -164,7 +164,7 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
         }
     }
 
-    private void getStopPointSystem(){
+    private void getStopPointSystem(final ProgressDialog dialog){
         String token = GetTokenLoginAccess();
         APIService mAPIService = ApiUtils.getAPIService();
         mAPIService.searchDestination(token,"",null,null,1,2000).enqueue(new Callback<StopPointSystemRes>() {
@@ -189,6 +189,7 @@ public class ListStopPointSystemActivity extends AppCompatActivity implements Se
                     });
 
                     Toast.makeText(getApplicationContext(),"Get stop points finished!", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
                 }
                 if(response.code()==500)
                 {

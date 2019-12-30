@@ -6,11 +6,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -33,10 +43,18 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowNotiOnRoadList.ShowNotiOnRoad;
+import com.maihuythong.testlogin.googlemapapi.DirectionFinder;
+import com.maihuythong.testlogin.googlemapapi.GetNearbyPlaces;
+import com.maihuythong.testlogin.googlemapapi.Route;
+import com.maihuythong.testlogin.googlemapapi.StopPointGoogleMap;
+import com.maihuythong.testlogin.model.StopPoints;
+import com.maihuythong.testlogin.pop.ShowPopupActivity;
 import com.maihuythong.testlogin.showTourInfo.GetTourInfo;
 import com.maihuythong.testlogin.showTourInfo.StopPoint;
 import com.maihuythong.testlogin.signup.APIService;
 import com.maihuythong.testlogin.signup.ApiUtils;
+import com.maihuythong.testlogin.userInfo.UserInfoRes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +97,26 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         myLocation = findViewById(R.id.my_location);
         final Intent intent = getIntent();
         tourId = intent.getLongExtra("tourId", 0);
-        userId = intent.getLongExtra("userId", 0);
+        //userId = intent.getLongExtra("userId", 0);
+
+        if (token == null) {
+            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
+            token = sf.getString("login_access_token", "");
+        }
+        APIService mapiService = ApiUtils.getAPIService();
+        mapiService.getUserInfo(token).enqueue(new Callback<UserInfoRes>() {
+            @Override
+            public void onResponse(Call<UserInfoRes> call, Response<UserInfoRes> response) {
+                UserInfoRes userInfoRes = response.body();
+                userId = userInfoRes.getID();
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoRes> call, Throwable t) {
+
+            }
+        });
+
         serviceReceiver = new ServiceToActivity();
         IntentFilter intentSFilter = new IntentFilter("ServiceToActivityAction");
         registerReceiver(serviceReceiver, intentSFilter);
@@ -129,7 +166,7 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        FloatingActionButton fab = findViewById(R.id.noti_btn);
+        ImageButton fab = findViewById(R.id.noti_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +177,17 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
             }
         });
 
-        FloatingActionButton fabrc = findViewById(R.id.send_record);
+        ImageButton showNotiListButton = findViewById(R.id.show_noti_list);
+        showNotiListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MapStartTour.this, ShowNotiOnRoad.class);
+                intent1.putExtra("tourId", tourId);
+                startActivity(intent1);
+            }
+        });
+
+        ImageButton fabrc = findViewById(R.id.send_record);
         fabrc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,12 +295,13 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
             double startLimitLong = Double.valueOf(intent.getStringExtra("startLimitLocationLong"));
             long startLimitUserId = Long.valueOf(intent.getStringExtra("startLimitUserId"));
             String startLitmitUserName = intent.getStringExtra("startLimitUserName");
+            String notificationText = intent.getStringExtra("startLimitNoti");
 
             map.addMarker(new MarkerOptions()
                     .position(new LatLng(startLimitLat, startLimitLong))
                     .flat(true)
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.max60))
-                    .title("Start limit speed by: " + startLitmitUserName + " (" + startLimitUserId + " )"));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.warning_on_road))
+                    .title("Start limit speed by: " + startLitmitUserName + " (" + startLimitUserId + " )" + " " + notificationText));
 
         }
     }
@@ -265,12 +313,12 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
             double endLimitLong = Double.valueOf(intent.getStringExtra("endLimitLocationLong"));
             long endLimitUserId = Long.valueOf(intent.getStringExtra("endLimitUserId"));
             String endLitmitUserName = intent.getStringExtra("endLimitUserName");
-
+            String notificationText = intent.getStringExtra("endLimitNoti");
             map.addMarker(new MarkerOptions()
                     .position(new LatLng(endLimitLat, endLimitLong))
                     .flat(true)
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.mkhet60))
-                    .title("End limit speed by: " + endLitmitUserName + " (" + endLimitUserId + " )"));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.safe_on_road))
+                    .title("End limit speed by: " + endLitmitUserName + " (" + endLimitUserId + " )" + " " + notificationText));
         }
     }
     private boolean isExistMarker(String idTitle){
@@ -377,10 +425,8 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
         initMap();
         isMapReady = true;
 
-        if (token == null) {
-            sf = getSharedPreferences("com.maihuythong.testlogin_preferences", MODE_PRIVATE);
-            token = sf.getString("login_access_token", "");
-        }
+
+
 
         if (isFirstTime){
             isFirstTime = false;
@@ -418,7 +464,7 @@ public class MapStartTour extends FragmentActivity implements  OnMapReadyCallbac
                                     .position(new LatLng(point.getLat().doubleValue(), point.getLong().doubleValue()))
                                     .flat(true)
                                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.stoppoint))
-                                    .title("Start tour"));
+                                    .title(point.getName()));
                         }
                     }
                 }

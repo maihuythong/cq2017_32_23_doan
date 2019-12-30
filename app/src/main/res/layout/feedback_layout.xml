@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/background_color">
+    android:layout_marginTop="@dimen/margin_16dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_background"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:layout_margin="5dp">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/default_avt"
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar_feedback"
-            />
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/default_avt"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="1dp"/>
 
         <LinearLayout
             android:layout_width="100dp"
@@ -28,13 +27,13 @@
             >
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/name_user_feedback"
-                android:textColor="#000000"
+                android:textColor="@color/black_text_color"
                 android:textStyle="bold"
                 android:textSize="@dimen/margin_16dp"
-                android:text="Name" />
+                android:text="Le Trung Tien" />
 
             <RatingBar
                 android:id="@+id/small_rating_bar_user_feedback"
@@ -44,20 +43,17 @@
                 style="@style/Widget.AppCompat.RatingBar.Small"/>
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="20dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:id="@+id/feed_back_user_create_on"
                 android:textSize="@dimen/margin_16dp"
                 android:text="date" />
+
+            <TextView
+                android:id="@+id/feed_back_of_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="feedback"/>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/feed_back_of_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black_text_color"
-            android:layout_gravity="center"
-            android:text="feedback"/>
-
     </LinearLayout>
 </LinearLayout>

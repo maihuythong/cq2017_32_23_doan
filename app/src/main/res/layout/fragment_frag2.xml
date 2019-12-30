@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".showTourInfomation.Frag3">
+    tools:context=".showTourInfomation.Frag3"
+    android:background="#ffffff">
 
     <LinearLayout
         android:id="@+id/tour_info_linear_layout_review"
@@ -46,7 +47,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/review_content_tour_info"
-                    android:layout_toRightOf="@+id/send_review_tour_info"
                     android:hint="Type your review"
                     android:layout_weight="9"/>
                 <ImageButton
@@ -63,10 +63,11 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rl_rating_and_review">
+            android:id="@+id/rl_rating_and_review"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/textview_rating"
                 android:textSize="18dp"
@@ -75,28 +76,31 @@
                 android:text="Ratings and reviews"
                 android:textStyle="bold"
                 android:textAlignment="center"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="@dimen/margin_16dp"/>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/textview_rating">
-                <RelativeLayout
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <LinearLayout
                     android:id="@+id/overview_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center">
 
                     <LinearLayout
                         android:id="@+id/linear_rating"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="0.0"
                             android:textSize="60dp"
+                            android:textColor="@color/black_text_color"
                             android:id="@+id/average_star"
                             android:gravity="center_horizontal"
                             />
@@ -104,48 +108,44 @@
                             android:id="@+id/small_rating_bar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/average_star"
                             android:stepSize="0.1"
                             style="@style/Widget.AppCompat.RatingBar.Small"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_below="@+id/linear_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_centerHorizontal="true">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/small_rating_bar"
-                            android:id="@+id/total_rating"
-                            android:text="0"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" reviews"/>
-                    </LinearLayout>
-                </RelativeLayout>
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/total_rating"
+                                android:text="0"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" reviews"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <com.taufiqrahman.reviewratings.RatingReviews
+                    android:layout_weight="7"
                     xmlns:bar="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/rating_reviews"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="42dp"
                     bar:animation="true"
                     bar:max_value="100"
                     bar:show_label="true"
-                    bar:spaces="0dp"
-                    bar:text_size="10sp"
-                    bar:width="50dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_toRightOf="@+id/overview_rating" />
+                    bar:spaces="10dp"
+                    bar:text_size="14dp"
+                    bar:width="20dp"
+                    android:layout_marginLeft="@dimen/margin_16dp"/>
 
-            </RelativeLayout>
-        </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

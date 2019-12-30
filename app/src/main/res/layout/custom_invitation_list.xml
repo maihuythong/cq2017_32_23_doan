@@ -32,6 +32,7 @@
             android:layout_marginLeft="@dimen/margin_16dp">
 
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -44,7 +45,17 @@
                     android:id="@+id/content_invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" invited you to join tour "/>
+                    android:text=" invited you to a tour"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tour name: "
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,8 +65,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+
+                android:layout_width="0dp"
+                android:layout_height="14dp">
                 <TextView
                     android:id="@+id/time_invite"
                     android:layout_width="wrap_content"

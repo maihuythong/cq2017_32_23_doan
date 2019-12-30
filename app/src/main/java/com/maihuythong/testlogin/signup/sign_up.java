@@ -1,5 +1,6 @@
 package com.maihuythong.testlogin.signup;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +35,7 @@ public class sign_up extends AppCompatActivity {
     private EditText mPasswordView;
     private EditText mPhoneView;
     private TextView mErrorDialogue;
+    private EditText mDobVew;
 
     private View mProgressView;
     private View mSignUpFormView;
@@ -37,6 +44,7 @@ public class sign_up extends AppCompatActivity {
 
     private APIService mAPIService;
 
+    private String valueDobUser="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +55,7 @@ public class sign_up extends AppCompatActivity {
         mEmailView = findViewById(R.id.email);
         mPhoneView = findViewById(R.id.phone);
         mErrorDialogue = findViewById(R.id.error_dialogue);
+        mDobVew = findViewById(R.id.dob_user_sign_up);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -67,7 +76,14 @@ public class sign_up extends AppCompatActivity {
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
                 String phone = mPhoneView.getText().toString();
-                sendPost(email, password, phone);
+                sendPost(email, password, phone,valueDobUser);
+            }
+        });
+
+        mDobVew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseDOB();
             }
         });
 
@@ -85,7 +101,7 @@ public class sign_up extends AppCompatActivity {
     }
 
 
-    private void sendPost(String email, String password, String phone) {
+    private void sendPost(String email, String password, String phone, String valueDobUser) {
         mProgressDialog.show();
         // Reset errors.
         mEmailView.setError(null);
@@ -153,24 +169,24 @@ public class sign_up extends AppCompatActivity {
 //                }
 //            });
 
-
+            valueDobUser = "2019-12-30";
             mAPIService = ApiUtils.getAPIService();
 
-            mAPIService.signUp(email, password, phone).enqueue(new Callback<Post>() {
+            mAPIService.signUp(email, password, phone,valueDobUser).enqueue(new Callback<Post>() {
                 @Override
                 public void onResponse(Call<Post> call, Response<Post> response) {
 
                     if(response.isSuccessful()) {
                         Intent intent = new Intent(sign_up.this, LoginActivity.class);
+                        finish();
                         startActivity(intent);
-                        Log.i("aaa", "post submitted to API." + response.body().toString());
                     }
                     else if(response.code() == 400){
-                        mErrorDialogue.setText("Thông tin đăng ký bị trùng");
+                        mErrorDialogue.setText("Duplicated user");
                         mProgressDialog.hide();
                     }
                     else if(response.code() == 503){
-                        mErrorDialogue.setText("Server đang bận, vui lòng thử lại sau ít phút");
+                        mErrorDialogue.setText("Server is busy, please try again after few minutes");
                         mProgressDialog.hide();
                     }
                 }
@@ -182,6 +198,29 @@ public class sign_up extends AppCompatActivity {
                 }
             });
         }
+    }
+
+
+    private void chooseDOB(){
+        final Calendar calendar = Calendar.getInstance();
+        //Get current date and time
+        int dayCr = calendar.get(Calendar.DATE);
+        int monthCr = calendar.get(Calendar.MONTH);
+        int yearCr = calendar.get(Calendar.YEAR);
+        //Take time from DatePicker into calendar
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                calendar.set(year,month,dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                mDobVew.setText(simpleDateFormat.format(calendar.getTime()));
+                valueDobUser = simpleDateFormat.format(calendar.getTime());
+            }
+
+        },yearCr,monthCr,dayCr);
+
+        datePickerDialog.show();
     }
 
 

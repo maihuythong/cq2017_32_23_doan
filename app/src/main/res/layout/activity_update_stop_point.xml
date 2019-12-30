@@ -193,10 +193,10 @@
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="0dp">
 
                 <ImageView
                     android:id="@+id/up_stop_point_imageView_id"
@@ -219,12 +219,11 @@
 
             <Button
                 android:id="@+id/submit_update_stop_point_button"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Update"
-                android:textStyle="bold"
+                style="@style/AppTheme.Button"
+                android:text="UPDATE"
                 />
 
 

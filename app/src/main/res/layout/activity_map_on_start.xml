@@ -1,69 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".TourCoordinate.MapStartTour"
-android:orientation="vertical">
-
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/map"
-    tools:context=".MapsActivity"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TourCoordinate.MapStartTour"
+    android:orientation="vertical">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/noti_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-     />
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <ImageView
-        android:id="@+id/speed_limit_60"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="20dp"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/max60kmh"
-        android:layout_toEndOf="@+id/noti_btn"
-        android:contentDescription="Speed limit 60km/h" />
-
-    <ImageView
-        android:id="@+id/end_speed_limit_60"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="20dp"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/het60kmh"
-        android:layout_toEndOf="@+id/speed_limit_60"
-        android:contentDescription="Speed limit 60km/h" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/send_record"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/marke_circle"
+        android:scaleType="centerCrop"
+        android:background="@drawable/card_background_no_shadow"
+        android:elevation="4dp"
+        android:layout_margin="@dimen/margin_16dp"
         android:layout_alignParentRight="true"
-        />
+        android:id="@+id/my_location"/>
 
-<ImageView
-    android:contentDescription="@string/my_current_location"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginBottom="120dp"
-    android:layout_alignParentEnd="true"
-    android:layout_marginTop="10dp"
-    android:scaleType="centerCrop"
-    android:id="@+id/my_location"
-    android:src="@drawable/ic_my_location"
-    android:layout_alignParentBottom="true"
-    />
+    <LinearLayout
+        android:id="@+id/onroad_panel"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_16dp"
+        android:background="@drawable/card_background_no_shadow"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/noti_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="#ffffff"
+                android:src="@drawable/chat"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"/>
+            <ImageButton
+                android:id="@+id/show_noti_list"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="#ffffff"
+                android:src="@drawable/notification"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"/>
+            <ImageButton
+                android:id="@+id/end_speed_limit_60"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="#ffffff"
+                android:src="@drawable/speed_ok"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"/>
+            <ImageButton
+                android:id="@+id/speed_limit_60"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="#ffffff"
+                android:src="@drawable/speed_warning"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"/>
+            <ImageButton
+                android:id="@+id/send_record"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="#ffffff"
+                android:src="@drawable/record"
+                android:scaleType="centerCrop"
+                android:layout_margin="8dp"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="center"
+                android:text="Chat"
+                android:textStyle="bold"
+                android:textColor="@color/black_text_color"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="center"
+                android:text="Notis"
+                android:textStyle="bold"
+                android:textColor="@color/black_text_color"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="center"
+                android:text="Safe"
+                android:textStyle="bold"
+                android:textColor="@color/black_text_color"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="center"
+                android:text="Warning"
+                android:textStyle="bold"
+                android:textColor="@color/black_text_color"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Record"
+                android:textStyle="bold"
+                android:textColor="@color/black_text_color"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

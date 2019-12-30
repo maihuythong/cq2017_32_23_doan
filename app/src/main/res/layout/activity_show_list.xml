@@ -10,14 +10,12 @@
         android:id="@+id/toolbar"
         android:background="@drawable/action_bar_gradient"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator">
+        android:layout_height="?attr/actionBarSize">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tours Available"
             android:textAlignment="center"
-            android:paddingRight="30dp"
             android:textColor="@color/appbar_text_color"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -38,71 +36,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/task_list">
-        <Button
-            android:id="@+id/show_account_tours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="a" />
-
-        <Button
-            android:id="@+id/show_stop_point_system"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SP" />
-
-        <Button
-            android:id="@+id/show_invitation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/show_account_tours"
-            android:text="invite" />
-
-        <Button
-            android:id="@+id/show_userInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/show_invitation"
-            android:text="User" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/task_list">
+        android:layout_below="@+id/toolbar"
+        android:background="@color/background_color">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total tours: "
-                android:textSize="20dp"
+                android:text="Display: "
                 android:textColor="@color/black_text_color"/>
-            <TextView
-                android:id="@+id/total_available_tours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="20dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="20dp"/>
 
             <TextView
                 android:id="@+id/item_visitble_capacity_list_tour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:textSize="20dp"
-                android:textColor="@color/black_text_color"
-                android:layout_marginStart="200dp"
+                android:text="0"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="/"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/total_available_tours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/colorPrimary"/>
+
+
                 />
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -46,9 +47,13 @@ public class SendSpeedLimitEnd extends Activity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        getWindow().setLayout((int)(width*0.9), (int)(height*0.5));
+        getWindow().setLayout((int)(width*0.9), (int)(height*0.2));
         text = findViewById(R.id.text_end_limit_speed);
         button = findViewById(R.id.send_speed_limit);
+
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.y = -50;
+        getWindow().setAttributes(params);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -28,8 +29,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maihuythong.testlogin.CreateTourActivity;
 import com.maihuythong.testlogin.LoginActivity;
 import com.maihuythong.testlogin.R;
+import com.maihuythong.testlogin.ShowSystemTourInfo.ShowSystemTourInfo;
 import com.maihuythong.testlogin.showListStopPointSystem.ListStopPointSystemActivity;
 import com.maihuythong.testlogin.showTourInfomation.ShowTourInformation;
+import com.maihuythong.testlogin.userInfo.UpdateUserInfoActivity;
 import com.maihuythong.testlogin.userInfo.UserInfoActivity;
 import com.maihuythong.testlogin.invitationTour.InvitationActivity;
 import com.maihuythong.testlogin.rate_comment_review.RateCommentTour;
@@ -96,46 +99,6 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             }
         });
 
-        //init show account tours button
-        Button showAccountTours = findViewById(R.id.show_account_tours);
-        showAccountTours.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowListActivity.this, ShowAccountToursActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //init show invitation of tours button
-        Button showInvitation = findViewById(R.id.show_invitation);
-        showInvitation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowListActivity.this, InvitationActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //init show user info button
-        Button showUserInfo = findViewById(R.id.show_userInfo);
-        showUserInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowListActivity.this, UserInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //init show stop point system
-        Button showListStopPointButton = findViewById(R.id.show_stop_point_system);
-        showListStopPointButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ListStopPointSystemActivity.class);
-                startActivity(intent);
-            }
-        });
-
         new LoadTourAsyncTask(this).execute();
 
     }
@@ -166,7 +129,7 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
             APIService mAPIService = ApiUtils.getAPIService();
             Intent intent = getIntent();
 
-            mAPIService.getList(s,4000, 1).enqueue(new Callback<ShowListReq>() {
+            mAPIService.getList(s,5000, 1).enqueue(new Callback<ShowListReq>() {
                 @Override
                 public void onResponse(Call<ShowListReq> call, Response<ShowListReq> response) {
                     if(response.code() == 200){
@@ -210,13 +173,13 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
 
 
     private void AddTour() {
-        startActivity(new Intent(this, CreateTourActivity.class));
+        startActivityForResult(new Intent(this, CreateTourActivity.class), 111);
     }
 
     private  void openRateCommentTour(ArrayList<Tour> arrTour,int position){
         Tour tt;
         tt = arrTour.get(position);
-        Intent intent = new Intent(ShowListActivity.this, RateCommentTour.class);
+        Intent intent = new Intent(ShowListActivity.this, ShowSystemTourInfo.class);
         intent.putExtra("pos", position);
         intent.putExtra("id", tt.getID());
         intent.putExtra("status", tt.getStatus());
@@ -230,6 +193,17 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
         intent.putExtra("isPrivate", tt.getIsPrivate());
         intent.putExtra("avatar", tt.getAvatar());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 111 && resultCode == RESULT_OK){
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            overridePendingTransition(0, 0);
+        }
     }
 
 
@@ -263,9 +237,11 @@ public class ShowListActivity extends AppCompatActivity implements SearchView.On
     }
 
 
+
     @Override
     public void onBackPressed() {
     }
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {
