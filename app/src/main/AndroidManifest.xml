@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.maihuythong.testlogin">
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission map, location -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".manager.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/icon_launch"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ShowNotiOnRoadList.ShowNotiOnRoad"
+            android:theme="@style/AppTheme.PopupTheme"></activity>
+        <activity android:name=".showListStopPointSystem.ListStopPointSystemActivity" />
+        <activity android:name=".stopPointInfo.UpdateStopPointActivity"></activity>
+        <activity android:name=".stopPointInfo.StopPointDetailActivity" />
+        <activity android:name=".showListStopPoints.showListStopPointsActivity" />
+        <activity android:name=".forgotPassword.RecoveryPasswordActivity" />
+        <activity android:name=".forgotPassword.RequestOTPActivity" />
+        <activity android:name=".userInfo.InputVerifyCodeActivity" />
+        <activity android:name=".userInfo.UpdateUserInfoActivity" />
+        <activity android:name=".userInfo.UserInfoActivity" />
+        <activity android:name=".updateTour.UpdateTour" />
+        <activity android:name=".showAccountTours.ShowAccountToursActivity" />
+        <activity
+            android:name=".showlist.ShowListActivity"
+            android:label="List tour">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".googlemapapi.StopPointGoogleMap"
+            android:label="Stop point create">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".signup.sign_up"
+            android:label="Sign Up" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateTourActivity"
+            android:label="Create Tour"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".pop.ShowPopupActivity"
+            android:label="Stop point infor" />
+        <activity
+            android:name=".ShowListUsers.ListUsersActivity"
+            android:label="ListUser" />
+        <activity
+            android:name=".invitationTour.InvitationActivity"
+            android:label="Invitations" />
+        <activity
+            android:name=".rate_comment_review.RateCommentTour"
+            android:label="Rate, review, comment a tour" />
+        <activity
+            android:name=".showTourInfo.ShowTourInfo"
+            android:label="Show all infomation of tour" />
+        <activity
+            android:name=".firebase.MessagingTour"
+            android:label="Chat" />
+
+        <receiver
+            android:name=".firebase.MyBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+            <intent-filter android:priority="999">
+                <action android:name="com.example.cancel" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".showTourInfomation.ShowTourInformation" />
+        <activity android:name=".ShowSPInformation.ShowSPInformation" />
+        <activity android:name=".ShowSystemTourInfo.ShowSystemTourInfo" />
+        <service
+            android:name=".firebase.MyFirebaseService" android:stopWithTask="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+
+        <service
+            android:name=".TourCoordinate.LocationService"
+            android:enabled="true"
+            android:exported="true" android:stopWithTask="true"/>
+
+        <activity
+            android:name=".TourCoordinate.MapStartTour"
+            android:label="Map on road">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".TourCoordinate.NotificationOnRoad"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+
+        <activity android:name=".TourCoordinate.SendSpeedLimitEnd"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+
+        <activity android:name=".TourCoordinate.SendSpeedLimitStart"
+            android:theme="@style/AppTheme.PopupTheme"
+            />
+        <activity android:name=".TourCoordinate.Record"
+            android:theme="@style/AppTheme.PopupTheme"/>
+
+        <activity android:name=".MainTabbedLayout.MainTabbedActivity"/>
+
+        <activity android:name=".TourCoordinate.ShowSelectedSP"
+            android:theme="@style/AppTheme.PopupTheme"/>
+
+        <activity android:name=".googlemapapi.ShowSystemStopPointPopup"
+            android:theme="@style/AppTheme.PopupTheme"/>
+    </application>
+
+</manifest>

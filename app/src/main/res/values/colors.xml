@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#317CD3</color>
+    <color name="colorPrimaryDark">#000bff</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="button_text">#ffffff</color>
+    <color name="text_color">#6D6D6D</color>
+    <color name="appbar_text_color">#ffffff</color>
+    <color name="colorAccent2">#4DE90F</color>
+    <color name="error_text_color">#FF0000</color>
+    <color name="background_color">#F6F6F6</color>
+    <color name="black_text_color">#1E1E1E</color>
+    <color name="white_text_shadow">#585858</color>
+    <color name="friend_serch_hint_text_color">#E9E9E9</color>
+</resources>

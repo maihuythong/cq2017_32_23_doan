@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="saved_username">login_username</string>
+    <string name="saved_access_token">login_access_token</string>
+    <string name="saved_access_token_time">login_access_token_time</string>
+    <string name="saved_token">login_token</string>
+</resources>

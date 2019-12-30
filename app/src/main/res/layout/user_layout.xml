@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin_16dp"
+    android:paddingLeft="@dimen/margin_16dp"
+    android:paddingRight="@dimen/margin_16dp">
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/member_avatar"
+    android:layout_width="51dp"
+    android:layout_height="51dp"
+    android:src="@drawable/default_avt"
+    app:civ_border_color="@color/colorAccent"
+    app:civ_border_width="1dp"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="8dp">
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/black_text_color"
+        android:text="Le Trung Tien"/>
+
+    <TextView
+        android:id="@+id/userId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID: "
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/member_phone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="0398523596"
+        android:textSize="12dp"/>
+    <TextView
+        android:id="@+id/member_email"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="gautrang@cartoonnetwork.com"/>
+    <TextView
+        android:id="@+id/member_host"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=""/>
+
+</LinearLayout>
+</LinearLayout>

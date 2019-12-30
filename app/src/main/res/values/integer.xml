@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="login" format="integer">100</item>
+    <item type="integer" name="signup" format="integer">101</item>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="province_array">
+        <item>Hồ Chí Minh</item>
+        <item>Hà Nội</item>
+        <item>Đà Nẵng</item>
+        <item>Bình Dương</item>
+        <item>Đồng Nai</item>
+        <item>Khánh Hòa</item>
+        <item>Hải Phòng</item>
+        <item>Long An</item>
+        <item>Quảng Nam</item>
+        <item>Bà Rịa Vũng Tàu</item>
+        <item>Đắk Lắk</item>
+        <item>Cần Thơ</item>
+        <item>Bình Thuận  </item>
+        <item>Lâm Đồng</item>
+        <item>Thừa Thiên Huế</item>
+        <item>Kiên Giang</item>
+        <item>Bắc Ninh</item>
+        <item>Quảng Ninh</item>
+        <item>Thanh Hóa</item>
+        <item>Nghệ An</item>
+        <item>Hải Dương</item>
+        <item>Gia Lai</item>
+        <item>Bình Phước</item>
+        <item>Hưng Yên</item>
+        <item>Bình Định</item>
+        <item>Tiền Giang</item>
+        <item>Thái Bình</item>
+        <item>Bắc Giang</item>
+        <item>Hòa Bình</item>
+        <item>An Giang</item>
+        <item>Vĩnh Phúc</item>
+        <item>Tây Ninh</item>
+        <item>Thái Nguyên</item>
+        <item>Lào Cai</item>
+        <item>Nam Định</item>
+        <item>Quảng Ngãi</item>
+        <item>Bến Tre</item>
+        <item>Đắk Nông</item>
+        <item>Cà Mau</item>
+        <item>Vĩnh Long</item>
+        <item>Ninh Bình</item>
+        <item>Phú Thọ</item>
+        <item>Ninh Thuận</item>
+        <item>Phú Yên</item>
+        <item>Hà Nam</item>
+        <item>Hà Tĩnh</item>
+        <item>Đồng Tháp</item>
+        <item>Sóc Trăng</item>
+        <item>Kon Tum</item>
+        <item>Quảng Bình</item>
+        <item>Quảng Trị</item>
+        <item>Trà Vinh</item>
+        <item>Hậu Giang</item>
+        <item>Sơn La</item>
+        <item>Bạc Liêu</item>
+        <item>Yên Bái</item>
+        <item>Tuyên Quang</item>
+        <item>Điện Biên</item>
+        <item>Lai Châu</item>
+        <item>Lạng Sơn</item>
+        <item>Hà Giang</item>
+        <item>Bắc Kạn</item>
+        <item>Cao Bằng</item>
+    </string-array>
+
+
+</resources>
